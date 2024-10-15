@@ -1,0 +1,51 @@
+
+GET http://localhost:8080/api/redirect/2vDQw
+Content-Type: application/json
+
+###
+POST http://localhost:8080/api/shorturl
+Content-Type: application/json
+
+{
+  "url": "hltv.org"
+}
+
+###
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "user": "test3",
+  "password": "1234"
+}
+
+###
+POST http://localhost:8080/api/auth
+Content-Type: application/json
+
+{
+  "user": "jbali",
+  "password": "1234"
+}
+
+###
+POST http://localhost:8080/api/shorturl
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidGVzdDMiLCJpZCI6IjY3MGRjNTMwZGNlZWI0YTNmYjMxMzZiOCIsImlhdCI6MTcyODk1NjExMCwiZXhwIjoxNzI5NTYwOTEwfQ.VcfonmQyM5HmnSXSYU50N6XlZCCeSZNZONLk9i9A1fE
+
+{
+  "url": "marca.es"
+}
+
+###
+GET http://localhost:8080/api/auth
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiamJhbGkiLCJpZCI6IjY3MGM2YmI4YjYzOTBhYTcwYWZkODMyNyIsImlhdCI6MTcyODkwNDk5NSwiZXhwIjoxNzI5NTA5Nzk1fQ._N0HWeoVO9jjcAk3bdJnbeywnO1MY5A7VYu17XtO0c4
+
+###
+DELETE http://localhost:8080/api/shorturl/jVE9k
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiamJhbGkiLCJpZCI6IjY3MGM2YmI4YjYzOTBhYTcwYWZkODMyNyIsImlhdCI6MTcyODkwNDk5NSwiZXhwIjoxNzI5NTA5Nzk1fQ._N0HWeoVO9jjcAk3bdJnbeywnO1MY5A7VYu17XtO0c4
+
+
+

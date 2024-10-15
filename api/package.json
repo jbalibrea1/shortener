@@ -1,0 +1,44 @@
+{
+  "name": "back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node build/index.js",
+    "dev": "ts-node-dev src/index.ts",
+    "lint": "eslint .",
+    "tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Jorge Balibrea",
+  "license": "ISC",
+  "dependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "metascraper": "^5.45.14",
+    "metascraper-description": "^5.45.10",
+    "metascraper-image": "^5.45.10",
+    "metascraper-logo-favicon": "^5.45.12",
+    "metascraper-title": "^5.45.10",
+    "metascraper-url": "^5.45.10",
+    "mongoose": "^8.4.3",
+    "nanoid": "3.3.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.11.1",
+    "@stylistic/eslint-plugin": "^2.8.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/eslint__js": "^8.42.3",
+    "@types/express": "^4.17.21",
+    "eslint": "^9.11.1",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "~5.5.4",
+    "typescript-eslint": "^8.8.0"
+  }
+}
