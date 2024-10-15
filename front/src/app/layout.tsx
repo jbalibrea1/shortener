@@ -1,22 +1,11 @@
 import '@/app/globals.css';
-import { inter } from '@/components/fonts';
+import { fontSans } from '@/components/fonts';
 import Footer from '@/components/footer';
 import Header from '@/components/header';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
+import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
-
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-});
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-});
 
 export const metadata: Metadata = {
   title: 'URL Shortener | by Jorge Balibrea - @jbalibrea1',
@@ -29,10 +18,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.className} ${geistSans.className} ${geistMono.className}  antialiased`}
-        suppressHydrationWarning={true}
+        className={cn(
+          `font-sans min-h-screen bg-background antialiased`,
+          fontSans.variable
+        )}
+        suppressHydrationWarning
       >
         <ThemeProvider
           attribute="class"
@@ -40,9 +32,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="relative flex min-h-screen flex-col bg-background">
+          <div className="relative flex min-h-screen flex-col ">
             <Header />
-            <div className="flex-1 container max-w-screen-md mx-auto w-full h-full flex flex-col">
+            <div className="container max-w-screen-md mx-auto w-full h-full flex-1 flex flex-col">
               {children}
             </div>
             <Footer />

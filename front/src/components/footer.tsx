@@ -1,11 +1,16 @@
+import SvgGithub from './svg-github';
+
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
   return (
-    <footer className="container max-w-screen-xl flex flex-col sm:flex-row justify-between items-center text-gray-900 dark:text-white p-4 text-base gap-2 font-light tracking-wider ">
-      <div className="flex space-x-1">
-        <span> Jorge Balibrea - {currentYear}</span>
+    <footer className="container max-w-screen-xl flex flex-row justify-end items-center p-4 gap-2 text-sm font-light tracking-wide ">
+      <div className="flex gap-2 items-center">
+        <span>
+          by <strong>jbalibrea</strong>
+        </span>
+        <a href="https://github.com/jbalibrea1" target="_blank">
+          <SvgGithub color="text-foreground" />
+        </a>
       </div>
-      <p>Created w/ nextjs + shadcn</p>
     </footer>
   );
 }

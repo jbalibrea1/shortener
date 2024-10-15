@@ -9,7 +9,7 @@ const page = () => {
   return (
     <div className="w-full h-full flex flex-col gap-8 pt-12">
       <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-        Questions and Answers
+        Preguntas y respuestas
       </h1>
       <Accordion type="single" collapsible>
         <AccordionItem value="item-1">
@@ -35,20 +35,21 @@ const page = () => {
         <AccordionItem value="item-3">
           <AccordionTrigger>¿Los QR generados caducan?</AccordionTrigger>
           <AccordionContent>
-            NO!, los códigos QR generados por el acortador de URLs no caducan.
-            Cada QR está vinculado de forma permanente a la URL corta, lo que
-            significa que se puede utilizar indefinidamente siempre que la URL
-            acortada siga siendo válida en el sistema.
+            NO! Los códigos QR nunca caducan. Cada QR está vinculado de forma
+            permanente a la URL corta, lo que significa que se puede utilizar
+            indefinidamente siempre que la URL acortada siga siendo válida en el
+            sistema.
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="item-3">
+        <AccordionItem value="item-4">
           <AccordionTrigger>¿El proyecto está terminado?</AccordionTrigger>
           <AccordionContent>
-            No, el proyecto está en fase beta. Aunque es completamente
-            utilizable para acortar URLs y generar códigos QR, aún faltan
-            funcionalidades clave como el registro de usuarios, la autenticación
-            y herramientas avanzadas de análisis. Estas características están en
-            desarrollo y se añadirán en futuras versiones.
+            Para nada, el proyecto está en una fase de pruebas. Aunque es
+            completamente utilizable para acortar URLs y generar códigos QR, aún
+            faltan funcionalidades clave como el registro de usuarios, la
+            autenticación y herramientas avanzadas de análisis. Estas
+            características están en desarrollo y se añadirán en futuras
+            versiones.
           </AccordionContent>
         </AccordionItem>
       </Accordion>

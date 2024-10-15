@@ -1,3 +1,4 @@
+import { GeistSans } from 'geist/font/sans';
 import { Inter, Roboto } from 'next/font/google';
 
 export const roboto = Roboto({
@@ -10,3 +11,5 @@ export const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
 });
+
+export const fontSans = GeistSans;
