@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/', asyncHandler(shortURLController.getAllShortURLs));
 router.post('/', asyncHandler(shortURLController.addShortURL));
-router.get('/:shorturl', asyncHandler(shortURLController.getShortURL));
+router.get('/:surl', asyncHandler(shortURLController.getShortURL));
 router.delete('/:surl', asyncHandler(shortURLController.deleteShortURL));
 
 export { router };

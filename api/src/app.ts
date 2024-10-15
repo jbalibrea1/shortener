@@ -1,10 +1,10 @@
-import 'dotenv/config';
-import express from 'express';
-import connectDB from './config/db';
-import middleware from './middleware';
+import "dotenv/config";
+import express from "express";
+import connectDB from "./config/db";
+import middleware from "./middleware";
 
-import cors from 'cors';
-import { router } from './routes';
+import cors from "cors";
+import { router } from "./routes";
 const app = express();
 
 // Middlewares
@@ -16,10 +16,6 @@ app.use(middleware.requestLogger);
 connectDB();
 
 // Routes
-app.get('/ping', (_req, res) => {
-  console.log('someone pinged here');
-  res.send('pong');
-});
 app.use(router);
 
 // Middleware for handling unknown routes and errors

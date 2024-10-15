@@ -1,10 +1,11 @@
-import { CustomJwtPayload } from '../interfaces/customJwt.interface';
-import { ShortURL } from '../interfaces/shortURL.interface';
-import ShortURLModel from '../models/shortURL.model';
-import UserModel from '../models/user.model';
-import addMetadata from '../utils/metadata';
-import generateUniqueShortUrl from '../utils/randomUrl';
-import toNewShortUrlEntry from '../utils/shortEntry';
+import { CustomJwtPayload } from "../interfaces/customJwt.interface";
+import { ShortURL } from "../interfaces/shortURL.interface";
+import { IUser } from "../interfaces/user.interface";
+import ShortURLModel from "../models/shortURL.model";
+import UserModel from "../models/user.model";
+import addMetadata from "../utils/metadata";
+import generateUniqueShortUrl from "../utils/randomUrl";
+import toNewShortUrlEntry from "../utils/shortEntry";
 
 const getAllSurl = async () => {
   const allUrls: ShortURL[] = await ShortURLModel.find({});
@@ -14,16 +15,16 @@ const getAllSurl = async () => {
 const createSurl = async (url: string, user: CustomJwtPayload | null) => {
   let newShortUrlEntry = toNewShortUrlEntry({ url });
 
-  // add metadata to the entry
+  // add metadata to the newShortUrlEntry
   newShortUrlEntry = await addMetadata(newShortUrlEntry);
 
-  // generate a unique short url while not clashing with existing ones
+  // generate unique short URL until it is unique
   let shortURL = generateUniqueShortUrl();
   while (await ShortURLModel.findOne({ shortURL })) {
     shortURL = generateUniqueShortUrl();
   }
 
-  // create a new entry
+  // create a new entry with the user id if user is logged
   const newEntry = new ShortURLModel({
     ...newShortUrlEntry,
     shortURL,
@@ -32,13 +33,23 @@ const createSurl = async (url: string, user: CustomJwtPayload | null) => {
   const savedEntry = await newEntry.save();
 
   if (user?.id) {
-    console.log("Adding short URL to user's list of URLs");
     await UserModel.findByIdAndUpdate(user.id, {
       $push: { shortURLs: savedEntry._id },
     });
   }
 
   return savedEntry;
+};
+
+const getInfoSurl = async (shortURL: string) => {
+  const entry = await ShortURLModel.findOne({ shortURL });
+
+  if (!entry) {
+    throw new Error(`Short URL not found for ${shortURL}`);
+  }
+  const fullUser = await UserModel.findById(entry.user);
+
+  return { entry, user: fullUser?.user ?? null };
 };
 
 const getSurl = async (shortURL: string) => {
@@ -50,12 +61,12 @@ const getSurl = async (shortURL: string) => {
 
   entry.totalClicks += 1;
   await entry.save();
-  return entry;
+  return entry.url;
 };
 
 const deleteSurl = async (shortURL: string, user: CustomJwtPayload | null) => {
   if (!user) {
-    throw new Error('No authorization token provided');
+    throw new Error("No authorization token provided");
   }
 
   const deletedEntry = await ShortURLModel.findOneAndDelete({
@@ -74,4 +85,4 @@ const deleteSurl = async (shortURL: string, user: CustomJwtPayload | null) => {
   return deletedEntry;
 };
 
-export default { getAllSurl, createSurl, getSurl, deleteSurl };
+export default { getAllSurl, createSurl, getSurl, deleteSurl, getInfoSurl };
