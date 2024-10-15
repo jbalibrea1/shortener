@@ -143,6 +143,7 @@ export function FormSendURL() {
                               placeholder="https://example.com"
                               {...field}
                               disabled={loading}
+                              className="text-base sm:text-sm"
                             />
                           </FormControl>
                           <FormMessage />

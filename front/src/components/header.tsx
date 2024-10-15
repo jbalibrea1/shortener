@@ -11,7 +11,9 @@ const Header = () => {
             alt="Logo"
             className="w-10 h-10 rounded-full"
           />
-          <span className="text-xl font-bold">URL Shortener</span>
+          <span className="hidden sm:block md:text-xl font-bold">
+            URL Shortener
+          </span>
         </a>
         <div className="flex gap-8 items-center">
           <ul className="font-light tracking-tight flex flex-row gap-2">
