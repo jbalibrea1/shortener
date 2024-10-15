@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 
 interface Metadata {
@@ -10,7 +11,7 @@ const ImageFallback: React.FC<{ data: Metadata }> = ({ data }) => {
     e: React.SyntheticEvent<HTMLImageElement, Event>
   ) => {
     const target = e.target as HTMLImageElement;
-    target.src = '/favicon.svg'; // Imagen de fallback en caso de error
+    target.src = '/favicon.ico';
   };
 
   return (

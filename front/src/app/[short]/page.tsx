@@ -12,7 +12,8 @@ interface ShortUrlData {
 export default function ShortPage({ params }: { params: { short: string } }) {
   const router = useRouter();
   const slug = params.short;
-  const BACKEND_API = `http://localhost:8080/api/redirect/${slug}`;
+  const API = process.env.NEXT_PUBLIC_API_URL;
+  const BACKEND_API = `${API}/redirect/${slug}`;
 
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);

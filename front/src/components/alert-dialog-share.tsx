@@ -10,9 +10,9 @@ import {
 } from '@/components/ui/alert-dialog';
 import type { ShortUrlEntry } from '@/interface/shortURLentry';
 import { CopyIcon } from '@radix-ui/react-icons';
-import ImageFallback from './ImageFallback';
-import InputWithCopyIcon from './InputWithCopy';
-import QRCodeGenerator from './QRCode';
+import ImageFallback from './image-fallback';
+import InputWithCopyIcon from './input-copy';
+import QRCodeGenerator from './qrcode';
 
 type AlertDialogDemoProps = {
   open: boolean;
@@ -49,14 +49,19 @@ export function AlertDialogShort({
           readOnly
           iconClick={handleIconClick}
         />
-        <AlertDialogFooter className="flex justify-between items-center  ">
+        <AlertDialogFooter className="justify-end sm:items-end gap-2 items-center">
           <QRCodeGenerator content={`${DOMAIN}/${data.shortURL}`} />
-          <AlertDialogCancel onClick={() => setOpen(false)}>
-            Cerrar
-          </AlertDialogCancel>
-          <AlertDialogAction onClick={handleCopyAndClose}>
-            <CopyIcon /> Copiar y cerrar
-          </AlertDialogAction>
+          <div
+            className="flex flex-col sm:flex-row justify-end
+ gap-2 w-full"
+          >
+            <AlertDialogCancel onClick={() => setOpen(false)}>
+              Cerrar
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleCopyAndClose}>
+              <CopyIcon /> Copiar y cerrar
+            </AlertDialogAction>
+          </div>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

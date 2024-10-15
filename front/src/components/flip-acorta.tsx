@@ -6,7 +6,7 @@ export function FlipWordsAcorta() {
   return (
     <div className="flex items-center ">
       <div className="tex2t-primary/80 dark:text2-primary/80">
-        url.ly/
+        /
         <FlipWords
           words={words}
           duration={1000}

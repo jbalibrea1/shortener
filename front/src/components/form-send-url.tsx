@@ -18,7 +18,7 @@ import { useToast } from '@/hooks/use-toast';
 import type { ShortUrlEntry } from '@/interface/shortURLentry';
 import handleCopy from '@/utils/handleCopy';
 import { useState } from 'react';
-import { AlertDialogShort } from './AlertDialogShort';
+import { AlertDialogShort } from './alert-dialog-share';
 import {
   Card,
   CardContent,
@@ -40,6 +40,7 @@ export function FormSendURL() {
   const [loading, setLoading] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [data, setData] = useState<Partial<ShortUrlEntry>>({});
+
   const { toast } = useToast();
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
@@ -89,20 +90,8 @@ export function FormSendURL() {
         description: `${new Date().toLocaleDateString(
           'es-ES'
         )} - ${new Date().toLocaleTimeString()}`,
-        // action: (
-        //   <ToastAction
-        //     altText="Copiar enlace"
-        //     onClick={() => handleCopy(data.shortURL, toast)}
-        //   >
-        //     <CopyIcon />
-        //   </ToastAction>
-        // ),
       });
       setOpen(true);
-      // action: {
-      //     label: 'Undo',
-      //     onClick: () => console.log('Undo'),
-      //   },
       form.reset();
     } catch (error) {
       console.error(error);
@@ -174,62 +163,7 @@ export function FormSendURL() {
             </Form>
           </Card>
         </TabsContent>
-        <TabsContent value="qr">
-          <Card>
-            <CardHeader>
-              <CardTitle>Crea un enlace único</CardTitle>
-              <CardDescription>
-                Genera un enlace único para compartirlo fácilmente.
-              </CardDescription>
-            </CardHeader>{' '}
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
-              >
-                <CardContent>
-                  <div className="grid w-full items-center gap-4">
-                    <FormField
-                      control={form.control}
-                      name="url"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Escribe la url a acortar</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="https://example.com"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-end">
-                  <Button type="submit">Generar enlace</Button>
-                  <Button
-                    onClick={() =>
-                      toast({
-                        variant: 'destructive',
-                        title: 'Error al generar el enlace',
-                        description: 'Por favor, intenta de nuevo.',
-                        action: (
-                          <ToastAction altText="Try again">
-                            Try again
-                          </ToastAction>
-                        ),
-                      })
-                    }
-                  >
-                    toast test
-                  </Button>
-                </CardFooter>
-              </form>
-            </Form>
-          </Card>
-        </TabsContent>
+        <TabsContent value="qr">{/* SECOND TAB */}</TabsContent>
       </Tabs>
       <AlertDialogShort
         open={open}

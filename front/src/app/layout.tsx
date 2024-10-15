@@ -1,4 +1,5 @@
 import '@/app/globals.css';
+import { inter } from '@/components/fonts';
 import Footer from '@/components/footer';
 import Header from '@/components/header';
 import { ThemeProvider } from '@/components/theme-provider';
@@ -30,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.className} ${geistSans.className} ${geistMono.className}  antialiased`}
         suppressHydrationWarning={true}
       >
         <ThemeProvider

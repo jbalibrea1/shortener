@@ -1,9 +1,3 @@
-// interface ToastProps {
-//   description?: string;
-//   title?: string;
-//   variant?: string;
-//   action?: ReactNode;
-// }
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const handleCopy = (urlToCopy: string, toast: any) => {
   navigator.clipboard
