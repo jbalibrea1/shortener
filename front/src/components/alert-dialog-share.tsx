@@ -29,7 +29,6 @@ export function AlertDialogShort({
   setOpen,
   handleCopyAndClose,
 }: AlertDialogDemoProps) {
-  const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
@@ -45,12 +44,12 @@ export function AlertDialogShort({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <InputWithCopyIcon
-          value={data.shortURL}
+          value={`${data.shortURL}`}
           readOnly
           iconClick={handleIconClick}
         />
         <AlertDialogFooter className="justify-end sm:items-end gap-2 items-center">
-          <QRCodeGenerator content={`${DOMAIN}/${data.shortURL}`} />
+          <QRCodeGenerator content={`${data.shortURL}`} />
           <div
             className="flex flex-col sm:flex-row justify-end
  gap-2 w-full"
