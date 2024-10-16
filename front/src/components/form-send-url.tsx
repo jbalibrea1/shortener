@@ -17,6 +17,7 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import type { ShortUrlEntry } from '@/interface/shortURLentry';
 import handleCopy from '@/utils/handleCopy';
+import {} from '@radix-ui/react-tooltip';
 import { useState } from 'react';
 import { AlertDialogShort } from './alert-dialog-share';
 import {
@@ -29,6 +30,12 @@ import {
 } from './ui/card';
 import { Input } from './ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from './ui/tooltip';
 const formSchema = z.object({
   url: z.string().min(4, {
     message: 'URL no válida',
@@ -157,12 +164,25 @@ export function FormSendURL() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-end">
-                  <Button type="submit" disabled={loading} className="relative">
-                    {loading && (
-                      <ReloadIcon className="mr-2 h-4 w-4 animate-spin absolute top-50 left-50 ml-3" />
-                    )}
-                    Generar enlace
-                  </Button>
+                  <TooltipProvider delayDuration={500} skipDelayDuration={500}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          type="submit"
+                          disabled={loading}
+                          className="relative"
+                        >
+                          {loading && (
+                            <ReloadIcon className="mr-2 h-4 w-4 animate-spin absolute top-50 left-50 ml-3" />
+                          )}
+                          Generar enlace
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Clic para generar un enlace único</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </CardFooter>
               </form>
             </Form>

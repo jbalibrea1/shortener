@@ -1,7 +1,5 @@
 import '@/app/globals.css';
 import { fontSans } from '@/components/fonts';
-import Footer from '@/components/footer';
-import Header from '@/components/header';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
@@ -32,13 +30,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="relative flex min-h-svh flex-col ">
-            <Header />
-            <div className="container max-w-screen-md mx-auto w-full h-full flex-1 flex flex-col">
-              {children}
-            </div>
-            <Footer />
-          </div>
+          <div className="relative flex min-h-svh flex-col ">{children}</div>
           <Toaster />
         </ThemeProvider>
       </body>

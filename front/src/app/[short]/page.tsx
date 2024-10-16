@@ -35,7 +35,7 @@ export default function ShortPage({ params }: { params: { short: string } }) {
         setError(true);
         setTimeout(() => {
           router.push('/');
-        }, 5000);
+        }, 3500);
       } finally {
         setIsLoading(false);
       }
@@ -57,13 +57,15 @@ export default function ShortPage({ params }: { params: { short: string } }) {
   }
 
   return (
-    <div className="max-w-4xl flex flex-1 flex-col items-center justify-center">
-      {error && (
-        <div className="scroll-m-20 text-xl md:text-2xl font-extrabold tracking-tight ">
-          <p>La url acortada no existe o no se ha encontrado.</p>
-          <p>Redirigiendo a la página principal...</p>
-        </div>
-      )}
+    <div className="container max-w-screen-md mx-auto w-full h-full flex-1 flex flex-col">
+      <div className="max-w-4xl flex flex-1 flex-col items-center justify-center">
+        {error && (
+          <div className="scroll-m-20 text-xl md:text-2xl font-extrabold tracking-tight ">
+            <p>La url acortada no existe o no se ha encontrado.</p>
+            <p>Redirigiendo a la página principal...</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
