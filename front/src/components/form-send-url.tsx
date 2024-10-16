@@ -36,13 +36,17 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from './ui/tooltip';
+
 const formSchema = z.object({
-  url: z.string().min(4, {
-    message: 'URL no válida',
-  }),
-  // .url({
-  //   message: 'URL no válida',
-  // }),
+  url: z
+    .string()
+    .min(3, {
+      message: 'URL no válida',
+    })
+    .regex(
+      /^(https?:\/\/)?([\w-]+\.)*[\w-]+\.[a-z]{2,}(\/.*)?$/i,
+      'URL no válida'
+    ),
 });
 
 export function FormSendURL() {
@@ -63,14 +67,19 @@ export function FormSendURL() {
 
   const handleCopyAndClose = () => {
     if (data.shortURL) {
-      handleCopy(data.shortURL, toast);
+      handleCopy({
+        url: data.shortURL,
+        title: 'Pop up cerrado y enlace copiado',
+        desc: 'Enlace copiado correctamente al portapapeles 🎉',
+        toast,
+      });
     }
     setOpen(false);
   };
 
   const handleIconClick = () => {
     if (data.shortURL) {
-      handleCopy(data.shortURL, toast);
+      handleCopy({ url: data.shortURL, toast });
     } else {
       toast({
         variant: 'destructive',
@@ -109,7 +118,7 @@ export function FormSendURL() {
       console.log('Error', message);
       toast({
         variant: 'destructive',
-        title: 'Error al generar el enlace',
+        title: 'Ups! Parece que hubo un error',
         description: message,
       });
     } finally {

@@ -1,10 +1,17 @@
+interface handleCopyProps {
+  url: string;
+  desc?: string;
+  title?: string;
+  toast: ({}) => void;
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const handleCopy = (urlToCopy: string, toast: any) => {
+const handleCopy = ({ url, desc, title, toast }: handleCopyProps) => {
   navigator.clipboard
-    .writeText(urlToCopy)
+    .writeText(url)
     .then(() => {
       toast({
-        description: 'Enlace copiado',
+        title: title ?? 'Enlace copiado',
+        description: desc ?? 'Enlace copiado al portapapeles correctamente  🎉',
       });
     })
     .catch((error) => {
