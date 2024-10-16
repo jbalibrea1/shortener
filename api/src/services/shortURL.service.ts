@@ -1,11 +1,9 @@
 import { CustomJwtPayload } from "../interfaces/customJwt.interface";
 import { ShortURL } from "../interfaces/shortURL.interface";
-import { IUser } from "../interfaces/user.interface";
 import ShortURLModel from "../models/shortURL.model";
 import UserModel from "../models/user.model";
-import addMetadata from "../utils/metadata";
-import generateUniqueShortUrl from "../utils/randomUrl";
-import toNewShortUrlEntry from "../utils/shortEntry";
+import generateRandom from "../utils/generateRandom";
+import parsedURL from "../utils/parsedURL";
 
 const getAllSurl = async () => {
   const allUrls: ShortURL[] = await ShortURLModel.find({});
@@ -13,23 +11,22 @@ const getAllSurl = async () => {
 };
 
 const createSurl = async (url: string, user: CustomJwtPayload | null) => {
-  let newShortUrlEntry = toNewShortUrlEntry({ url });
-
-  // add metadata to the newShortUrlEntry
-  newShortUrlEntry = await addMetadata(newShortUrlEntry);
+  // validate and add metadata
+  const newShortUrlEntry = await parsedURL({ url });
 
   // generate unique short URL until it is unique
-  let shortURL = generateUniqueShortUrl();
-  while (await ShortURLModel.findOne({ shortURL })) {
-    shortURL = generateUniqueShortUrl();
+  let uniqueShortURL = generateRandom();
+  while (await ShortURLModel.findOne({ shortURL: uniqueShortURL })) {
+    uniqueShortURL = generateRandom();
   }
 
   // create a new entry with the user id if user is logged
   const newEntry = new ShortURLModel({
     ...newShortUrlEntry,
-    shortURL,
+    shortURL: uniqueShortURL,
     user: user?.id ?? null,
   });
+
   const savedEntry = await newEntry.save();
 
   if (user?.id) {
