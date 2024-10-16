@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          `font-sans min-h-screen bg-background antialiased`,
+          `font-sans min-h-svh bg-background antialiased`,
           fontSans.variable
         )}
         suppressHydrationWarning
@@ -32,7 +32,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="relative flex min-h-screen flex-col ">
+          <div className="relative flex min-h-svh flex-col ">
             <Header />
             <div className="container max-w-screen-md mx-auto w-full h-full flex-1 flex flex-col">
               {children}
