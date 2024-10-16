@@ -17,7 +17,7 @@ const ImageFallback: React.FC<{ data: Metadata }> = ({ data }) => {
   return (
     <>
       <img
-        src={data.logo}
+        src={data.logo ?? '/favicon.ico'}
         alt={data.title}
         className="max-w-10 max-h-10 border-2 border-primary rounded-full"
         onError={handleImageError}

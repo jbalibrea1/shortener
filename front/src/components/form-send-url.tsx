@@ -29,11 +29,13 @@ import {
 } from './ui/card';
 import { Input } from './ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { ToastAction } from './ui/toast';
 const formSchema = z.object({
-  url: z.string().min(2, {
+  url: z.string().min(4, {
     message: 'URL no válida',
   }),
+  // .url({
+  //   message: 'URL no válida',
+  // }),
 });
 
 export function FormSendURL() {
@@ -71,7 +73,6 @@ export function FormSendURL() {
     }
   };
 
-  // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
@@ -84,6 +85,7 @@ export function FormSendURL() {
         body: JSON.stringify(values),
       });
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Error al acortar la URL');
       setData({ ...data, shortURL: `${DOMAIN}/${data.shortURL}` });
       toast({
         title: 'Enlace generado exitosamente',
@@ -95,11 +97,13 @@ export function FormSendURL() {
       form.reset();
     } catch (error) {
       console.error(error);
+      const message =
+        error instanceof Error ? error.message : 'Error desconocido';
+      console.log('Error', message);
       toast({
         variant: 'destructive',
         title: 'Error al generar el enlace',
-        description: 'Por favor, intenta de nuevo.',
-        action: <ToastAction altText="Try again">Try again</ToastAction>,
+        description: message,
       });
     } finally {
       setLoading(false);

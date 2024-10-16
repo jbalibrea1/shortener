@@ -36,12 +36,12 @@ export function AlertDialogShort({
         <AlertDialogHeader>
           <AlertDialogTitle>Enlace generado exitosamente</AlertDialogTitle>
           <AlertDialogDescription className="flex items-center gap-4 ">
-            {data.logo && (
-              <ImageFallback
-                data={{ logo: data.logo, title: data.title || '' }}
-              />
-            )}
-            {data.description || 'Sin descripción'}
+            <ImageFallback
+              data={{ logo: data?.logo || undefined, title: data.title || '' }}
+            />
+            {data.description
+              ? `Descripción: ${data.description}`
+              : 'Copia el enlace corto y compártelo con tus amigos'}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <InputWithCopyIcon

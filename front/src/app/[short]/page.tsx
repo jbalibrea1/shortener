@@ -25,7 +25,6 @@ export default function ShortPage({ params }: { params: { short: string } }) {
           throw new Error('No se pudo redirigir a la URL');
         }
         const data: ShortUrlData = await res.json();
-        console.log(data);
         if (data.url) {
           router.push(data.url);
         } else {
