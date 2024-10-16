@@ -3,6 +3,12 @@
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import { ModeToggle } from './toggle-dark';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from './ui/tooltip';
 
 const Header = () => {
   const pathname = usePathname();
@@ -47,14 +53,21 @@ const Header = () => {
                 info
               </a>
             </li>
-            <li>
-              <a
-                href="#"
-                className="cursor-not-allowed text-gray-400 hover:text-gray-400 pointer-events-none opacity-90 hover:opacity-100 transition-opacity "
-              >
-                register
-              </a>
-            </li>
+            <TooltipProvider delayDuration={200} skipDelayDuration={500}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <li>
+                    <a
+                      href="#"
+                      className="cursor-not-allowed text-gray-400 hover:text-gray-400 pointer-events-none opacity-50  transition-opacity"
+                    >
+                      register
+                    </a>
+                  </li>
+                </TooltipTrigger>
+                <TooltipContent>Coming soon</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </ul>
           <ModeToggle />
         </div>
