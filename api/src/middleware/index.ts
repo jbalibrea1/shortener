@@ -6,6 +6,9 @@ const requestLogger = (
   _response: Response,
   next: () => void
 ) => {
+  if (request.path === '/health') {
+    return next();
+  }
   logger.info('Method:', request.method);
   logger.info('Path:  ', request.path);
   logger.info('Body:  ', request.body);
@@ -25,11 +28,11 @@ const errorMidHandler = (
 ) => {
   if (error.name === 'CastError') {
     return response.status(400).send({
-      error: 'malformatted id',
+      error: 'malformatted id'
     });
   } else if (error.name === 'ValidationError') {
     return response.status(400).json({
-      error: error.message,
+      error: error.message
     });
   } else if (
     error.name === 'MongoServerError' &&
@@ -40,11 +43,11 @@ const errorMidHandler = (
       .json({ error: 'expected `username` to be unique' });
   } else if (error.name === 'JsonWebTokenError') {
     return response.status(401).json({
-      error: 'invalid token',
+      error: 'invalid token'
     });
   } else if (error.name === 'TokenExpiredError') {
     return response.status(401).json({
-      error: 'token expired',
+      error: 'token expired'
     });
   }
 
@@ -57,5 +60,5 @@ const errorMidHandler = (
 export default {
   requestLogger,
   unknownEndpoint,
-  errorMidHandler,
+  errorMidHandler
 };

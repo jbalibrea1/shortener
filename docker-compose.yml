@@ -1,0 +1,51 @@
+services:
+  front:
+    build:
+      context: ./front/
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=<API_URL>
+        - NEXT_PUBLIC_DOMAIN=<DOMAIN>
+    env_file: ./front/.env.production
+    ports:
+      - "3000:3000"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    depends_on:
+      back:
+        condition: service_healthy
+
+  back:
+    build:
+      context: ./api/
+      dockerfile: Dockerfile
+    env_file: ./api/.env
+    expose:
+      - 3001
+    ports:
+      - "3001:3001"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 768M
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # mongo:
+  #   image: mongo
+  #   ports:
+  #     - 3456:27017
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: example
+  #     MONGO_INITDB_DATABASE: the_database 
+  #   volumes: 
+  #     - ./api/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+  #     - ./api/mongo_data:/data/db

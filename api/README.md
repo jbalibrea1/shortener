@@ -33,4 +33,10 @@ Set the environment variables in a `.env` file like the `.env.example` file.
 
 ```bash
 pnpm i
+# run development server
+pnpm dev
+# to build
+pnpm build
+# to run built code
+pnpm start
 ```

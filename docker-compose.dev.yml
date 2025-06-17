@@ -1,0 +1,39 @@
+services:
+  front:
+    container_name: shortener-front-dev
+    image: shortener-front-dev
+    build:
+      context: ./front
+      dockerfile: dev.Dockerfile 
+    volumes:
+      - ./front/:/app
+    ports:
+      - 3000:3000
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3001/api
+      - NEXT_PUBLIC_DOMAIN=http://localhost:3000
+
+  back:
+    container_name: shortener-back-dev
+    image: shortener-back-dev
+    build:
+      context: ./api
+      dockerfile: dev.Dockerfile
+    env_file: ./api/.env
+    volumes:
+      - ./api:/app
+    ports:
+      - 3001:3001
+
+  # mongo:
+  #   image: mongo
+  #   ports:
+  #     - 3456:27017
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: root
+  #     MONGO_INITDB_ROOT_PASSWORD: example
+  #     MONGO_INITDB_DATABASE: the_database 
+  #   volumes: 
+  #     - ./todo-backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+  #     - ./todo-backend/mongo_data:/data/db
+

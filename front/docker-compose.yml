@@ -1,0 +1,9 @@
+services:
+  front:
+    image: shortener-front
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=/api
+      - NEXT_PUBLIC_DOMAIN=https://sh.jbalibrea.dev

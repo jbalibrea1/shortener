@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
+import config from './server';
 
 const connectDB = () => {
   mongoose.set('strictQuery', false);
 
-  const url = process.env.MONGODB_URI;
+  const url = config.MONGODB_URI;
   console.log('connecting to', url);
   if (!url) {
     console.log('No MongoDB URI provided');
