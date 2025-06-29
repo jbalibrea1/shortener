@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/index.js",
-    "dev": "ts-node-dev  --respawn --exit-child --watch src src/index.ts",
+    "dev": "ts-node-dev --respawn --exit-child --watch src -r tsconfig-paths/register src/index.ts",
     "lint": "eslint .",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -14,32 +14,35 @@
   "author": "Jorge Balibrea",
   "license": "ISC",
   "dependencies": {
-    "@types/jsonwebtoken": "^9.0.7",
+    "@types/jsonwebtoken": "^9.0.10",
     "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
+    "dotenv": "^17.0.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
-    "metascraper": "^5.45.14",
-    "metascraper-description": "^5.45.10",
-    "metascraper-image": "^5.45.10",
-    "metascraper-logo-favicon": "^5.45.12",
-    "metascraper-title": "^5.45.10",
-    "metascraper-url": "^5.45.10",
-    "mongoose": "^8.4.3",
-    "nanoid": "3.3.4"
+    "metascraper": "^5.49.1",
+    "metascraper-description": "^5.49.1",
+    "metascraper-image": "^5.49.1",
+    "metascraper-logo-favicon": "^5.49.1",
+    "metascraper-title": "^5.49.1",
+    "metascraper-url": "^5.49.1",
+    "mongoose": "^8.16.1",
+    "morgan": "^1.10.0",
+    "nanoid": "5.1.5"
   },
   "devDependencies": {
-    "@eslint/js": "^9.11.1",
-    "@stylistic/eslint-plugin": "^2.8.0",
+    "@eslint/js": "^9.30.0",
+    "@stylistic/eslint-plugin": "^5.1.0",
     "@types/bcrypt": "^5.0.2",
-    "@types/cors": "^2.8.17",
-    "@types/eslint__js": "^8.42.3",
-    "@types/express": "^4.17.21",
-    "eslint": "^9.11.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/morgan": "^1.9.10",
+    "eslint": "^9.30.0",
     "ts-node-dev": "^2.0.0",
-    "typescript": "~5.5.4",
-    "typescript-eslint": "^8.8.0"
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.35.0"
   },
   "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
 }

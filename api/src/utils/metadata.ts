@@ -11,19 +11,25 @@ const scraper = metascraper([
   metascraperTitle(),
   metascraperDescription(),
   metascraperUrl(),
-  metascraperLogoFavicon(),
+  metascraperLogoFavicon()
 ]);
 
 async function getMetadata(url: string) {
   const response = await fetch(url, {
     headers: {
-      'Content-Type': 'text/html; charset=utf-8',
-    },
+      'Content-Type': 'text/html; charset=utf-8'
+    }
   });
   const html = await response.text();
   const metadata = await scraper({ html, url });
   return metadata;
 }
+
+/**
+ * Extracts and parses metadata from a given URL using Open Graph and HTML meta tags.
+ * @param url - URL to extract metadata from
+ * @returns Metadata object with title, description, image, etc.
+ */
 
 const addMetadata = async (
   entry: NewShortURLEntry
@@ -36,7 +42,7 @@ const addMetadata = async (
       logo: metadata.logo ?? null,
       description: metadata.description
         ? truncateString(metadata.description, 50)
-        : null,
+        : null
     };
   } catch (error) {
     console.error('Error fetching metadata:', error);

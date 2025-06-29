@@ -1,37 +1,42 @@
-import { Request } from "express";
-import jwt from "jsonwebtoken";
-import { CustomJwtPayload } from "../interfaces/customJwt.interface";
+/**
+ * Utility functions for JWT token creation and verification.
+ * @module utils/token
+ */
+
+import { UnauthorizedError } from '@/utils/errors';
+import { Request } from 'express';
+import jwt from 'jsonwebtoken';
+import { CustomJwtPayload } from '../interfaces/customJwt.interface';
 
 const generateToken = (user: string, id: string) => {
   if (!process.env.SECRET) {
-    throw new Error("No secret provided");
+    throw new UnauthorizedError('No secret provided');
   }
 
-  const userForToken = {
-    user,
-    id,
-  };
+  const userForToken = { user, id };
 
   return jwt.sign(userForToken, process.env.SECRET, {
-    expiresIn: 60 * 60 * 24 * 7, // 1 semana
+    expiresIn: 60 * 60 * 24 * 7 // 1 semana
   });
 };
 
 const extractToken = (req: Request) => {
   if (!process.env.SECRET) {
-    throw new Error("No secret provided");
+    throw new UnauthorizedError('No secret provided');
   }
 
-  const authorization = req.get("authorization");
-  if (authorization && authorization.toLowerCase().startsWith("bearer ")) {
+  const authorization = req.get('authorization');
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     const token = authorization.substring(7);
     const decodedToken = jwt.verify(
       token,
-      process.env.SECRET,
+      process.env.SECRET
     ) as CustomJwtPayload;
-    if (!decodedToken.id && typeof decodedToken.id !== "string") {
+
+    if (!decodedToken.id && typeof decodedToken.id !== 'string') {
       return null;
     }
+
     return decodedToken;
   }
   return null;
