@@ -1,0 +1,525 @@
+[2025-07-01T11:04:26.648Z] [ERROR] 
+### [UnauthorizedError] ### Invalid token
+
+UnauthorizedError: Invalid token
+    at authenticate (/home/jbalibrea/projects/shortener/api/src/middleware/authenticate.ts:26:10)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T12:31:36.316Z] [ERROR] 
+### [UnauthorizedError] ### Invalid token
+
+UnauthorizedError: Invalid token
+    at authenticate (/home/jbalibrea/projects/shortener/api/src/middleware/authenticate.ts:26:10)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T12:31:44.087Z] [ERROR] 
+### [UnauthorizedError] ### Invalid token
+
+UnauthorizedError: Invalid token
+    at authenticate (/home/jbalibrea/projects/shortener/api/src/middleware/authenticate.ts:26:10)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T12:31:50.375Z] [ERROR] 
+### [UnauthorizedError] ### Invalid token
+
+UnauthorizedError: Invalid token
+    at authenticate (/home/jbalibrea/projects/shortener/api/src/middleware/authenticate.ts:26:10)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T12:32:31.078Z] [ERROR] 
+### [UnauthorizedError] ### Invalid username or password
+
+UnauthorizedError: Invalid username or password
+    at /home/jbalibrea/projects/shortener/api/src/services/auth.service.ts:89:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/auth.service.ts:10:58)
+[2025-07-01T12:32:58.841Z] [ERROR] 
+### [UnauthorizedError] ### Invalid username or password
+
+UnauthorizedError: Invalid username or password
+    at /home/jbalibrea/projects/shortener/api/src/services/auth.service.ts:89:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/auth.service.ts:10:58)
+[2025-07-01T12:35:22.416Z] [ERROR] 
+### [UnauthorizedError] ### Invalid username or password
+
+UnauthorizedError: Invalid username or password
+    at /home/jbalibrea/projects/shortener/api/src/services/auth.service.ts:89:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/auth.service.ts:10:58)
+[2025-07-01T12:35:37.330Z] [ERROR] 
+### [UnauthorizedError] ### Insufficient permissions
+
+UnauthorizedError: Insufficient permissions
+    at /home/jbalibrea/projects/shortener/api/src/middleware/authenticate.ts:41:19
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at authenticate (/home/jbalibrea/projects/shortener/api/src/middleware/authenticate.ts:24:5)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+[2025-07-01T12:41:06.206Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for peL20
+
+NotFoundError: Short URL not found for peL20
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:155:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T12:41:50.682Z] [ERROR] 
+### [UnauthorizedError] ### No authorization token provided
+
+UnauthorizedError: No authorization token provided
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:142:11
+    at Generator.next (<anonymous>)
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:13:71
+    at new Promise (<anonymous>)
+    at __awaiter (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:9:12)
+    at Object.deleteShortURL (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:140:5)
+    at /home/jbalibrea/projects/shortener/api/src/controllers/shortURLController.ts:122:18
+    at Generator.next (<anonymous>)
+    at /home/jbalibrea/projects/shortener/api/src/controllers/shortURLController.ts:13:71
+    at new Promise (<anonymous>)
+[2025-07-01T12:42:15.895Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for peL20
+
+NotFoundError: Short URL not found for peL20
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:155:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T12:42:38.032Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for peL20
+
+NotFoundError: Short URL not found for peL20
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:157:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:31:11.864Z] [ERROR] 
+### [Error] ### Short URL not found for peL20dff
+
+Error: Short URL not found for peL20dff
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:32:32.635Z] [ERROR] 
+### [Error] ### Short URL not found for peL20dff
+
+Error: Short URL not found for peL20dff
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:32:32.669Z] [ERROR] 
+### [Error] ### Short URL not found for peL20dff
+
+Error: Short URL not found for peL20dff
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:32:39.044Z] [ERROR] 
+### [Error] ### Short URL not found for peL20d
+
+Error: Short URL not found for peL20d
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:32:39.106Z] [ERROR] 
+### [Error] ### Short URL not found for peL20d
+
+Error: Short URL not found for peL20d
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:43:38.358Z] [ERROR] 
+### [Error] ### Short URL not found for peL20a
+
+Error: Short URL not found for peL20a
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:43:38.451Z] [ERROR] 
+### [Error] ### Short URL not found for peL20a
+
+Error: Short URL not found for peL20a
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:43:38.479Z] [ERROR] 
+### [Error] ### Short URL not found for peL20a
+
+Error: Short URL not found for peL20a
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:43:47.273Z] [ERROR] 
+### [Error] ### Short URL not found for peL20a
+
+Error: Short URL not found for peL20a
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:43:55.684Z] [ERROR] 
+### [Error] ### Short URL not found for peL20a
+
+Error: Short URL not found for peL20a
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:45:23.769Z] [ERROR] 
+### [Error] ### Short URL not found for peL20a
+
+Error: Short URL not found for peL20a
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:45:25.971Z] [ERROR] 
+### [Error] ### Short URL not found for peL20a
+
+Error: Short URL not found for peL20a
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:46:39.881Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for peL20a
+
+NotFoundError: Short URL not found for peL20a
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:46:54.948Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for peL20a
+
+NotFoundError: Short URL not found for peL20a
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:47:11.862Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for peL20a
+
+NotFoundError: Short URL not found for peL20a
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:47:29.666Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for peL202
+
+NotFoundError: Short URL not found for peL202
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:48:09.954Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for peL20a
+
+NotFoundError: Short URL not found for peL20a
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:48:54.601Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for pel20b
+
+NotFoundError: Short URL not found for pel20b
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:48:54.738Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for pel20b
+
+NotFoundError: Short URL not found for pel20b
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:49:09.786Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for pel20
+
+NotFoundError: Short URL not found for pel20
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:49:09.832Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for pel20
+
+NotFoundError: Short URL not found for pel20
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:50:31.787Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for pel20
+
+NotFoundError: Short URL not found for pel20
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:50:31.857Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for pel20
+
+NotFoundError: Short URL not found for pel20
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T13:55:28.956Z] [ERROR] 
+### [NotFoundError] ### Short URL not found for pel20
+
+NotFoundError: Short URL not found for pel20
+    at /home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:116:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/shortURL.service.ts:10:58)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+[2025-07-01T20:45:09.500Z] [ERROR] 
+### [ValidationError] ### Required
+
+ValidationError: Required
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:19:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T20:45:14.463Z] [ERROR] 
+### [ValidationError] ### Required
+
+ValidationError: Required
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:19:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T20:47:09.509Z] [ERROR] 
+### [ValidationError] ### Required
+
+ValidationError: Required
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:19:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T20:47:22.524Z] [ERROR] 
+### [ValidationError] ### Required
+
+ValidationError: Required
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:19:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T20:48:20.726Z] [ERROR] 
+### [ValidationError] ### Required
+
+ValidationError: Required
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:19:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T20:48:41.313Z] [ERROR] 
+### [ValidationError] ### Required
+
+ValidationError: Required
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:19:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T20:50:07.678Z] [ERROR] Failed to load router v1 /redirect ⨯ Unable to compile TypeScript:
+src/routes/v1/redirect.ts(11,26): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type '(req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'Application<Record<string, any>>'.
+      Type '(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<...>' is missing the following properties from type 'Application<Record<string, any>>': init, defaultConfiguration, engine, set, and 63 more.
+
+Error: ⨯ Unable to compile TypeScript:
+src/routes/v1/redirect.ts(11,26): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Argument of type '(req: Request, res: Response) => Promise<Response<any, Record<string, any>> | undefined>' is not assignable to parameter of type 'Application<Record<string, any>>'.
+      Type '(req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>, res: Response<any, Record<string, any>>) => Promise<...>' is missing the following properties from type 'Application<Record<string, any>>': init, defaultConfiguration, engine, set, and 63 more.
+
+    at Object.<anonymous> (/home/jbalibrea/projects/shortener/api/src/routes/v1/redirect.ts:1:7)
+    at Module.<anonymous> (node:internal/modules/cjs/loader:1730:14)
+    at Module._compile (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/source-map-support@0.5.21/node_modules/source-map-support/source-map-support.js:568:25)
+    at Module.m._compile (/tmp/ts-node-dev-hook-5616743336332286.js:69:33)
+    at node:internal/modules/cjs/loader:1895:10
+    at require.extensions..jsx.require.extensions..js (/tmp/ts-node-dev-hook-5616743336332286.js:114:20)
+    at require.extensions.<computed> (/tmp/ts-node-dev-hook-5616743336332286.js:71:20)
+    at Object.nodeDevHook [as .ts] (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/ts-node-dev@2.0.0_@types+node@24.0.7_typescript@5.8.3/node_modules/ts-node-dev/lib/hook.js:63:13)
+    at Module.load (node:internal/modules/cjs/loader:1465:32)
+    at Function._load (node:internal/modules/cjs/loader:1282:12)
+[2025-07-01T20:53:26.986Z] [ERROR] 
+### [ValidationError] ### Required
+
+ValidationError: Required
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:20:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T20:54:27.442Z] [ERROR] 
+### [UnauthorizedError] ### Invalid username or password
+
+UnauthorizedError: Invalid username or password
+    at /home/jbalibrea/projects/shortener/api/src/services/auth.service.ts:89:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/auth.service.ts:10:58)
+[2025-07-01T21:06:51.109Z] [ERROR] 
+### [ValidationError] ### Contraseña mínima 6 caracteres
+
+ValidationError: Contraseña mínima 6 caracteres
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:20:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T21:08:26.704Z] [ERROR] 
+### [ValidationError] ### Contraseña mínima 6 caracteres
+
+ValidationError: Contraseña mínima 6 caracteres
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:20:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T21:08:43.030Z] [ERROR] 
+### [ValidationError] ### Contraseña mínima 6 caracteres
+
+ValidationError: Contraseña mínima 6 caracteres
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:20:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T21:10:21.232Z] [ERROR] 
+### [ValidationError] ### Contraseña mínima 6 caracteres
+
+ValidationError: Contraseña mínima 6 caracteres
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:20:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
+[2025-07-01T21:10:49.596Z] [ERROR] 
+### [UnauthorizedError] ### Invalid username or password
+
+UnauthorizedError: Invalid username or password
+    at /home/jbalibrea/projects/shortener/api/src/services/auth.service.ts:89:11
+    at Generator.next (<anonymous>)
+    at fulfilled (/home/jbalibrea/projects/shortener/api/src/services/auth.service.ts:10:58)
+[2025-07-01T21:42:05.198Z] [ERROR] 
+### [ValidationError] ### Contraseña mínima 6 caracteres
+
+ValidationError: Contraseña mínima 6 caracteres
+    at validateLoginBody (/home/jbalibrea/projects/shortener/api/src/middleware/validateAuthBody.ts:20:7)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:157:13)
+    at Route.dispatch (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/route.js:117:3)
+    at handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:435:11)
+    at Layer.handleRequest (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/lib/layer.js:152:17)
+    at /home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:295:15
+    at processParams (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:582:12)
+    at next (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:291:5)
+    at Function.handle (/home/jbalibrea/projects/shortener/api/node_modules/.pnpm/router@2.2.0/node_modules/router/index.js:186:3)
