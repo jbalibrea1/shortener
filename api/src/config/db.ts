@@ -1,23 +1,26 @@
+import logger from '@/utils/logger';
 import mongoose from 'mongoose';
-import config from './server';
+import config from './';
 
 const connectDB = () => {
   mongoose.set('strictQuery', false);
 
-  const url = config.MONGODB_URI;
-  console.log('connecting to', url);
+  const url = config.mongoUri;
+  if (config.env !== 'production') {
+    logger.info(`Connecting to MongoDB at ${url}`);
+  }
   if (!url) {
-    console.log('No MongoDB URI provided');
+    logger.error('No MongoDB URI provided');
     process.exit(1);
   }
 
   mongoose
     .connect(url)
     .then((_result) => {
-      console.log('connected to MongoDB');
+      logger.info('Connected to MongoDB');
     })
     .catch((error: Error) => {
-      console.log('error connecting to MongoDB:', error.message);
+      logger.error(`error connecting to MongoDB: ${error.message}`);
     });
 };
 

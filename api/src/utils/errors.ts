@@ -5,37 +5,43 @@
  */
 
 /**
+ * Clase base para errores personalizados de la aplicación.
+ */
+export class AppError extends Error {
+  status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = 'AppError';
+    this.status = status;
+  }
+}
+
+/**
  * Error para respuestas 401 Unauthorized.
  */
-export class UnauthorizedError extends Error {
-  status: number;
+export class UnauthorizedError extends AppError {
   constructor(message: string) {
-    super(message);
+    super(message, 401);
     this.name = 'UnauthorizedError';
-    this.status = 401;
   }
 }
 
 /**
  * Error para respuestas 400 Bad Request (validación).
  */
-export class ValidationError extends Error {
-  status: number;
+export class ValidationError extends AppError {
   constructor(message: string) {
-    super(message);
+    super(message, 400);
     this.name = 'ValidationError';
-    this.status = 400;
   }
 }
 
 /**
  * Error para respuestas 404 Not Found.
  */
-export class NotFoundError extends Error {
-  status: number;
+export class NotFoundError extends AppError {
   constructor(message: string) {
-    super(message);
+    super(message, 404);
     this.name = 'NotFoundError';
-    this.status = 404;
   }
 }

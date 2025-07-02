@@ -3,19 +3,24 @@ import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema(
   {
-    user: {
+    username: {
       type: String,
       required: true,
-      unique: true,
+      unique: true
     },
     name: String,
     passwordHash: String,
+    role: {
+      type: String,
+      enum: ['user', 'admin'],
+      default: 'user'
+    },
     shortURLs: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'ShortURL',
-      },
-    ],
+        ref: 'ShortURL'
+      }
+    ]
   },
   { timestamps: true }
 );
@@ -27,7 +32,7 @@ userSchema.set('toJSON', {
     delete returnedObject.__v;
     // the passwordHash should not be revealed
     delete returnedObject.passwordHash;
-  },
+  }
 });
 
 const UserModel = mongoose.model('User', userSchema);

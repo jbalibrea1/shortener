@@ -18,7 +18,10 @@ export const fetchWithTimeout = async (
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to fetch: ${response.statusText}`);
+        throw new AppError(
+          `HTTP error! status: ${response.status} on attempt ${attempt} for: ${url}`,
+          response.status
+        );
       }
 
       return response;

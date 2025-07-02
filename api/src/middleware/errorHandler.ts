@@ -1,3 +1,4 @@
+import config from '@/config';
 import logger from '@/utils/logger';
 import { NextFunction, Request, Response } from 'express';
 import {
@@ -16,29 +17,24 @@ import {
  * @param _next - Express next function (not used)
  */
 export const errorHandler = (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  err: any,
-  _req: Request,
+  err: unknown,
+  req: Request,
   res: Response,
   _next: NextFunction
 ) => {
   // Log all errors with context
-
-  logger.error(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    `\n### Error occurred ### \n [${err.name || 'Unknown'}] ${
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      err.message || 'No message'
-    }`,
-    {
-      method: _req.method,
-      url: _req.url,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-      stack: process.env.NODE_ENV !== 'production' ? err.stack : undefined,
-      date: new Date().toISOString()
-    },
-    `\n### End of Error ###\n`
-  );
+  const errorObj =
+    typeof err === 'object' && err !== null
+      ? (err as Record<string, unknown>)
+      : {};
+  logger.error('Error occurred', {
+    name: errorObj.name || 'Unknown',
+    message: errorObj.message || 'No message',
+    method: req.method,
+    url: req.url,
+    stack: config.env !== 'production' ? errorObj.stack : undefined,
+    date: new Date().toISOString()
+  });
 
   // 400 Bad Request errors
   if (isErrorWithName(err) && err.name === 'CastError') {
@@ -51,8 +47,19 @@ export const errorHandler = (
     err.name === 'ValidationError' &&
     isErrorWithMessage(err)
   ) {
-    res.status(400).json({ error: err.message });
-    return;
+    // Si el mensaje es un string JSON, lo parseamos y devolvemos como objeto
+    try {
+      const parsed: unknown = JSON.parse(err.message);
+      if (typeof parsed === 'object' && parsed !== null) {
+        res.status(400).json(parsed);
+        return;
+      }
+      res.status(400).json({ error: err.message });
+      return;
+    } catch {
+      res.status(400).json({ error: err.message });
+      return;
+    }
   }
 
   if (
@@ -88,11 +95,10 @@ export const errorHandler = (
     return;
   }
 
-  // Fallback for unexpected errors
   res.status(500).json({
     error:
-      process.env.NODE_ENV === 'production'
+      config.env === 'production'
         ? 'Internal server error'
-        : 'Unexpected error occurred'
+        : errorObj.message || 'Unexpected error occurred'
   });
 };

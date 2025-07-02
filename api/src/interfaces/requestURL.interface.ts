@@ -1,9 +1,7 @@
 import { Request } from 'express';
 
-interface IRequestURL extends Request {
+export interface IRequestURL extends Request {
   body: {
     url: string;
   };
 }
-
-export default IRequestURL;

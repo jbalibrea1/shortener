@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/index.js",
-    "dev": "ts-node-dev --respawn --exit-child --watch src -r tsconfig-paths/register src/index.ts",
+    "dev": "NODE=development ts-node-dev --respawn --exit-child --watch src -r tsconfig-paths/register src/index.ts",
     "lint": "eslint .",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -29,7 +29,9 @@
     "metascraper-url": "^5.49.1",
     "mongoose": "^8.16.1",
     "morgan": "^1.10.0",
-    "nanoid": "5.1.5"
+    "nanoid": "5.1.5",
+    "winston": "^3.17.0",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.0",

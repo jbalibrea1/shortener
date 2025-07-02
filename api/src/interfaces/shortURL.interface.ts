@@ -1,4 +1,4 @@
-export interface ShortURL {
+export interface IShortURL {
   id: string;
   url: string;
   title?: string | null;
@@ -11,6 +11,6 @@ export interface ShortURL {
 }
 
 export type NewShortURLEntry = Omit<
-  ShortURL,
+  IShortURL,
   'shortURL' | 'createdAt' | 'updatedAt' | 'id' | 'totalClicks'
 >;

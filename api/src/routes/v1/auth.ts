@@ -4,12 +4,14 @@
  */
 
 import userController from '@/controllers/userController';
+import { authenticate, validateData } from '@/middleware';
+import { loginSchema, registerSchema } from '@/schemas/auth.schema';
 import express from 'express';
 
 const router = express.Router();
 
-router.post('/', userController.login);
-router.get('/', userController.getUser);
-router.post('/register', userController.saveUser);
+router.post('/login', validateData(loginSchema), userController.login);
+router.get('/me', authenticate, userController.getUser);
+router.post('/register', validateData(registerSchema), userController.saveUser);
 
 export default router;

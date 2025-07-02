@@ -1,8 +1,8 @@
 import app from './app';
-import config from './config/server';
+import config from './config';
 import logger from './utils/logger';
 
-const PORT = config.PORT || 3000;
+const PORT = config.port || 3000;
 
 app.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);

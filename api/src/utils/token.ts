@@ -3,25 +3,26 @@
  * @module utils/token
  */
 
+import config from '@/config';
+import { CustomJwtPayload } from '@/interfaces';
 import { UnauthorizedError } from '@/utils/errors';
 import { Request } from 'express';
 import jwt from 'jsonwebtoken';
-import { CustomJwtPayload } from '../interfaces/customJwt.interface';
 
-const generateToken = (user: string, id: string) => {
-  if (!process.env.SECRET) {
+const generateToken = (username: string, id: string, role: string) => {
+  if (!config.jwtSecret) {
     throw new UnauthorizedError('No secret provided');
   }
 
-  const userForToken = { user, id };
+  const userForToken = { username, id, role };
 
-  return jwt.sign(userForToken, process.env.SECRET, {
+  return jwt.sign(userForToken, config.jwtSecret, {
     expiresIn: 60 * 60 * 24 * 7 // 1 semana
   });
 };
 
-const extractToken = (req: Request) => {
-  if (!process.env.SECRET) {
+const extractToken = (req: Request<unknown>) => {
+  if (!config.jwtSecret) {
     throw new UnauthorizedError('No secret provided');
   }
 
@@ -30,7 +31,7 @@ const extractToken = (req: Request) => {
     const token = authorization.substring(7);
     const decodedToken = jwt.verify(
       token,
-      process.env.SECRET
+      config.jwtSecret
     ) as CustomJwtPayload;
 
     if (!decodedToken.id && typeof decodedToken.id !== 'string') {
@@ -42,4 +43,4 @@ const extractToken = (req: Request) => {
   return null;
 };
 
-export default { extractToken, generateToken };
+export default { generateToken, extractToken };

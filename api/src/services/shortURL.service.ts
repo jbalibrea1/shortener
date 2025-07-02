@@ -1,10 +1,4 @@
-/**
- * Servicio de URLs acortadas. Gestiona la creación, consulta, redirección y eliminación de shortURLs.
- * @module services/shortURL.service
- */
-
-import { CustomJwtPayload } from '@/interfaces/customJwt.interface';
-import { ShortURL } from '@/interfaces/shortURL.interface';
+import { CustomJwtPayload, IShortURL } from '@/interfaces';
 import ShortURLModel from '@/models/shortURL.model';
 import UserModel from '@/models/user.model';
 import {
@@ -13,13 +7,12 @@ import {
   ValidationError
 } from '@/utils/errors';
 import generateRandom from '@/utils/generateRandom';
-import parsedURL from '@/utils/parsedURL';
 
 /**
  * Obtiene todos los registros de URLs acortadas.
  * @returns {Promise<ShortURL[]>} Lista de URLs acortadas.
  */
-const getAllShortURLs = async (): Promise<ShortURL[]> => {
+const getAllShortURLs = async (): Promise<IShortURL[]> => {
   return await ShortURLModel.find({});
 };
 
@@ -47,15 +40,12 @@ const createShortURL = async (url: string, user: CustomJwtPayload | null) => {
     throw new ValidationError('URL is required');
   }
 
-  // Valida y agrega metadatos
-  const newShortUrlEntry = await parsedURL({ url });
-
   // Genera shortURL único
   const uniqueShortURL = await generateUniqueShortURL();
 
   // Crea la entrada
   const newEntry = new ShortURLModel({
-    ...newShortUrlEntry,
+    url,
     shortURL: uniqueShortURL,
     user: user?.id ?? null
   });
@@ -83,20 +73,19 @@ const getShortURLInfo = async (shortURL: string) => {
   if (!entry) {
     throw new Error(`Short URL not found for ${shortURL}`);
   }
-  const fullUser = entry.user ? await UserModel.findById(entry.user) : null;
-  return { entry, user: fullUser?.user ?? null };
+  const findUser = entry.user ? await UserModel.findById(entry.user) : null;
+  return { entry, user: findUser?.username ?? null };
 };
 
 /**
  * Obtiene la URL original y suma un click.
  * @param {string} shortURL - El identificador de la URL corta.
- * @returns {Promise<string>} La URL original.
- * @throws {Error} Si no se encuentra la URL corta.
+ * @returns {Promise<string|null>} La URL original o null si no se encuentra.
  */
 const resolveShortURL = async (shortURL: string) => {
   const entry = await ShortURLModel.findOne({ shortURL });
   if (!entry) {
-    throw new Error(`Short URL not found for ${shortURL}`);
+    return null;
   }
   entry.totalClicks += 1;
   await entry.save();
@@ -104,22 +93,34 @@ const resolveShortURL = async (shortURL: string) => {
 };
 
 /**
- * Elimina una shortURL asociada a un usuario.
+ * Elimina una shortURL asociada a un usuario autenticado.
  * @param {string} shortURL - El identificador de la URL corta.
  * @param {CustomJwtPayload | null} user - El usuario autenticado.
  * @returns {Promise<any>} El documento eliminado.
- * @throws {Error} Si no hay usuario autenticado o no se encuentra la URL.
+ * @throws {UnauthorizedError} Si no hay usuario autenticado.
+ * @throws {ValidationError} Si el parámetro es inválido.
+ * @throws {NotFoundError} Si la URL no existe o no pertenece al usuario.
  */
 const deleteShortURL = async (
   shortURL: string,
   user: CustomJwtPayload | null
 ) => {
-  if (!user) {
+  if (!user || !user.id) {
     throw new UnauthorizedError('No authorization token provided');
   }
 
-  if (!shortURL) {
-    throw new ValidationError('Short URL is required');
+  if (!shortURL || typeof shortURL !== 'string') {
+    throw new ValidationError('Short URL is required and must be a string');
+  }
+
+  const entry = await ShortURLModel.findOne({ shortURL });
+  if (!entry) {
+    throw new NotFoundError(`Short URL not found for ${shortURL}`);
+  }
+  if (!entry.user || entry.user.toString() !== user.id) {
+    throw new UnauthorizedError(
+      'You do not have permission to delete this URL'
+    );
   }
 
   const deletedEntry = await ShortURLModel.findOneAndDelete({
@@ -127,12 +128,9 @@ const deleteShortURL = async (
     user: user.id
   });
 
-  if (!deletedEntry) {
-    throw new NotFoundError(`Short URL not found for ${shortURL}`);
-  }
-
+  // Quita la referencia en el usuario
   await UserModel.findByIdAndUpdate(user.id, {
-    $pull: { shortURLs: deletedEntry._id }
+    $pull: { shortURLs: entry._id }
   });
 
   return deletedEntry;

@@ -4,6 +4,7 @@ import metascraperLogoFavicon from 'metascraper-logo-favicon';
 import metascraperTitle from 'metascraper-title';
 import metascraperUrl from 'metascraper-url';
 import { NewShortURLEntry } from '../interfaces/shortURL.interface';
+import { fetchWithTimeout } from './fetchWithTimeout';
 import truncateString from './truncateString';
 
 const scraper = metascraper([
@@ -15,11 +16,12 @@ const scraper = metascraper([
 ]);
 
 async function getMetadata(url: string) {
-  const response = await fetch(url, {
+  const response = await fetchWithTimeout(url, 3, {
     headers: {
       'Content-Type': 'text/html; charset=utf-8'
     }
   });
+
   const html = await response.text();
   const metadata = await scraper({ html, url });
   return metadata;

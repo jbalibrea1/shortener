@@ -4,82 +4,88 @@
  * @module controllers/shortURLController
  */
 
-import IRequestURL from '@/interfaces/requestURL.interface';
+import { IJwtRequest } from '@/interfaces';
 import shortURL from '@/services/shortURL.service';
 import token from '@/utils/token';
 import { Request, Response } from 'express';
+import path from 'path';
 
 /**
- * Devuelve todas las URLs acortadas.
- * @route GET /api/shorturl
+ * Lista todas las URLs acortadas (solo admin).
+ * @route GET /api/urls
  * @param _req - Request de Express (no usado)
- * @param res - Response de Express con el listado de URLs
+ * @param res - Response con el listado de URLs
  */
-const getAllShortURLs = async (_req: Request, res: Response) => {
+const listShortURLs = async (_req: Request, res: Response) => {
   const allUrls = await shortURL.getAllShortURLs();
   res.json(allUrls);
 };
 
 /**
- * Crea una nueva URL acortada.
- * Si el usuario está autenticado, la URL se asocia a su cuenta.
- * Si no, la URL se crea de forma anónima.
- * @route POST /api/shorturl
+ * Crea una nueva URL acortada. Si el usuario está autenticado, la asocia a su cuenta.
+ * @route POST /api/urls
  * @param req - Request con { url } y, opcionalmente, usuario autenticado
  * @param res - Response con la URL acortada creada
  */
-const addShortURL = async (req: IRequestURL, res: Response) => {
+const createShortURL = async (
+  req: Request<unknown, unknown, { url: string }>,
+  res: Response
+) => {
   const { url } = req.body;
   const user = token.extractToken(req);
   const newShortUrlEntry = await shortURL.createShortURL(url, user);
-  res.json(newShortUrlEntry);
+  res.status(201).json(newShortUrlEntry);
 };
 
 /**
  * Devuelve información de una shortURL concreta.
- * @route GET /api/shorturl/:surl
- * @param req - Request con el parámetro surl
+ * @route GET /api/urls/:shortUrl
+ * @param req - Request con el parámetro shortUrl
  * @param res - Response con la información de la shortURL
  */
-const getShortURL = async (req: Request, res: Response) => {
-  const url = req.params.surl;
-  const entry = await shortURL.getShortURLInfo(url);
+const getShortURLInfo = async (req: Request, res: Response) => {
+  const { shortUrl } = req.params;
+  const entry = await shortURL.getShortURLInfo(shortUrl);
   res.json(entry);
 };
 
 /**
- * Redirige (o devuelve) la URL original a partir de una shortURL.
- * @route GET /api/redirect/:shortURL
- * @param req - Request con el parámetro shortURL
- * @param res - Response con la URL original
+ * Redirige a la URL original a partir de una shortURL, o muestra una página 404 si no existe.
+ * @route GET /api/redirect/:shortUrl
+ * @param req - Request con el parámetro shortUrl
+ * @param res - Response con la redirección o la página 404
  */
-const getRedirect = async (req: Request, res: Response) => {
-  const { shortURL: surl } = req.params;
-  const url = await shortURL.resolveShortURL(surl);
+const redirectShortURL = async (req: Request, res: Response) => {
+  const { shortUrl } = req.params;
+  const url = await shortURL.resolveShortURL(shortUrl);
   if (!url) {
-    throw new Error('No URL found for the given short URL');
+    return res
+      .status(404)
+      .sendFile(path.resolve(__dirname, '../static/notfound.html'));
   }
-  // res.redirect(url);
-  res.json({ url });
+  res.redirect(url);
 };
 
 /**
  * Elimina una shortURL del usuario autenticado.
- * @route DELETE /api/shorturl/:surl
- * @param req - Request con el parámetro surl y usuario autenticado
+ * @route DELETE /api/urls/:shortUrl
+ * @param req - Request con el parámetro shortUrl y usuario autenticado
  * @param res - Response con mensaje de éxito
  */
-const deleteShortURL = async (req: Request, res: Response) => {
-  const { surl } = req.params;
-  const user = token.extractToken(req);
-  await shortURL.deleteShortURL(surl, user);
-  res.status(200).json({ message: 'Short URL deleted successfully' });
+const removeShortURL = async (req: IJwtRequest, res: Response) => {
+  const { shortUrl } = req.params;
+  const user = req.user as import('@/interfaces').CustomJwtPayload | null;
+  if (!user) {
+    throw new Error('Unauthorized: No user authenticated');
+  }
+  await shortURL.deleteShortURL(shortUrl, user);
+  res.status(204).end();
 };
 
 export default {
-  getAllShortURLs,
-  addShortURL,
-  getShortURL,
-  getRedirect,
-  deleteShortURL
+  listShortURLs,
+  createShortURL,
+  getShortURLInfo,
+  redirectShortURL,
+  removeShortURL
 };

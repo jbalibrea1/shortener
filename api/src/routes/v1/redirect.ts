@@ -8,6 +8,6 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/:shortURL', shortURLController.getRedirect);
+router.get('/:shortUrl', shortURLController.redirectShortURL);
 
 export default router;

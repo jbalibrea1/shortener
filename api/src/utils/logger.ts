@@ -1,27 +1,40 @@
+import config from '@/config';
+import winston from 'winston';
+
 /**
- * Logger utility using console methods, can be replaced by Winston/Morgan in production.
- * Provides info and error logging with timestamps.
+ * Logger utility using Winston, with file logging in production and console in development.
  * @module utils/logger
  */
 
-/**
- * Imprime mensajes informativos en consola, excepto en entorno de test.
- * @param params - Mensajes a mostrar.
- */
-const info = (...params: unknown[]) => {
-  if (process.env.NODE_ENV !== 'test') {
-    console.log(...params);
-  }
-};
+const transports = [];
 
-/**
- * Imprime mensajes de error en consola, excepto en entorno de test.
- * @param params - Mensajes a mostrar.
- */
-const error = (...params: unknown[]) => {
-  if (process.env.NODE_ENV !== 'test') {
-    console.error(...params);
-  }
-};
+if (config.env !== 'production') {
+  transports.push(
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'logs/app.log' })
+  );
+}
 
-export default { error, info };
+// Siempre consola, excepto en test
+if (config.env !== 'test') {
+  transports.push(new winston.transports.Console());
+}
+
+const logger = winston.createLogger({
+  level: config.env === 'production' ? 'info' : 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.errors({ stack: true }),
+    // winston.format.printf(({ timestamp, level, message }) => {
+    //   return `${timestamp} [${level}]: ${message}`;
+    // })
+    winston.format.printf(({ timestamp, level, message, ...meta }) => {
+      return `${timestamp} [${level}]: ${message} ${
+        Object.keys(meta).length ? JSON.stringify(meta) : ''
+      }`;
+    })
+  ),
+  transports
+});
+
+export default logger;

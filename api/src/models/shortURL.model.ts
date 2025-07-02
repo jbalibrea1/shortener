@@ -5,27 +5,27 @@ const shortURLSchema = new mongoose.Schema(
   {
     url: {
       type: String,
-      required: true,
+      required: true
     },
     title: {
       type: String,
-      default: null,
+      default: null
     },
     logo: {
       type: String,
-      default: null,
+      default: null
     },
     description: {
       type: String,
-      default: null,
+      default: null
     },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      default: null,
+      default: null
     },
     shortURL: { type: String, unique: true, required: true },
-    totalClicks: { type: Number, default: 0 },
+    totalClicks: { type: Number, default: 0 }
   },
   { timestamps: true }
 );
@@ -36,7 +36,7 @@ shortURLSchema.set('toJSON', {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;
-  },
+  }
 });
 
 const ShortURLModel = mongoose.model('ShortURL', shortURLSchema);
