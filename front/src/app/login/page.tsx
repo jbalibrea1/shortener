@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -22,6 +23,7 @@ const LoginPage = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -35,10 +37,18 @@ const LoginPage = () => {
         password: formData.password,
         redirect: false
       });
-      console.log('SignIn response:', res);
       if (res?.error) {
         setError('Credenciales incorrectas');
+        toast({
+          title: 'Error',
+          description: 'Credenciales incorrectas',
+          variant: 'destructive'
+        });
       } else if (res?.ok) {
+        toast({
+          title: 'Éxito',
+          description: 'Sesión iniciada correctamente'
+        });
         router.push('/');
       }
     } catch {

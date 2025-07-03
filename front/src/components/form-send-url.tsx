@@ -93,7 +93,7 @@ export function FormSendURL() {
     setLoading(true);
     try {
       if (!values.url) throw new Error('URL no válida');
-      const res = await fetch(`${API_URL}/shorturl`, {
+      const res = await fetch(`${API_URL}/urls`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

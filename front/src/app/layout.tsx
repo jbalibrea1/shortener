@@ -3,6 +3,7 @@ import ClientProviders from '@/components/ClientProviders';
 import { fontSans } from '@/components/fonts';
 import Footer from '@/components/footer';
 import Navigation from '@/components/Navigation';
+import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 
@@ -28,9 +29,9 @@ export default function RootLayout({
         <ClientProviders>
           <div className="flex flex-col  min-h-svh">
             <Navigation />
-            {/* <main className="container max-w-screen-md mx-auto w-full h-full flex-1 flex flex-col"> */}
             <main className="flex flex-1 flex-col">{children}</main>
             <Footer />
+            <Toaster />
           </div>
         </ClientProviders>
       </body>

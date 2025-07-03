@@ -75,7 +75,7 @@ export default function Navigation() {
   const NAV_LINKS = getNavLinks(pathname, session);
 
   return (
-    <header className="container top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container max-w-screen-xl flex items-center justify-between h-14">
         <Link
           href="/"
