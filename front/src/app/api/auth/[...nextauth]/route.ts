@@ -1,12 +1,12 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-const authOptions = {
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        user: { label: 'User', type: 'text' },
+        username: { label: 'User', type: 'text' },
         password: { label: 'Password', type: 'password' }
       },
       async authorize(credentials) {
@@ -17,21 +17,23 @@ const authOptions = {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                user: credentials?.user,
+                username: credentials?.username,
                 password: credentials?.password
               })
             }
           );
+
+          console.log('Response status:', res.status);
 
           if (!res.ok) {
             return null;
           }
 
           const data = await res.json();
-          if (data && data.token && data.user) {
+          if (data && data.token && data.username) {
             return {
-              id: data.user,
-              name: data.user,
+              id: data.username,
+              name: data.username,
               token: data.token
             };
           }
@@ -44,7 +46,7 @@ const authOptions = {
     })
   ],
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as const,
     maxAge: 30 * 24 * 60 * 60 // 30 días
   },
   callbacks: {
@@ -64,12 +66,12 @@ const authOptions = {
     }
   },
   pages: {
-    signIn: '/login'
+    signIn: '/login',
+    signOut: '/signout'
   },
   debug: process.env.NODE_ENV === 'development'
 };
 
-// @ts-expect-error NextAuth call signature issue
 const handler = NextAuth(authOptions);
 
 export const GET = handler;

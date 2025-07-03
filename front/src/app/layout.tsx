@@ -1,17 +1,18 @@
 import '@/app/globals.css';
+import ClientProviders from '@/components/ClientProviders';
 import { fontSans } from '@/components/fonts';
-import { ThemeProvider } from '@/components/theme-provider';
-import { Toaster } from '@/components/ui/toaster';
+import Footer from '@/components/footer';
+import Navigation from '@/components/Navigation';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'URL Shortener | by Jorge Balibrea - @jbalibrea1',
-  description: 'URL Shortener is a simple tool to shorten URLs',
+  description: 'URL Shortener is a simple tool to shorten URLs'
 };
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -24,15 +25,14 @@ export default function RootLayout({
         )}
         suppressHydrationWarning
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="relative flex min-h-svh flex-col ">{children}</div>
-          <Toaster />
-        </ThemeProvider>
+        <ClientProviders>
+          <div className="flex flex-col  min-h-svh">
+            <Navigation />
+            {/* <main className="container max-w-screen-md mx-auto w-full h-full flex-1 flex flex-col"> */}
+            <main className="flex flex-1 flex-col">{children}</main>
+            <Footer />
+          </div>
+        </ClientProviders>
       </body>
     </html>
   );

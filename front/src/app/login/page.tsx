@@ -1,12 +1,25 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const LoginPage = () => {
-  const [user, setUser] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -18,12 +31,12 @@ const LoginPage = () => {
 
     try {
       const res = await signIn('credentials', {
-        user,
-        password,
+        username: formData.username,
+        password: formData.password,
         redirect: false
       });
+      console.log('SignIn response:', res);
       if (res?.error) {
-        console.error('Error de autenticación:', res.error);
         setError('Credenciales incorrectas');
       } else if (res?.ok) {
         router.push('/');
@@ -36,41 +49,58 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center">Login</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            name="user"
-            placeholder="Username"
-            required
-            className="w-full p-2 border rounded"
-            value={user}
-            onChange={(e) => setUser(e.target.value)}
-            disabled={loading}
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            required
-            className="w-full p-2 border rounded"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            disabled={loading}
-          />
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full p-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors disabled:opacity-50"
-          >
-            {loading ? 'Iniciando sesión...' : 'Login'}
-          </button>
-          {error && <div className="text-red-500 text-center">{error}</div>}
+    <main className="container max-w-screen-md mx-auto w-full h-full flex-1 flex min-h-[calc(85vh)] items-center justify-center">
+      <Card className="w-full max-w-md">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl text-center">Iniciar Sesión</CardTitle>
+          <CardDescription className="text-center">
+            Ingresa tus credenciales para acceder
+          </CardDescription>
+        </CardHeader>
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username">Usuario</Label>
+              <Input
+                id="username"
+                type="text"
+                placeholder="Ingresa tu usuario"
+                value={formData.username}
+                onChange={(e) =>
+                  setFormData({ ...formData, username: e.target.value })
+                }
+                disabled={loading}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">Contraseña</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Ingresa tu contraseña"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                disabled={loading}
+                required
+              />
+            </div>
+            {error && (
+              <div className="text-sm text-red-500 text-center bg-red-50 dark:bg-red-950 p-3 rounded">
+                {error}
+              </div>
+            )}
+          </CardContent>
+          <CardFooter>
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+            </Button>
+          </CardFooter>
         </form>
-      </div>
-    </div>
+      </Card>
+    </main>
   );
 };
 

@@ -12,7 +12,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import type { ShortUrlEntry } from '@/interface/shortURLentry';
@@ -26,7 +26,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from './ui/card';
 import { Input } from './ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
@@ -34,19 +34,19 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from './ui/tooltip';
 
 const formSchema = z.object({
   url: z
     .string()
     .min(3, {
-      message: 'URL no válida',
+      message: 'URL no válida'
     })
     .regex(
       /^(https?:\/\/)?([\w-]+\.)*[\w-]+\.[a-z]{2,}(\/.*)?$/i,
       'URL no válida'
-    ),
+    )
 });
 
 export function FormSendURL() {
@@ -61,8 +61,8 @@ export function FormSendURL() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      url: '',
-    },
+      url: ''
+    }
   });
 
   const handleCopyAndClose = () => {
@@ -71,7 +71,7 @@ export function FormSendURL() {
         url: data.shortURL,
         title: 'Pop up cerrado y enlace copiado',
         desc: 'Enlace copiado correctamente al portapapeles 🎉',
-        toast,
+        toast
       });
     }
     setOpen(false);
@@ -84,7 +84,7 @@ export function FormSendURL() {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'URL no encontrada',
+        description: 'URL no encontrada'
       });
     }
   };
@@ -96,9 +96,9 @@ export function FormSendURL() {
       const res = await fetch(`${API_URL}/shorturl`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(values)
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || 'Error al acortar la URL');
@@ -107,7 +107,7 @@ export function FormSendURL() {
         title: 'Enlace generado exitosamente',
         description: `${new Date().toLocaleDateString(
           'es-ES'
-        )} - ${new Date().toLocaleTimeString()}`,
+        )} - ${new Date().toLocaleTimeString()}`
       });
       setOpen(true);
       form.reset();
@@ -119,7 +119,7 @@ export function FormSendURL() {
       toast({
         variant: 'destructive',
         title: 'Ups! Parece que hubo un error',
-        description: message,
+        description: message
       });
     } finally {
       setLoading(false);
