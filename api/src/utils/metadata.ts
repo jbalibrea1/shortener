@@ -5,7 +5,6 @@ import metascraperTitle from 'metascraper-title';
 import metascraperUrl from 'metascraper-url';
 import { NewShortURLEntry } from '../interfaces/shortURL.interface';
 import { fetchWithTimeout } from './fetchWithTimeout';
-import truncateString from './truncateString';
 
 const scraper = metascraper([
   // metascraperImage(),
@@ -18,7 +17,9 @@ const scraper = metascraper([
 async function getMetadata(url: string) {
   const response = await fetchWithTimeout(url, 3, {
     headers: {
-      'Content-Type': 'text/html; charset=utf-8'
+      'Content-Type': 'text/html; charset=utf-8',
+      'User-Agent':
+        'Mozilla/5.0 (compatible; ShortenerBot/1.0; +https://yourdomain.com/bot)'
     }
   });
 
@@ -32,7 +33,6 @@ async function getMetadata(url: string) {
  * @param url - URL to extract metadata from
  * @returns Metadata object with title, description, image, etc.
  */
-
 const addMetadata = async (
   entry: NewShortURLEntry
 ): Promise<NewShortURLEntry> => {
@@ -42,9 +42,7 @@ const addMetadata = async (
       ...entry,
       title: metadata.title ?? null,
       logo: metadata.logo ?? null,
-      description: metadata.description
-        ? truncateString(metadata.description, 50)
-        : null
+      description: metadata.description ?? null
     };
   } catch (error) {
     console.error('Error fetching metadata:', error);

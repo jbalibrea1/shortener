@@ -18,14 +18,9 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        defaultSrc: ["'self'"],
         styleSrc: ["'self'", 'https://cdn.tailwindcss.com', "'unsafe-inline'"],
         scriptSrc: ["'self'", 'https://cdn.tailwindcss.com', "'unsafe-inline'"],
-        imgSrc: ["'self'", 'data:'],
-        fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
-        connectSrc: ["'self'"],
-        baseUri: ["'self'"],
-        formAction: ["'self'"]
+        fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:']
       }
     }
   })

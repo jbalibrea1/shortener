@@ -31,9 +31,9 @@ const createShortURL = async (
   req: Request<unknown, unknown, { url: string }>,
   res: Response
 ) => {
-  const { url } = req.body;
+  const urlData = req.body;
   const user = token.extractToken(req);
-  const newShortUrlEntry = await shortURL.createShortURL(url, user);
+  const newShortUrlEntry = await shortURL.createShortURL(urlData, user);
   res.status(201).json(newShortUrlEntry);
 };
 

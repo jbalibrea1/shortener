@@ -35,17 +35,20 @@ const generateUniqueShortURL = async (): Promise<string> => {
  * @returns {Promise<any>} El documento guardado en la base de datos.
  * @throws {Error} Si la URL no es válida.
  */
-const createShortURL = async (url: string, user: CustomJwtPayload | null) => {
-  if (!url || typeof url !== 'string') {
+const createShortURL = async (
+  urlData: Record<string, unknown>,
+  user: CustomJwtPayload | null
+) => {
+  if (!urlData || typeof urlData.url !== 'string') {
     throw new ValidationError('URL is required');
   }
 
   // Genera shortURL único
   const uniqueShortURL = await generateUniqueShortURL();
 
-  // Crea la entrada
+  // Crea la entrada + metadatos
   const newEntry = new ShortURLModel({
-    url,
+    ...urlData,
     shortURL: uniqueShortURL,
     user: user?.id ?? null
   });

@@ -11,7 +11,8 @@ export async function validateShortUrlBody(
   try {
     // Normaliza y parsea la URL antes de validar
     if (req.body?.url) {
-      req.body.url = (await parsedURL({ url: req.body.url })).url;
+      const parsed = await parsedURL({ url: req.body.url });
+      req.body = { ...req.body, ...parsed };
     }
     const result = shortUrlBodySchema.safeParse(req.body);
     if (!result.success) {
