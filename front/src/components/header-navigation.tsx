@@ -5,7 +5,7 @@ import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LogoutLink } from './LogoutLink';
+import { LogoutLink } from './logout-link';
 import { ModeToggle } from './toggle-dark';
 import {
   Tooltip,
@@ -69,7 +69,7 @@ function getNavLinks(pathname: string, session: Session | null): NavLink[] {
   return baseLinks;
 }
 
-export default function Navigation() {
+export default function HeaderNavigation() {
   const { data: session } = useSession();
   const pathname = usePathname();
   const NAV_LINKS = getNavLinks(pathname, session);

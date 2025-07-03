@@ -1,8 +1,8 @@
 import '@/app/globals.css';
-import ClientProviders from '@/components/ClientProviders';
-import { fontSans } from '@/components/fonts';
+import ClientProviders from '@/components/client-provider';
+import { fontSans, roboto } from '@/components/fonts';
 import Footer from '@/components/footer';
-import Navigation from '@/components/Navigation';
+import HeaderNavigation from '@/components/header-navigation';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import type { Metadata } from 'next';
@@ -21,14 +21,15 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          `font-sans min-h-svh bg-background antialiased`,
-          fontSans.variable
+          roboto.className,
+          fontSans.className,
+          `font-sans min-h-svh bg-background antialiased`
         )}
         suppressHydrationWarning
       >
         <ClientProviders>
           <div className="flex flex-col  min-h-svh">
-            <Navigation />
+            <HeaderNavigation />
             <main className="flex flex-1 flex-col">{children}</main>
             <Footer />
             <Toaster />
