@@ -1,4 +1,5 @@
-import { CustomJwtPayload, IShortURL } from '@/interfaces';
+import { CustomJwtPayload, IShortURL, NewShortURLEntry } from '@/interfaces';
+import AnalyticsModel from '@/models/analytics.model';
 import ShortURLModel from '@/models/shortURL.model';
 import UserModel from '@/models/user.model';
 import {
@@ -6,26 +7,20 @@ import {
   UnauthorizedError,
   ValidationError
 } from '@/utils/errors';
-import generateRandom from '@/utils/generateRandom';
+import {
+  generateUniqueShortURL,
+  isDuplicateError
+} from '@/utils/generateUniqueShortURL';
+import { Request } from 'express';
+import mongoose from 'mongoose';
 
-/**
- * Obtiene todos los registros de URLs acortadas.
- * @returns {Promise<ShortURL[]>} Lista de URLs acortadas.
- */
-const getAllShortURLs = async (): Promise<IShortURL[]> => {
-  return await ShortURLModel.find({});
-};
-
-/**
- * Genera un shortURL único que no exista en la base de datos.
- * @returns {Promise<string>} Un identificador único para la URL corta.
- */
-const generateUniqueShortURL = async (): Promise<string> => {
-  let uniqueShortURL = generateRandom();
-  while (await ShortURLModel.findOne({ shortURL: uniqueShortURL })) {
-    uniqueShortURL = generateRandom();
+const getAllShortURLsFromUser = async (
+  user: CustomJwtPayload
+): Promise<IShortURL[]> => {
+  if (!user || !user.id) {
+    throw new UnauthorizedError('No user id provided');
   }
-  return uniqueShortURL;
+  return await ShortURLModel.find({ user: user.id });
 };
 
 /**
@@ -35,34 +30,69 @@ const generateUniqueShortURL = async (): Promise<string> => {
  * @returns {Promise<any>} El documento guardado en la base de datos.
  * @throws {Error} Si la URL no es válida.
  */
-const createShortURL = async (
-  urlData: Record<string, unknown>,
-  user: CustomJwtPayload | null
+
+const MAX_ATTEMPTS = 3;
+export const createShortURL = async (
+  urlData: NewShortURLEntry,
+  user?: CustomJwtPayload
 ) => {
-  if (!urlData || typeof urlData.url !== 'string') {
-    throw new ValidationError('URL is required');
+  if (!urlData?.url || typeof urlData.url !== 'string') {
+    throw new ValidationError('URL válida es requerida');
   }
 
-  // Genera shortURL único
-  const uniqueShortURL = await generateUniqueShortURL();
-
-  // Crea la entrada + metadatos
-  const newEntry = new ShortURLModel({
+  const commonData = {
     ...urlData,
-    shortURL: uniqueShortURL,
-    user: user?.id ?? null
-  });
+    user: user?.id || null,
+    totalClicks: 0
+  };
 
-  const savedEntry = await newEntry.save();
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    const shortURL = generateUniqueShortURL();
+    // Iniciar sesión de Mongoose para transacciones
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-  // Asocia la URL al usuario si está autenticado
-  if (user?.id) {
-    await UserModel.findByIdAndUpdate(user.id, {
-      $push: { shortURLs: savedEntry._id }
-    });
+    try {
+      // 1. Crear la URL corta
+      const [savedEntry] = await ShortURLModel.create(
+        [
+          {
+            ...commonData,
+            shortURL
+          }
+        ],
+        { session }
+      );
+
+      // 2. Actualizar usuario en caso de existir
+      if (user?.id) {
+        await UserModel.findByIdAndUpdate(
+          user.id,
+          { $addToSet: { shortURLs: savedEntry._id } },
+          { session }
+        );
+      }
+
+      await session.commitTransaction();
+      return savedEntry;
+    } catch (error) {
+      await session.abortTransaction();
+
+      // Si no es error de duplicado, relanzar
+      if (!isDuplicateError(error)) throw error;
+
+      // Esperar exponencialmente entre intentos
+      if (attempt < MAX_ATTEMPTS - 1) {
+        await new Promise((resolve) => setTimeout(resolve, 10 * 2 ** attempt));
+      }
+    } finally {
+      await session.endSession();
+    }
   }
 
-  return savedEntry;
+  throw new Error(
+    `No se pudo generar URL única después de ${MAX_ATTEMPTS} intentos`
+  );
 };
 
 /**
@@ -85,13 +115,24 @@ const getShortURLInfo = async (shortURL: string) => {
  * @param {string} shortURL - El identificador de la URL corta.
  * @returns {Promise<string|null>} La URL original o null si no se encuentra.
  */
-const resolveShortURL = async (shortURL: string) => {
+const resolveShortURL = async (shortURL: string, req?: Request) => {
   const entry = await ShortURLModel.findOne({ shortURL });
   if (!entry) {
     return null;
   }
   entry.totalClicks += 1;
   await entry.save();
+
+  if (req) {
+    const ip =
+      req.headers['x-forwarded-for']?.toString().split(',')[0].trim() ||
+      req.socket?.remoteAddress ||
+      req.ip;
+    await AnalyticsModel.create({
+      shortUrl: entry._id,
+      ipAddress: ip || null
+    });
+  }
   return entry.url;
 };
 
@@ -140,9 +181,9 @@ const deleteShortURL = async (
 };
 
 export default {
-  getAllShortURLs,
   createShortURL,
   resolveShortURL,
   deleteShortURL,
-  getShortURLInfo
+  getShortURLInfo,
+  getAllShortURLsFromUser
 };

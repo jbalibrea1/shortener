@@ -6,7 +6,6 @@
 import shortURLController from '@/controllers/shortURLController';
 import {
   authenticate,
-  requireRole,
   validateShortUrlBody,
   validateShortUrlParam
 } from '@/middleware';
@@ -14,12 +13,7 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get(
-  '/',
-  authenticate,
-  requireRole('admin'),
-  shortURLController.listShortURLs
-);
+router.get('/', authenticate, shortURLController.listShortURLs);
 router.post('/', validateShortUrlBody, shortURLController.createShortURL);
 router.get(
   '/:shortUrl',

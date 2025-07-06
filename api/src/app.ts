@@ -31,7 +31,6 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 
 // DB connection
 connectDB();
-
 // Routes
 app.use('/api/v1', v1Routes);
 

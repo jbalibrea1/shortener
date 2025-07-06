@@ -12,26 +12,30 @@ import bcrypt from 'bcryptjs';
 
 /**
  * Registra un nuevo usuario y devuelve el token y el nombre de usuario.
- * @param {IUser} param0 - Objeto con username, name y password.
+ * @param {Pick<IUser, 'username' | 'password'>} data - Objeto con username y password.
  * @returns {Promise<{ token: string, username: string }>} Token y usuario registrado.
  * @throws {ValidationError} Si faltan datos.
  */
-const register = async ({ username, name, password }: IUser) => {
-  if (!username || !name || !password) {
-    throw new ValidationError('Username, name and password are required');
+const register = async (
+  data: Pick<IUser, 'username' | 'password'>
+): Promise<{ token: string; username: string }> => {
+  const { username, password } = data;
+  if (!username || !password) {
+    throw new ValidationError('Username and password are required');
   }
   const saltRounds = 10;
   const passwordHash: string = await bcrypt.hash(password, saltRounds);
+
   const userCreated = new UserModel({
     username,
-    name,
     passwordHash
   });
+
   const savedUser = await userCreated.save();
   const tokenGen = token.generateToken(
     savedUser.username,
     savedUser._id.toString(),
-    savedUser.role
+    savedUser.role // role default is user
   );
   return { token: tokenGen, username: savedUser.username };
 };
@@ -39,10 +43,12 @@ const register = async ({ username, name, password }: IUser) => {
 /**
  * Devuelve los datos y URLs del usuario autenticado.
  * @param {CustomJwtPayload} user - Usuario autenticado extraído del token.
- * @returns {Promise<any>} Usuario con sus URLs.
+ * @returns {Promise<ReturnType<typeof UserModel.findById>>} Datos del usuario con sus URLs acortadas.
  * @throws {UnauthorizedError} Si no hay usuario.
  */
-const getPersonalInfo = async (user: CustomJwtPayload) => {
+const getPersonalInfo = async (
+  user: CustomJwtPayload
+): Promise<ReturnType<typeof UserModel.findById>> => {
   if (!user) {
     throw new UnauthorizedError('No user id provided');
   }
@@ -51,12 +57,15 @@ const getPersonalInfo = async (user: CustomJwtPayload) => {
 
 /**
  * Inicia sesión y devuelve el token y el nombre de usuario.
- * @param {IUser} param0 - Objeto con username y password.
+ * @param {Pick<IUser, 'username' | 'password'>} data - Objeto con username y password.
  * @returns {Promise<{ token: string, username: string }>} Token y usuario autenticado.
  * @throws {ValidationError} Si faltan datos.
  * @throws {UnauthorizedError} Si el usuario o la contraseña no son válidos.
  */
-const login = async ({ username, password }: IUser) => {
+const login = async (
+  data: Pick<IUser, 'username' | 'password'>
+): Promise<{ token: string; username: string }> => {
+  const { username, password } = data;
   if (!username || !password) {
     throw new ValidationError('Username and password are required');
   }

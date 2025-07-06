@@ -1,6 +1,7 @@
 import { IJwtRequest, IUser } from '@/interfaces';
 import auth from '@/services/auth.service';
 import { UnauthorizedError } from '@/utils/errors';
+import { successResponse } from '@/utils/succesResponse';
 import { Request, Response } from 'express';
 
 /**
@@ -14,13 +15,17 @@ import { Request, Response } from 'express';
  */
 const login = async (req: Request<unknown, unknown, IUser>, res: Response) => {
   const { username, password } = req.body;
+  console.log(username);
   const userAuth = await auth.login({ username, password });
-  res
-    .status(200)
-    .json({
+  successResponse(
+    res,
+    200,
+    {
       token: String(userAuth.token),
       username: String(userAuth.username)
-    });
+    },
+    'Login correcto'
+  );
 };
 
 /**
@@ -31,9 +36,9 @@ const saveUser = async (
   req: Request<unknown, unknown, IUser>,
   res: Response
 ) => {
-  const { username, name, password } = req.body;
-  const savedUser = await auth.register({ username, name, password });
-  res.status(201).json(savedUser);
+  const { username, password } = req.body;
+  const savedUser = await auth.register({ username, password });
+  successResponse(res, 201, savedUser, 'Usuario registrado correctamente');
 };
 
 /**
@@ -46,7 +51,12 @@ const getUser = async (req: IJwtRequest, res: Response) => {
     throw new UnauthorizedError('Unauthorized');
   }
   const userUrls = await auth.getPersonalInfo(user);
-  res.json(userUrls);
+  successResponse(
+    res,
+    200,
+    userUrls,
+    'Datos de usuario obtenidos correctamente'
+  );
 };
 
 export default { saveUser, getUser, login };

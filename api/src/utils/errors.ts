@@ -45,3 +45,13 @@ export class NotFoundError extends AppError {
     this.name = 'NotFoundError';
   }
 }
+
+/**
+ * Error para respuestas 400 Bad Request (general).
+ */
+export class BadRequestError extends AppError {
+  constructor(message: string) {
+    super(message, 400);
+    this.name = 'BadRequestError';
+  }
+}

@@ -62,7 +62,7 @@ PI para acortar URLs, con soporte para usuarios autenticados y anónimos, roles 
 ### Gestión de URLs
 
 - `GET /api/v1/urls`  
-  **Admin**: Lista todas las URLs acortadas.
+  Lista las URLs propias del usuario autenticado.
 
 - `POST /api/v1/urls`  
   Crea una nueva shortURL.  
@@ -70,7 +70,7 @@ PI para acortar URLs, con soporte para usuarios autenticados y anónimos, roles 
   (Opcional: autenticación para asociar la URL al usuario)
 
 - `GET /api/v1/urls/:shortUrl`  
-  Devuelve información de una shortURL.
+  Devuelve información de una shortURL propia.
 
 - `DELETE /api/v1/urls/:shortUrl`  
   Elimina una shortURL propia (requiere autenticación).
@@ -79,6 +79,14 @@ PI para acortar URLs, con soporte para usuarios autenticados y anónimos, roles 
 
 - `GET /api/v1/redirect/:shortUrl`  
   Redirige a la URL original o muestra una página 404 si no existe.
+
+### Administración
+
+- `GET /api/v1/admin/urls`  
+  (Solo admin) Lista todas las URLs acortadas.
+- `GET /api/v1/admin/urls/:shortUrl`
+- `DELETE /api/v1/admin/urls/:shortUrl`  
+  Elimina una shortURL (requiere autenticación de admin).
 
 ## Roles
 
@@ -93,3 +101,9 @@ curl -X POST http://localhost:3000/api/v1/urls -H "Authorization: Bearer <token>
 
 - All endpoints return JSON except redirection, which returns a 404 HTML page if the short URL does not exist.
 - Protected endpoints require JWT authentication in the header `Authorization: Bearer <token>`.
+
+## TODO
+
+- [ ] Implementar analíticas de clics por día y país.
+- [ ] eliminar shortURL y sus analíticas al eliminar una shortURL.
+- [ ] añadir redis para mejorar el rendimiento de las consultas.
