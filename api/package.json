@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node build/index.js",
     "dev": "NODE=development ts-node-dev --respawn --exit-child --watch src -r tsconfig-paths/register src/index.ts",
-    "lint": "eslint .",
+    "lint": "eslint --ext .ts src",
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

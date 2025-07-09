@@ -56,7 +56,7 @@ PI para acortar URLs, con soporte para usuarios autenticados y anónimos, roles 
   Respuesta: `{ token, username }`
 
 - `GET /api/v1/auth/me`  
-  Devuelve el usuario autenticado y sus URLs.  
+  Devuelve el usuario autenticado
   Header: `Authorization: Bearer <token>`
 
 ### Gestión de URLs
@@ -79,6 +79,26 @@ PI para acortar URLs, con soporte para usuarios autenticados y anónimos, roles 
 
 - `GET /api/v1/redirect/:shortUrl`  
   Redirige a la URL original o muestra una página 404 si no existe.
+
+### Analytics
+
+- `GET /api/v1/analytics/`
+  Devuelve todas las URLs del usuario autenticado con analíticas.
+
+- `GET /api/v1/analytics/:shortUrl`  
+  Devuelve las analíticas de una shortURL propia.
+- `GET /api/v1/analytics/by-day`  
+  Devuelve las analíticas de clics por día del usuario autenticado.
+- `GET /api/v1/analytics/by-day/:shortUrl`
+  Devuelve las analíticas de clics por día de una shortURL propia.
+<!--TODO: Implementar analíticas de clics por día y país. -->
+- `GET /api/v1/analytics/country/:shortUrl`
+- `GET /api/v1/analytics/country/by-day/:shortUrl`  
+  Devuelve las analíticas de clics por país de una shortURL propia.
+- `GET /api/v1/analytics/country/by-day`
+- `GET /api/v1/analytics/country`  
+  Devuelve las analíticas de clics por país del usuario autenticado.
+
 
 ### Administración
 
@@ -107,3 +127,4 @@ curl -X POST http://localhost:3000/api/v1/urls -H "Authorization: Bearer <token>
 - [ ] Implementar analíticas de clics por día y país.
 - [ ] eliminar shortURL y sus analíticas al eliminar una shortURL.
 - [ ] añadir redis para mejorar el rendimiento de las consultas.
+- [ ] añadir refresh token

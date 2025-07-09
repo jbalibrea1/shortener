@@ -1,14 +1,12 @@
 import cors from 'cors';
 import 'dotenv/config';
-import express from 'express';
+import express, { Application, Request, Response } from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import path from 'path';
-import connectDB from './config/db';
-import * as middleware from './middleware';
-import v1Routes from './routes/v1';
-
-const app = express();
+import apiRouter from './api';
+import logger from './logger';
+import { unknownEndpoint } from './middleware/unknownEndpoint';
+const app: Application = express();
 
 // Middlewares
 app.use(cors());
@@ -18,24 +16,48 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        styleSrc: ["'self'", 'https://cdn.tailwindcss.com', "'unsafe-inline'"],
-        scriptSrc: ["'self'", 'https://cdn.tailwindcss.com', "'unsafe-inline'"],
-        fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:']
+        styleSrc: ['\'self\'', 'https://cdn.tailwindcss.com', '\'unsafe-inline\''],
+        scriptSrc: ['\'self\'', 'https://cdn.tailwindcss.com', '\'unsafe-inline\''],
+        fontSrc: ['\'self\'', 'https://fonts.gstatic.com', 'data:']
       }
     }
   })
 );
 
-// Static files
-app.use('/static', express.static(path.join(__dirname, 'static')));
+// API router
+app.use('/api', apiRouter);
 
-// DB connection
-connectDB();
-// Routes
-app.use('/api/v1', v1Routes);
+// health check endpoint
+app.get('/health', (_req: Request, res: Response) => {
+  res.status(200).json({
+    uptime: process.uptime(),
+    message: 'OK',
+    timestamp: Date.now(),
+    version: process.env.npm_package_version,
+    env: process.env.NODE_ENV
+  });
+});
 
-// Middleware for handling unknown routes and errors
-app.use(middleware.unknownEndpoint);
-app.use(middleware.errorHandler);
+// Middleware for handling unknown routes
+app.use(unknownEndpoint);
+
+// Manejo de errores globales y señales
+process.on('uncaughtException', (err) => {
+  logger.error('Uncaught Exception:', err.message);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Promise Rejection at:', promise, 'reason:', reason);
+  process.exit(1);
+});
+
+process.on('SIGTERM', () => {
+  logger.info(
+    'SIGTERM received. Shutting down gracefully at ',
+    new Date().toISOString()
+  );
+  process.exit(0);
+});
 
 export default app;

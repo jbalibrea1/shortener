@@ -1,6 +1,6 @@
-import logger from '@/utils/logger';
+import logger from '@/logger';
 import mongoose from 'mongoose';
-import config from './';
+import config from '.';
 
 const connectDB = () => {
   mongoose.set('strictQuery', false);
