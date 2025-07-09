@@ -1,6 +1,7 @@
 'use client';
 
 import { SessionProvider } from 'next-auth/react';
+import RouteLoadingOverlay from './main/routeLoading';
 import { ThemeProvider } from './theme-provider';
 
 export function ClientProviders({ children }: { children: React.ReactNode }) {
@@ -14,6 +15,7 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
       >
         {children}
       </ThemeProvider>
+      <RouteLoadingOverlay />
     </SessionProvider>
   );
 }

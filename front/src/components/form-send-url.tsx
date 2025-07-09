@@ -1,7 +1,6 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ReloadIcon } from '@radix-ui/react-icons';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -14,11 +13,12 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form';
-import { useToast } from '@/hooks/use-toast';
 import type { ShortUrlEntry } from '@/interface/shortURLentry';
 import handleCopy from '@/utils/handleCopy';
 import {} from '@radix-ui/react-tooltip';
+import { Loader } from 'lucide-react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { AlertDialogShort } from './alert-dialog-share';
 import {
   Card,
@@ -41,11 +41,11 @@ const formSchema = z.object({
   url: z
     .string()
     .min(3, {
-      message: 'URL no válida'
+      message: 'Invalid URL'
     })
     .regex(
       /^(https?:\/\/)?([\w-]+\.)*[\w-]+\.[a-z]{2,}(\/.*)?$/i,
-      'URL no válida'
+      'Invalid URL'
     )
 });
 
@@ -54,7 +54,6 @@ export function FormSendURL() {
   const [open, setOpen] = useState<boolean>(false);
   const [data, setData] = useState<Partial<ShortUrlEntry>>({});
 
-  const { toast } = useToast();
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
   const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
 
@@ -69,9 +68,15 @@ export function FormSendURL() {
     if (data.shortURL) {
       handleCopy({
         url: data.shortURL,
-        title: 'Pop up cerrado y enlace copiado',
-        desc: 'Enlace copiado correctamente al portapapeles 🎉',
-        toast
+        title: 'Popup closed and link copied',
+        desc: 'Link successfully copied to clipboard 🎉',
+        toast: (msg, opts) => {
+          if (opts?.type === 'error') {
+            toast.error(msg, { description: opts?.desc });
+          } else {
+            toast.success(msg, { description: opts?.desc });
+          }
+        }
       });
     }
     setOpen(false);
@@ -79,20 +84,25 @@ export function FormSendURL() {
 
   const handleIconClick = () => {
     if (data.shortURL) {
-      handleCopy({ url: data.shortURL, toast });
-    } else {
-      toast({
-        variant: 'destructive',
-        title: 'Error',
-        description: 'URL no encontrada'
+      handleCopy({
+        url: data.shortURL,
+        toast: (msg, opts) => {
+          if (opts?.type === 'error') {
+            toast.error(msg, { description: opts?.desc });
+          } else {
+            toast.success(msg, { description: opts?.desc });
+          }
+        }
       });
+    } else {
+      toast.error('URL not found');
     }
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true);
     try {
-      if (!values.url) throw new Error('URL no válida');
+      if (!values.url) throw new Error('Invalid URL');
       const res = await fetch(`${API_URL}/urls`, {
         method: 'POST',
         headers: {
@@ -101,26 +111,15 @@ export function FormSendURL() {
         body: JSON.stringify(values)
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Error al acortar la URL');
+      if (!res.ok) throw new Error(data.message || 'Error shortening the URL');
       setData({ ...data, shortURL: `${DOMAIN}/${data.shortURL}` });
-      toast({
-        title: 'Enlace generado exitosamente',
-        description: `${new Date().toLocaleDateString(
-          'es-ES'
-        )} - ${new Date().toLocaleTimeString()}`
-      });
+      toast.success('Link generated successfully');
       setOpen(true);
       form.reset();
     } catch (error) {
       console.error(error);
-      const message =
-        error instanceof Error ? error.message : 'Error desconocido';
-      console.log('Error', message);
-      toast({
-        variant: 'destructive',
-        title: 'Ups! Parece que hubo un error',
-        description: message
-      });
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -130,18 +129,17 @@ export function FormSendURL() {
     <>
       <Tabs defaultValue="url" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="url">Crear URL acortada</TabsTrigger>
+          <TabsTrigger value="url">Create short URL</TabsTrigger>
           <TabsTrigger value="qr" disabled>
-            Personalizar QR
+            Customize QR
           </TabsTrigger>
         </TabsList>
         <TabsContent value="url">
           <Card>
             <CardHeader>
-              <CardTitle>Acorta tu URL</CardTitle>
+              <CardTitle>Shorten your URL</CardTitle>
               <CardDescription>
-                Genera un enlace único para compartirlo fácilmente y con código
-                QR.
+                Generate a unique link to easily share it, including a QR code.
               </CardDescription>
             </CardHeader>
             <Form {...form}>
@@ -157,10 +155,10 @@ export function FormSendURL() {
                       name="url"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Escribe la url a acortar</FormLabel>
+                          <FormLabel>Enter the full URL to shorten</FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="https://example.com"
+                              placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ ...."
                               {...field}
                               disabled={loading}
                               className="text-base sm:text-sm"
@@ -182,13 +180,15 @@ export function FormSendURL() {
                           className="relative"
                         >
                           {loading && (
-                            <ReloadIcon className="mr-2 h-4 w-4 animate-spin absolute top-50 left-50 ml-3" />
+                            <Loader className="h-7 w-7 animate-spin absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10" />
                           )}
-                          Generar enlace
+                          <span className={loading ? 'opacity-50' : ''}>
+                            Generate link
+                          </span>
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Clic para generar un enlace único</p>
+                        <p>Click to generate a unique link</p>
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>

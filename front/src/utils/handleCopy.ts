@@ -2,25 +2,26 @@ interface handleCopyProps {
   url: string;
   desc?: string;
   title?: string;
-  toast: ({}) => void;
+  toast: (
+    msg: string,
+    opts?: { type?: 'success' | 'error'; desc?: string }
+  ) => void;
 }
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+
 const handleCopy = ({ url, desc, title, toast }: handleCopyProps) => {
   navigator.clipboard
     .writeText(url)
     .then(() => {
-      toast({
-        title: title ?? 'Enlace copiado',
-        description: desc ?? 'Enlace copiado al portapapeles correctamente  🎉',
+      toast(title ?? 'Enlace copiado', {
+        type: 'success',
+        desc: desc ?? 'Enlace copiado al portapapeles correctamente  🎉'
       });
     })
     .catch((error) => {
       console.error(error);
-      toast({
-        variant: 'destructive',
-        title: 'Error al copiar el enlace',
-        description: 'Por favor, intenta de nuevo.',
-        // action: <ToastAction altText="Try again">Try again</ToastAction>,
+      toast('Error al copiar el enlace', {
+        type: 'error',
+        desc: 'Por favor, intenta de nuevo.'
       });
     });
 };
