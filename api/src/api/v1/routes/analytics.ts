@@ -4,10 +4,18 @@ import express from 'express';
 
 const router = express.Router();
 
+router.get(
+  '/user/global-metrics',
+  authenticate,
+  analytics.getUserGlobalMetrics
+);
 router.get('/user/urls', authenticate, analytics.getAllAnalytics);
-router.get('/user/urls/:shortUrl', authenticate, analytics.getShortUrlAnalytics);
+router.get(
+  '/user/urls/:shortUrl',
+  authenticate,
+  analytics.getShortUrlAnalytics
+);
 router.get('/by-day', authenticate, analytics.getDailyClicks);
 router.get('/by-day/:shortUrl', authenticate, analytics.getShortUrlClicksByDay);
-
 
 export default router;

@@ -8,7 +8,8 @@
     "dev": "NODE=development ts-node-dev --respawn --exit-child --watch src -r tsconfig-paths/register src/index.ts",
     "lint": "eslint --ext .ts src",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed:analytics": "ts-node-dev -r tsconfig-paths/register src/api/v1/scripts/seedAnalytics.ts"
   },
   "keywords": [],
   "author": "Jorge Balibrea",

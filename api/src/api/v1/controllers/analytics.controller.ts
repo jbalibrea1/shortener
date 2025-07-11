@@ -39,7 +39,6 @@ export const getShortUrlAnalytics = async (req: IJwtRequest, res: Response) => {
   successResponse({ res, data });
 };
 
-
 export const getDailyClicks = async (req: IJwtRequest, res: Response) => {
   const user = req.user;
   if (!user || !user.id) {
@@ -66,12 +65,27 @@ export const getDailyClicks = async (req: IJwtRequest, res: Response) => {
 /**
  * Devuelve los clics por día sumados de una shortUrl concreta del usuario autenticado.
  */
-export const getShortUrlClicksByDay = async (req: IJwtRequest, res: Response) => {
+export const getShortUrlClicksByDay = async (
+  req: IJwtRequest,
+  res: Response
+) => {
   const user = req.user;
   if (!user || !user.id) {
     throw new UnauthorizedError('No authorization token provided');
   }
   const { shortUrl } = req.params;
   const data = await analytics.getShortUrlClicksByDay(user, shortUrl);
+  successResponse({ res, data });
+};
+
+/**
+ * Devuelve las métricas globales del usuario autenticado.
+ * @param req - Request con el usuario autenticado
+ * @param res - Response con las métricas globales
+ */
+export const getUserGlobalMetrics = async (req: IJwtRequest, res: Response) => {
+  const user = req.user;
+  if (!user?.id) throw new UnauthorizedError('No authorization token provided');
+  const data = await analytics.getUserGlobalMetrics(user);
   successResponse({ res, data });
 };

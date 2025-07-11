@@ -29,9 +29,9 @@ const getOLDmetrics = async (shortUrlFilter: ShortUrlFilter) => {
         },
         topReferrer: { $first: '$referrer' },
         topDevice: { $first: '$deviceType' },
-        topCountry: { $first: '$country' },
+        topCountry: { $first: '$country' }
       }
-    },
+    }
   ]);
 };
 
@@ -99,7 +99,7 @@ const getShortUrlAnalytics = async (
       lastClickAt: metricsData.lastClickAt,
       topReferrer: metricsData.topReferrer,
       topDevice: metricsData.topDevice,
-      topCountry: metricsData.topCountry,
+      topCountry: metricsData.topCountry
     }
   };
 };
@@ -142,10 +142,10 @@ const getDailyClicks = async (
     throw new ValidationError('No user authenticated');
   }
 
-  // Configuración por defecto, 30 días, orden descendente, sin URLs, 30 resultados por página, página 1
+  // Configuración por defecto, 30 días, orden ascendente, sin URLs, 30 resultados por página, página 1
   const {
     days = 30,
-    order = 'desc',
+    order = 'asc',
     includeUrls = false,
     limit = 30,
     page = 1
@@ -156,7 +156,8 @@ const getDailyClicks = async (
   const validatedPage = Math.max(1, page);
 
   // Calcular fecha de inicio
-  const startDate = days > 0 ? new Date(Date.now() - days * 24 * 60 * 60 * 1000) : null;
+  const startDate =
+    days > 0 ? new Date(Date.now() - days * 24 * 60 * 60 * 1000) : null;
 
   //obtener IDs de las URLs del usuario
   const urlIds = await ShortURLModel.distinct('_id', { user: user.id });
@@ -168,7 +169,7 @@ const getDailyClicks = async (
         page: validatedPage,
         limit: validatedLimit,
         totalPages: 0
-      },
+      }
     };
   }
 
@@ -237,7 +238,9 @@ const getDailyClicks = async (
   ];
 
   // Obtener el total de días primero - obtenemos el primer resultado del array devuelto por countPipeline
-  const [countResult] = await AnalyticsModel.aggregate<{ count: number }>(countPipeline);
+  const [countResult] = await AnalyticsModel.aggregate<{ count: number }>(
+    countPipeline
+  );
   const totalDays = countResult?.count || 0;
 
   // Completar pipeline para obtener datos
@@ -264,10 +267,9 @@ const getDailyClicks = async (
       page: validatedPage,
       limit: validatedLimit,
       totalPages: Math.ceil(totalDays / validatedLimit)
-    },
+    }
   };
 };
-
 
 const getShortUrlClicksByDay = async (
   user: CustomJwtPayload,
@@ -283,7 +285,6 @@ const getShortUrlClicksByDay = async (
   const clicksByDay = await getOLDmetrics({ shortUrl: urlDoc._id });
   return clicksByDay;
 };
-
 
 // get analytics with params
 // Interfaces para tipado fuerte
@@ -426,12 +427,18 @@ interface AnalyticsPagination {
 export const getAnalytics = async (
   user: CustomJwtPayload,
   options: AnalyticsOptions = {}
-):Promise<{ data: UrlWithMetrics[]; pagination: AnalyticsPagination }>  => {
+): Promise<{ data: UrlWithMetrics[]; pagination: AnalyticsPagination }> => {
   if (!user?.id) {
     throw new ValidationError('No user authenticated');
   }
 
-  const { dailyClicks = false, limit = 50, sortBy = 'createdAt', order = 'desc', page = 1 } = options;
+  const {
+    dailyClicks = false,
+    limit = 50,
+    sortBy = 'createdAt',
+    order = 'desc',
+    page = 1
+  } = options;
 
   const validatedPage = Math.max(1, page);
   const validatedLimit = Math.min(100, limit);
@@ -447,18 +454,18 @@ export const getAnalytics = async (
     ShortURLModel.countDocuments({ user: user.id })
   ]);
 
-  if (!urls.length) return {
-    data: [],
-    pagination: {
-      totalUrls: 0,
-      page: validatedPage,
-      limit: validatedLimit,
-      totalPages: 0
-    }
-  };
+  if (!urls.length)
+    return {
+      data: [],
+      pagination: {
+        totalUrls: 0,
+        page: validatedPage,
+        limit: validatedLimit,
+        totalPages: 0
+      }
+    };
 
-
-  const urlIds = urls.map(u => u._id);
+  const urlIds = urls.map((u) => u._id);
   // obtener analytics por shortUrl
   const pipeline: PipelineStage[] = [
     { $match: { shortUrl: { $in: urlIds } } },
@@ -474,7 +481,9 @@ export const getAnalytics = async (
         ...(dailyClicks && {
           dailyStats: {
             $push: {
-              date: { $dateToString: { format: '%Y-%m-%d', date: '$timestamp' } },
+              date: {
+                $dateToString: { format: '%Y-%m-%d', date: '$timestamp' }
+              },
               clicks: 1, // Cada documento representa 1 click
               referrer: '$referrer',
               device: '$deviceType'
@@ -482,11 +491,11 @@ export const getAnalytics = async (
           }
         })
       }
-    },
+    }
   ];
 
-  if (dailyClicks){
-    pipeline.push(   {
+  if (dailyClicks) {
+    pipeline.push({
       $addFields: {
         dailyStats: {
           $reduce: {
@@ -542,11 +551,10 @@ export const getAnalytics = async (
   const metricsData = await AnalyticsModel.aggregate<UrlMetrics>(pipeline);
 
   // 4. Mapear resultados
-  const data = urls.map(url => {
+  const data = urls.map((url) => {
     // busca metricas, si no las encuentra, crea un objeto vacío
-    const urlMetrics = metricsData.find(m =>
-      m._id?.toString() === url._id.toString()
-    ) ?? {};
+    const urlMetrics =
+      metricsData.find((m) => m._id?.toString() === url._id.toString()) ?? {};
 
     // Construir respuesta
     const result: UrlWithMetrics = {
@@ -565,7 +573,6 @@ export const getAnalytics = async (
     };
 
     return result;
-
   });
 
   return {
@@ -579,4 +586,124 @@ export const getAnalytics = async (
   };
 };
 
-export default { getShortUrlAnalytics, getDailyClicks, getShortUrlClicksByDay,  getAnalytics };
+interface TopMetric {
+  name: string;
+  count: number;
+}
+
+interface UserGlobalMetrics {
+  totalClicks: number;
+  totalShortUrls: number;
+  topCountries: TopMetric[];
+  topCities: TopMetric[];
+  topBrowsers: TopMetric[];
+  topDeviceTypes: TopMetric[];
+  topOperatingSystems: TopMetric[];
+  topReferrers: TopMetric[];
+  weekAvgClicks: number;
+  monthAvgClicks: number;
+  trend: number | null;
+}
+
+const getUserGlobalMetrics = async (
+  user: CustomJwtPayload
+): Promise<UserGlobalMetrics> => {
+  // 1. Obtener los IDs de las URLs del usuario
+  const urlIds = await ShortURLModel.distinct('_id', { user: user.id });
+
+  // 2. Agregación global en Analytics
+  const [agg] = await AnalyticsModel.aggregate<{
+    totalClicks: number;
+    topCountries: string[];
+    topCities: string[];
+    topBrowsers: string[];
+    topDeviceTypes: string[];
+    topOperatingSystems: string[];
+    topReferrers: string[];
+  }>([
+    { $match: { shortUrl: { $in: urlIds } } },
+    {
+      $group: {
+        _id: null,
+        totalClicks: { $sum: 1 },
+        topCountries: { $push: '$country' },
+        topCities: { $push: '$city' },
+        topBrowsers: { $push: '$browser' },
+        topDeviceTypes: { $push: '$deviceType' },
+        topOperatingSystems: { $push: '$operatingSystem' },
+        topReferrers: { $push: '$referrer' }
+      }
+    }
+  ]);
+
+  // 3. Contar shorturls distintas
+  const totalShortUrls = urlIds.length;
+
+  // 4. Procesar top países, ciudades, browsers, deviceTypes, operatingSystems, referrers
+  const countBy = (arr: string[] = []): TopMetric[] =>
+    Object.entries(
+      arr.filter(Boolean).reduce((acc, v) => {
+        acc[v] = (acc[v] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>)
+    )
+      .sort((a, b) => b[1] - a[1])
+      .map(([name, count]) => ({ name, count }));
+
+  // 5. Tendencias: clicks de la semana y media diaria del mes
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const weekAgo = new Date(today);
+  weekAgo.setDate(today.getDate() - 7);
+  const monthAgo = new Date(today);
+  monthAgo.setDate(today.getDate() - 30);
+
+  // Clicks de la semana (últimos 7 días)
+  const [weekAgg] = await AnalyticsModel.aggregate<{ count: number }>([
+    { $match: { shortUrl: { $in: urlIds }, timestamp: { $gte: weekAgo } } },
+    { $count: 'count' }
+  ]);
+  const weekClicks = weekAgg?.count || 0;
+  const weekAvgClicks = weekClicks / 7;
+
+  // Clicks del mes (últimos 30 días)
+  const [monthAgg] = await AnalyticsModel.aggregate<{ count: number }>([
+    {
+      $match: {
+        shortUrl: { $in: urlIds },
+        timestamp: { $gte: monthAgo, $lt: weekAgo }
+      }
+    },
+    { $count: 'count' }
+  ]);
+  const monthClicks = monthAgg?.count || 0;
+  const monthAvgClicks = monthClicks / 30;
+
+  // Tendencia: comparación de la semana vs media diaria del mes anterior
+  const trend =
+    monthAvgClicks > 0
+      ? ((weekAvgClicks - monthAvgClicks) / monthAvgClicks) * 100
+      : null;
+
+  return {
+    totalClicks: agg?.totalClicks || 0,
+    totalShortUrls,
+    topCountries: countBy(agg?.topCountries),
+    topCities: countBy(agg?.topCities),
+    topBrowsers: countBy(agg?.topBrowsers),
+    topDeviceTypes: countBy(agg?.topDeviceTypes),
+    topOperatingSystems: countBy(agg?.topOperatingSystems),
+    topReferrers: countBy(agg?.topReferrers),
+    weekAvgClicks: Math.round(weekAvgClicks),
+    monthAvgClicks: Math.round(monthAvgClicks),
+    trend
+  };
+};
+
+export default {
+  getShortUrlAnalytics,
+  getDailyClicks,
+  getShortUrlClicksByDay,
+  getAnalytics,
+  getUserGlobalMetrics
+};

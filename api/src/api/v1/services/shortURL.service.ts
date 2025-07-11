@@ -13,7 +13,10 @@ import {
 import logger from '@/logger';
 import { Request } from 'express';
 import mongoose from 'mongoose';
-import { generateUniqueShortURL, isDuplicateError } from '../utils/generateUniqueShortURL';
+import {
+  generateUniqueShortURL,
+  isDuplicateError
+} from '../utils/generateUniqueShortURL';
 
 const getAllShortURLsFromUser = async (
   user: CustomJwtPayload
@@ -40,7 +43,6 @@ export const createShortURL = async (
   if (!urlData?.url || typeof urlData.url !== 'string') {
     throw new ValidationError('URL válida es requerida');
   }
-
 
   const commonData = {
     ...urlData,
@@ -110,6 +112,7 @@ const getShortURLInfo = async (shortURL: string) => {
  */
 interface IpApiResponse {
   country?: string;
+  city?: string;
   [key: string]: unknown;
 }
 const resolveShortURL = async (shortURL: string, req?: Request) => {
@@ -120,12 +123,31 @@ const resolveShortURL = async (shortURL: string, req?: Request) => {
   await entry.save();
 
   if (req) {
-
     const userAgent = req.headers['user-agent'] || 'unknown';
     const referrer = req.headers.referer || 'direct';
     let deviceType = 'desktop';
     if (/mobile/i.test(userAgent)) deviceType = 'mobile';
     if (/tablet/i.test(userAgent)) deviceType = 'tablet';
+    let browser = 'unknown';
+    if (/chrome|crios/i.test(userAgent)) browser = 'chrome';
+    else if (/firefox|fxios/i.test(userAgent)) browser = 'firefox';
+    else if (/safari/i.test(userAgent) && !/chrome|crios/i.test(userAgent))
+      browser = 'safari';
+    else if (/edg/i.test(userAgent)) browser = 'edge';
+    else if (/opera|opr/i.test(userAgent)) browser = 'opera';
+    else if (/msie|trident/i.test(userAgent)) browser = 'ie';
+    else if (/brave/i.test(userAgent)) browser = 'brave';
+    else if (/vivaldi/i.test(userAgent)) browser = 'vivaldi';
+    else if (/duckduckgo/i.test(userAgent)) browser = 'duckduckgo';
+    let operatingSystem = 'unknown';
+    if (/windows/i.test(userAgent)) operatingSystem = 'windows';
+    else if (/macintosh|mac os x/i.test(userAgent)) operatingSystem = 'macOS';
+    else if (/linux/i.test(userAgent)) operatingSystem = 'linux';
+    else if (/android/i.test(userAgent)) operatingSystem = 'android';
+    else if (/iphone|ipad|ipod/i.test(userAgent)) operatingSystem = 'iOS';
+    else if (/blackberry/i.test(userAgent)) operatingSystem = 'blackberry';
+    else if (/webos/i.test(userAgent)) operatingSystem = 'webOS';
+
     const ip =
       req.headers['x-forwarded-for']?.toString().split(',')[0].trim() ||
       req.socket?.remoteAddress ||
@@ -134,10 +156,12 @@ const resolveShortURL = async (shortURL: string, req?: Request) => {
     // const ipFR = '90.84.146.60'; // For testing purposes, replace with ip2 in production
 
     let country = 'unknown';
+    let city = 'unknown';
     try {
       const ipData = await fetch(`http://ip-api.com/json/${ip}`);
-      const data = await ipData.json() as IpApiResponse;
+      const data = (await ipData.json()) as IpApiResponse;
       country = data.country || 'unknown';
+      city = data.city || 'unknown';
     } catch (error) {
       logger.error('Error al obtener país:', error);
     }
@@ -149,6 +173,9 @@ const resolveShortURL = async (shortURL: string, req?: Request) => {
       referrer: referrer.toString(),
       deviceType: deviceType.toString(),
       country: country.toString(),
+      city: city.toString(),
+      browser: browser.toString(),
+      operatingSystem: operatingSystem.toString()
     });
   }
 
