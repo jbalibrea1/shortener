@@ -1,22 +1,21 @@
-import {
-  CustomJwtPayload,
-  IShortURL,
-  NewShortURLEntry
-} from '@/api/v1/interfaces';
-import { AnalyticsModel, ShortURLModel, UserModel } from '@/api/v1/models';
-
-import {
-  NotFoundError,
-  UnauthorizedError,
-  ValidationError
-} from '@/api/v1/utils/errors';
-import logger from '@/logger';
 import { Request } from 'express';
 import mongoose from 'mongoose';
 import {
-  generateUniqueShortURL,
-  isDuplicateError
-} from '../utils/generateUniqueShortURL';
+  CustomJwtPayload,
+  IShortURL,
+  NewShortURLEntry,
+} from '@/api/v1/interfaces';
+import { AnalyticsModel, ShortURLModel, UserModel } from '@/api/v1/models';
+import {
+  NotFoundError,
+  UnauthorizedError,
+  ValidationError,
+} from '@/api/v1/utils/errors';
+import {
+  generateUniquerShortCode,
+  isDuplicateError,
+} from '@/api/v1/utils/generateUniqueShortURL';
+import { getGeoFromIp, parseUserAgent } from '@/api/v1/utils/metrics';
 
 const getAllShortURLsFromUser = async (
   user: CustomJwtPayload
@@ -35,7 +34,7 @@ const getAllShortURLsFromUser = async (
  * @throws {Error} Si la URL no es válida.
  */
 
-const MAX_ATTEMPTS = 3;
+const MAX_ATTEMPTS = 5;
 export const createShortURL = async (
   urlData: NewShortURLEntry,
   user?: CustomJwtPayload
@@ -47,23 +46,22 @@ export const createShortURL = async (
   const commonData = {
     ...urlData,
     user: user?.id || null,
-    totalClicks: 0
+    totalClicks: 0,
   };
 
   for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-    const shortURL = generateUniqueShortURL();
+    const shortCode = generateUniquerShortCode();
     // Iniciar sesión de Mongoose para transacciones
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
-      // 1. Crear la URL corta y agregar usuario en caso de que exista
       const [savedEntry] = await ShortURLModel.create(
         [
           {
             ...commonData,
-            shortURL
-          }
+            shortCode,
+          },
         ],
         { session }
       );
@@ -76,7 +74,6 @@ export const createShortURL = async (
       // Si no es error de duplicado, relanzar
       if (!isDuplicateError(error)) throw error;
 
-      // Esperar exponencialmente entre intentos
       if (attempt < MAX_ATTEMPTS - 1) {
         await new Promise((resolve) => setTimeout(resolve, 10 * 2 ** attempt));
       }
@@ -91,15 +88,15 @@ export const createShortURL = async (
 };
 
 /**
- * Obtiene información de una shortURL, incluyendo el usuario.
- * @param {string} shortURL - El identificador de la URL corta.
+ * Obtiene información de un shortCode, incluyendo el usuario.
+ * @param {string} shortCode - El identificador de la URL corta.
  * @returns {Promise<{ entry: any, user: string | null }>} Información de la URL y el usuario.
  * @throws {Error} Si no se encuentra la URL corta.
  */
-const getShortURLInfo = async (shortURL: string) => {
-  const entry = await ShortURLModel.findOne({ shortURL });
+const getShortURLInfo = async (shortCode: string) => {
+  const entry = await ShortURLModel.findOne({ shortCode });
   if (!entry) {
-    throw new Error(`Short URL not found for ${shortURL}`);
+    throw new Error(`Short URL not found for ${shortCode}`);
   }
   const findUser = entry.user ? await UserModel.findById(entry.user) : null;
   return { entry, user: findUser?.username ?? null };
@@ -107,16 +104,12 @@ const getShortURLInfo = async (shortURL: string) => {
 
 /**
  * Obtiene la URL original y suma un click.
- * @param {string} shortURL - El identificador de la URL corta.
+ * @param {string} shortCode - El identificador de la URL corta.
  * @returns {Promise<string|null>} La URL original o null si no se encuentra.
  */
-interface IpApiResponse {
-  country?: string;
-  city?: string;
-  [key: string]: unknown;
-}
-const resolveShortURL = async (shortURL: string, req?: Request) => {
-  const entry = await ShortURLModel.findOne({ shortURL });
+
+const resolveShortURL = async (shortCode: string, req?: Request) => {
+  const entry = await ShortURLModel.findOne({ shortCode });
   if (!entry) return null; // retorna null porque redirige a página 404
 
   entry.totalClicks += 1;
@@ -125,45 +118,19 @@ const resolveShortURL = async (shortURL: string, req?: Request) => {
   if (req) {
     const userAgent = req.headers['user-agent'] || 'unknown';
     const referrer = req.headers.referer || 'direct';
-    let deviceType = 'desktop';
-    if (/mobile/i.test(userAgent)) deviceType = 'mobile';
-    if (/tablet/i.test(userAgent)) deviceType = 'tablet';
-    let browser = 'unknown';
-    if (/chrome|crios/i.test(userAgent)) browser = 'chrome';
-    else if (/firefox|fxios/i.test(userAgent)) browser = 'firefox';
-    else if (/safari/i.test(userAgent) && !/chrome|crios/i.test(userAgent))
-      browser = 'safari';
-    else if (/edg/i.test(userAgent)) browser = 'edge';
-    else if (/opera|opr/i.test(userAgent)) browser = 'opera';
-    else if (/msie|trident/i.test(userAgent)) browser = 'ie';
-    else if (/brave/i.test(userAgent)) browser = 'brave';
-    else if (/vivaldi/i.test(userAgent)) browser = 'vivaldi';
-    else if (/duckduckgo/i.test(userAgent)) browser = 'duckduckgo';
-    let operatingSystem = 'unknown';
-    if (/windows/i.test(userAgent)) operatingSystem = 'windows';
-    else if (/macintosh|mac os x/i.test(userAgent)) operatingSystem = 'macOS';
-    else if (/linux/i.test(userAgent)) operatingSystem = 'linux';
-    else if (/android/i.test(userAgent)) operatingSystem = 'android';
-    else if (/iphone|ipad|ipod/i.test(userAgent)) operatingSystem = 'iOS';
-    else if (/blackberry/i.test(userAgent)) operatingSystem = 'blackberry';
-    else if (/webos/i.test(userAgent)) operatingSystem = 'webOS';
+    const { deviceType, browser, operatingSystem } = parseUserAgent(
+      userAgent.toString()
+    );
 
     const ip =
       req.headers['x-forwarded-for']?.toString().split(',')[0].trim() ||
       req.socket?.remoteAddress ||
       req.ip;
-    // TODO: Delete this line when deploying to production
-    // const ipFR = '90.84.146.60'; // For testing purposes, replace with ip2 in production
 
     let country = 'unknown';
     let city = 'unknown';
-    try {
-      const ipData = await fetch(`http://ip-api.com/json/${ip}`);
-      const data = (await ipData.json()) as IpApiResponse;
-      country = data.country || 'unknown';
-      city = data.city || 'unknown';
-    } catch (error) {
-      logger.error('Error al obtener país:', error);
+    if (ip) {
+      ({ country, city } = await getGeoFromIp(ip));
     }
 
     await AnalyticsModel.create({
@@ -175,7 +142,7 @@ const resolveShortURL = async (shortURL: string, req?: Request) => {
       country: country.toString(),
       city: city.toString(),
       browser: browser.toString(),
-      operatingSystem: operatingSystem.toString()
+      operatingSystem: operatingSystem.toString(),
     });
   }
 
@@ -184,7 +151,7 @@ const resolveShortURL = async (shortURL: string, req?: Request) => {
 
 /**
  * Elimina una shortURL asociada a un usuario autenticado.
- * @param {string} shortURL - El identificador de la URL corta.
+ * @param {string} shortCode - El identificador de la URL corta.
  * @param {CustomJwtPayload | null} user - El usuario autenticado.
  * @returns {Promise<any>} El documento eliminado.
  * @throws {UnauthorizedError} Si no hay usuario autenticado.
@@ -192,20 +159,20 @@ const resolveShortURL = async (shortURL: string, req?: Request) => {
  * @throws {NotFoundError} Si la URL no existe o no pertenece al usuario.
  */
 const deleteShortURL = async (
-  shortURL: string,
+  shortCode: string,
   user: CustomJwtPayload | null
 ) => {
   if (!user || !user.id) {
     throw new UnauthorizedError('No authorization token provided');
   }
 
-  if (!shortURL || typeof shortURL !== 'string') {
-    throw new ValidationError('Short URL is required and must be a string');
+  if (!shortCode || typeof shortCode !== 'string') {
+    throw new ValidationError('Short code is required and must be a string');
   }
 
-  const entry = await ShortURLModel.findOne({ shortURL });
+  const entry = await ShortURLModel.findOne({ shortCode, user: user.id });
   if (!entry) {
-    throw new NotFoundError(`Short URL not found for ${shortURL}`);
+    throw new NotFoundError(`Short URL not found for ${shortCode}`);
   }
   if (!entry.user || entry.user.toString() !== user.id) {
     throw new UnauthorizedError(
@@ -214,8 +181,8 @@ const deleteShortURL = async (
   }
 
   const deletedEntry = await ShortURLModel.findOneAndDelete({
-    shortURL,
-    user: user.id
+    shortCode,
+    user: user.id,
   });
 
   return deletedEntry;
@@ -226,5 +193,5 @@ export default {
   resolveShortURL,
   deleteShortURL,
   getShortURLInfo,
-  getAllShortURLsFromUser
+  getAllShortURLsFromUser,
 };

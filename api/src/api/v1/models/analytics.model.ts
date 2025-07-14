@@ -4,7 +4,7 @@ const analyticsSchema = new mongoose.Schema({
   shortUrl: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'ShortURL',
-    required: true
+    required: true,
   },
   referrer: String,
   deviceType: String,
@@ -12,7 +12,7 @@ const analyticsSchema = new mongoose.Schema({
   city: String,
   browser: String,
   operatingSystem: String,
-  timestamp: { type: Date, default: Date.now }
+  timestamp: { type: Date, default: Date.now },
 });
 analyticsSchema.index({ shortUrl: 1, timestamp: 1 });
 analyticsSchema.index({ timestamp: 1 });

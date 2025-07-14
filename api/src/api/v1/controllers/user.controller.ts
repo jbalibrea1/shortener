@@ -3,11 +3,12 @@
  * @module controllers/userController
  */
 
+import { Request, Response } from 'express';
 import { IJwtRequest, IUser } from '@/api/v1/interfaces';
 import auth from '@/api/v1/services/auth.service';
 import { UnauthorizedError } from '@/api/v1/utils/errors';
-import { successResponse } from '@/api/v1/utils/succesResponse';
-import { Request, Response } from 'express';
+import { successResponse } from '@/api/v1/utils/responses';
+import token from '../utils/token';
 
 /**
  * Inicia sesión de usuario y devuelve el token JWT.
@@ -32,7 +33,12 @@ export const saveUser = async (
 ) => {
   const { username, password, name, email } = req.body;
   const newUser = await auth.register({ username, password, name, email });
-  successResponse({ res, status: 201, data: newUser, msg: 'Usuario registrado correctamente' });
+  successResponse({
+    res,
+    status: 201,
+    data: newUser,
+    msg: 'Usuario registrado correctamente',
+  });
 };
 
 /**
@@ -41,9 +47,45 @@ export const saveUser = async (
  */
 export const getUser = async (req: IJwtRequest, res: Response) => {
   const user = req.user;
-  if (!user) {
+  if (!user || !user.id) {
     throw new UnauthorizedError('Unauthorized');
   }
   const userUrls = await auth.getPersonalInfo(user);
-  successResponse({ res, data: userUrls, msg: 'Datos de usuario obtenidos correctamente' });
+  successResponse({
+    res,
+    data: userUrls,
+    msg: 'Datos de usuario obtenidos correctamente',
+  });
+};
+
+// TODO: Remove refresh token
+export const logout = async (req: IJwtRequest, res: Response) => {
+  const user = req.user;
+  if (!user || !user.id) {
+    throw new UnauthorizedError('No authorization token provided');
+  }
+
+  await auth.logout(user.id);
+  successResponse({ res, msg: 'Logout exitoso' });
+};
+
+/**
+ * Devuelve el token de refresco del usuario autenticado.
+ * @route GET /api/auth/refresh
+ */
+export const refreshToken = async (
+  req: Request<unknown, unknown, { refreshToken: string }>,
+  res: Response
+) => {
+  const { refreshToken } = req.body;
+  if (!refreshToken || typeof refreshToken !== 'string') {
+    throw new UnauthorizedError('No refresh token provided');
+  }
+  const payload = token.verifyRefreshToken(refreshToken);
+  if (!payload || !payload.id) {
+    throw new UnauthorizedError('Invalid refresh token');
+  }
+  const data = await auth.refreshToken(payload.id);
+
+  successResponse({ res, data, msg: 'Token refrescado' });
 };

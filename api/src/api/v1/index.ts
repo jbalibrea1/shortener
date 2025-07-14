@@ -1,4 +1,3 @@
-import connectDB from '@/config/db';
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import path from 'path';
@@ -10,9 +9,6 @@ const router = express.Router();
 // Static files
 router.use('/static', express.static(path.join(__dirname, 'static')));
 
-// DB connection
-connectDB();
-
 // Routes
 router.use('/', v1Routes);
 
@@ -22,7 +18,7 @@ router.get('/health', (_req: Request, res: Response) => {
     uptime: process.uptime(),
     message: 'OK V1 API',
     timestamp: Date.now(),
-    version: process.env.npm_package_version
+    version: process.env.npm_package_version,
   });
 });
 

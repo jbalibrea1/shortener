@@ -1,9 +1,9 @@
-import logger from '@/logger';
 import metascraper from 'metascraper';
 import metascraperDescription from 'metascraper-description';
 import metascraperLogoFavicon from 'metascraper-logo-favicon';
 import metascraperTitle from 'metascraper-title';
 import metascraperUrl from 'metascraper-url';
+import logger from '@/logger';
 import { NewShortURLEntry } from '../interfaces/shortURL.interface';
 import { fetchWithTimeout } from './fetchWithTimeout';
 
@@ -12,7 +12,7 @@ const scraper = metascraper([
   metascraperTitle(),
   metascraperDescription(),
   metascraperUrl(),
-  metascraperLogoFavicon()
+  metascraperLogoFavicon(),
 ]);
 
 async function getMetadata(url: string) {
@@ -20,8 +20,8 @@ async function getMetadata(url: string) {
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
       'User-Agent':
-        'Mozilla/5.0 (compatible; ShortenerBot/1.0; +https://yourdomain.com/bot)'
-    }
+        'Mozilla/5.0 (compatible; ShortenerBot/1.0; +https://yourdomain.com/bot)',
+    },
   });
 
   const html = await response.text();
@@ -43,7 +43,7 @@ const addMetadata = async (
       ...entry,
       title: metadata.title ?? null,
       logo: metadata.logo ?? null,
-      description: metadata.description ?? null
+      description: metadata.description ?? null,
     };
   } catch (error) {
     logger.error('Error fetching metadata:', error);

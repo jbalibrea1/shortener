@@ -1,5 +1,5 @@
-import config from '@/config';
 import winston from 'winston';
+import config from '@/config';
 
 /**
  * Logger utility using Winston, with file logging in production and console in development.
@@ -34,7 +34,7 @@ const logger = winston.createLogger({
       }`;
     })
   ),
-  transports
+  transports,
 });
 
 export default logger;

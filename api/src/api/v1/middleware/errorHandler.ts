@@ -1,18 +1,19 @@
+import { NextFunction, Request, Response } from 'express';
+import { errorResponse } from '@/api/v1/utils/responses';
 import config from '@/config';
 import logger from '@/logger';
-import { NextFunction, Request, Response } from 'express';
 import {
   isErrorWithMessage,
   isErrorWithName,
-  isErrorWithStatus
+  isErrorWithStatus,
 } from './typeGuards';
 
 /**
  * Express error-handling middleware. Centralizes error responses and logging.
  * Handles known error types (Mongoose, JWT, custom errors) and logs unexpected errors.
  *
- * @param error - The error thrown in the request pipeline
- * @param _req - Express request object (not used)
+ * @param err - The error thrown in the request pipeline
+ * @param req - Express request object
  * @param res - Express response object
  * @param _next - Express next function (not used)
  */
@@ -33,12 +34,12 @@ export const errorHandler = (
     method: req.method,
     url: req.url,
     stack: config.env !== 'production' ? errorObj.stack : undefined,
-    date: new Date().toISOString()
+    date: new Date().toISOString(),
   });
 
   // 400 Bad Request errors
   if (isErrorWithName(err) && err.name === 'CastError') {
-    res.status(400).json({ error: 'Invalid ID format' });
+    errorResponse({ res, status: 400, error: 'Invalid ID format' });
     return;
   }
 
@@ -51,13 +52,18 @@ export const errorHandler = (
     try {
       const parsed: unknown = JSON.parse(err.message);
       if (typeof parsed === 'object' && parsed !== null) {
-        res.status(400).json(parsed);
+        errorResponse({
+          res,
+          status: 400,
+          error: 'Validation error',
+          details: parsed,
+        });
         return;
       }
-      res.status(400).json({ error: err.message });
+      errorResponse({ res, status: 400, error: err.message });
       return;
     } catch {
-      res.status(400).json({ error: err.message });
+      errorResponse({ res, status: 400, error: err.message });
       return;
     }
   }
@@ -68,7 +74,7 @@ export const errorHandler = (
     isErrorWithMessage(err) &&
     err.message.includes('E11000')
   ) {
-    res.status(400).json({ error: 'Resource already exists' });
+    errorResponse({ res, status: 409, error: 'Resource already exists' });
     return;
   }
 
@@ -79,26 +85,26 @@ export const errorHandler = (
   ) {
     const message =
       err.name === 'TokenExpiredError' ? 'Token expired' : 'Invalid token';
-    res.status(401).json({ error: message });
+    errorResponse({ res, status: 401, error: message });
     return;
   }
 
   // Custom errors with status
   if (isErrorWithStatus(err)) {
-    res.status(err.status).json({ error: err.message });
+    errorResponse({ res, status: err.status, error: err.message });
     return;
   }
 
   // Generic errors
   if (isErrorWithMessage(err)) {
-    res.status(400).json({ error: err.message });
+    errorResponse({ res, status: 400, error: err.message });
     return;
   }
 
-  res.status(500).json({
-    error:
-      config.env === 'production'
-        ? 'Internal server error'
-        : errorObj.message || 'Unexpected error occurred'
+  errorResponse({
+    res,
+    status: 500,
+    error: 'Internal server error',
+    details: config.env !== 'production' ? errorObj : undefined,
   });
 };

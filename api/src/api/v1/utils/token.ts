@@ -3,12 +3,14 @@
  * @module utils/token
  */
 
+import { Request } from 'express';
+import jwt from 'jsonwebtoken';
 import { CustomJwtPayload } from '@/api/v1/interfaces';
 import { UnauthorizedError } from '@/api/v1/utils/errors';
 import config from '@/config';
-import { Request } from 'express';
-import jwt from 'jsonwebtoken';
 
+const ACCESS_TOKEN_EXP = '15m';
+const REFRESH_TOKEN_EXP = '7d';
 const generateToken = (username: string, id: string, role: string) => {
   if (!config.jwtSecret) {
     throw new UnauthorizedError('No secret provided');
@@ -16,9 +18,17 @@ const generateToken = (username: string, id: string, role: string) => {
 
   const userForToken = { username, id, role };
 
-  return jwt.sign(userForToken, config.jwtSecret, {
-    expiresIn: 60 * 60 * 24 * 7 // 1 semana
+  const accessToken = jwt.sign(userForToken, config.jwtSecret, {
+    expiresIn: ACCESS_TOKEN_EXP,
   });
+  const refreshToken = jwt.sign(userForToken, config.refreshSecret, {
+    expiresIn: REFRESH_TOKEN_EXP,
+  });
+  //TODO: EXPIRED_IN??
+  const expiredAt = new Date();
+  expiredAt.setDate(expiredAt.getDate() + 7); // 7 days for refresh token
+
+  return { accessToken, refreshToken, expiredAt };
 };
 
 const extractToken = (req: Request<unknown>) => {
@@ -43,4 +53,18 @@ const extractToken = (req: Request<unknown>) => {
   return null;
 };
 
-export default { generateToken, extractToken };
+const verifyRefreshToken = (token: string): CustomJwtPayload | null => {
+  if (!config.refreshSecret) {
+    throw new UnauthorizedError('No secret provided');
+  }
+  const decodedToken = jwt.verify(
+    token,
+    config.refreshSecret
+  ) as CustomJwtPayload;
+  if (!decodedToken.id || typeof decodedToken.id !== 'string') {
+    return null;
+  }
+  return decodedToken;
+};
+
+export default { generateToken, extractToken, verifyRefreshToken };

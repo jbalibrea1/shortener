@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/** biome-ignore-all lint/suspicious/noConsole: <its okay> */
 /**
  * Rutas principales de la API v1. Carga dinámica de routers de la versión 1.
  * @module routes/index

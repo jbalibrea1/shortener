@@ -1,6 +1,6 @@
+import { NextFunction, Request, Response } from 'express';
 import { shortUrlParamSchema } from '@/api/v1/schemas/shorturl.schema';
 import { ValidationError } from '@/api/v1/utils/errors';
-import { NextFunction, Request, Response } from 'express';
 
 export function validateShortUrlParam(
   req: Request,

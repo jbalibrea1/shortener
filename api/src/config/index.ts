@@ -10,9 +10,10 @@ const envSchema = z.object({
     .default('development'),
   PORT: z.coerce.number().default(3000),
   SECRET: z.string(),
+  REFRESH_SECRET: z.string(),
   MONGODB_URI: z.string(),
   MONGODB_URI_PROD: z.string().optional(),
-  MONGODB_URI_TEST: z.string().optional()
+  MONGODB_URI_TEST: z.string().optional(),
 });
 
 const env = envSchema.parse(process.env);
@@ -30,7 +31,8 @@ const config = {
   isProd: env.NODE_ENV === 'production',
   port: env.PORT,
   jwtSecret: env.SECRET,
-  mongoUri: MONGODB_URI
+  refreshSecret: env.REFRESH_SECRET,
+  mongoUri: MONGODB_URI,
 };
 
 export default config;

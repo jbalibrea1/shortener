@@ -1,6 +1,6 @@
-import { ValidationError } from '@/api/v1/utils/errors';
 import { NextFunction, Request, Response } from 'express';
 import { ZodSchema } from 'zod';
+import { ValidationError } from '@/api/v1/utils/errors';
 
 // Middleware genérico
 export function validateData(schema: ZodSchema) {
@@ -9,7 +9,7 @@ export function validateData(schema: ZodSchema) {
     if (!result.success) {
       const errorMessages = result.error.errors.map((issue) => ({
         field: issue.path.join('.'),
-        message: issue.message
+        message: issue.message,
       }));
       return next(new ValidationError(JSON.stringify({ errorMessages })));
     }

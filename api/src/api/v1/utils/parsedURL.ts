@@ -50,7 +50,7 @@ const parsedURL = async (
   }
   urlObj = {
     ...urlObj,
-    url: parseUrl(urlObj.url)
+    url: parseUrl(urlObj.url),
   };
 
   return await addMetadata(urlObj);

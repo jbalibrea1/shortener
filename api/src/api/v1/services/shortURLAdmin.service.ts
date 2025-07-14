@@ -3,7 +3,7 @@ import { ShortURLModel, UserModel } from '@/api/v1/models';
 import {
   ConflictError,
   NotFoundError,
-  ValidationError
+  ValidationError,
 } from '@/api/v1/utils/errors';
 import logger from '@/logger';
 
@@ -32,6 +32,7 @@ const promoteUserToAdmin = async (username: string) => {
     logger.info(
       `Usuario ${user.username} promovido de ${previousRole} a admin`
     );
+    // TODO: Enviar notificación al administrador
     // await sendAdminNotification({
     //   userId: user._id,
     //   email: user.email,
@@ -43,7 +44,7 @@ const promoteUserToAdmin = async (username: string) => {
       username: user.username,
       newRole: user.role,
       previousRole,
-      updatedAt: user.updatedAt
+      updatedAt: user.updatedAt,
     };
   } catch (error) {
     logger.error(`Error al promover usuario a admin: ${error}`);
@@ -69,7 +70,7 @@ export const demoteUserToAdmin = async (username: string) => {
       username: user.username,
       newRole: user.role,
       previousRole,
-      updatedAt: user.updatedAt
+      updatedAt: user.updatedAt,
     };
   } catch (error) {
     logger.error(`Error al demotear usuario a user: ${error}`);
@@ -80,5 +81,5 @@ export const demoteUserToAdmin = async (username: string) => {
 export default {
   getAllShortURLs,
   promoteUserToAdmin,
-  demoteUserToAdmin
+  demoteUserToAdmin,
 };

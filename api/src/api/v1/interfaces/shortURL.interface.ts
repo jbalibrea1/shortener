@@ -5,12 +5,12 @@ export interface IShortURL {
   logo?: string | null;
   description?: string | null;
   totalClicks: number;
-  shortURL: string;
+  shortCode: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export type NewShortURLEntry = Omit<
   IShortURL,
-  'shortURL' | 'createdAt' | 'updatedAt' | 'id' | 'totalClicks'
+  'shortCode' | 'createdAt' | 'updatedAt' | 'id' | 'totalClicks'
 >;

@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/** biome-ignore-all lint/suspicious/noConsole: <its okay> */
 import { AnalyticsModel, ShortURLModel, UserModel } from '@/api/v1/models';
 import 'dotenv/config';
 import mongoose from 'mongoose';
@@ -13,50 +13,50 @@ const SEED_CONFIG = {
   URLS: [
     {
       url: 'https://jbalibrea.dev',
-      shortURL: 'jbalibrea',
-      title: 'Jorge Balibrea'
+      shortCode: 'jbalibrea',
+      title: 'Jorge Balibrea',
     },
     {
       url: 'https://openai.com',
-      shortURL: 'openai',
-      title: 'OpenAI'
+      shortCode: 'openai',
+      title: 'OpenAI',
     },
     {
       url: 'https://github.com',
-      shortURL: 'github',
-      title: 'GitHub'
+      shortCode: 'github',
+      title: 'GitHub',
     },
     {
       url: 'https://wikipedia.org',
-      shortURL: 'wiki',
-      title: 'Wikipedia'
+      shortCode: 'wiki',
+      title: 'Wikipedia',
     },
     {
       url: 'https://youtube.com',
-      shortURL: 'youtube',
-      title: 'YouTube'
+      shortCode: 'youtube',
+      title: 'YouTube',
     },
     {
       url: 'https://x.com',
-      shortURL: 'twitter',
-      title: 'X'
+      shortCode: 'twitter',
+      title: 'X',
     },
     {
       url: 'https://facebook.com',
-      shortURL: 'facebook',
-      title: 'Facebook'
+      shortCode: 'facebook',
+      title: 'Facebook',
     },
     {
       url: 'https://amazon.com',
-      shortURL: 'amazon',
-      title: 'Amazon'
+      shortCode: 'amazon',
+      title: 'Amazon',
     },
     {
       url: 'https://stackoverflow.com',
-      shortURL: 'stackoverflow',
-      title: 'Stack Overflow'
-    }
-  ]
+      shortCode: 'stackoverflow',
+      title: 'Stack Overflow',
+    },
+  ],
 };
 
 // Datos para generación realista
@@ -65,13 +65,13 @@ const BROWSERS = [
   { name: 'Safari', weight: 0.2 },
   { name: 'Firefox', weight: 0.05 },
   { name: 'Edge', weight: 0.05 },
-  { name: 'Other', weight: 0.05 }
+  { name: 'Other', weight: 0.05 },
 ];
 
 const DEVICES = [
   { type: 'mobile', weight: 0.6 },
   { type: 'desktop', weight: 0.35 },
-  { type: 'tablet', weight: 0.05 }
+  { type: 'tablet', weight: 0.05 },
 ];
 
 // CITIES: mayoría de España, pero añade algunas internacionales
@@ -92,7 +92,7 @@ const CITIES = [
   { name: 'New York', country: 'United States', weight: 0.03 },
   { name: 'Mexico City', country: 'Mexico', weight: 0.03 },
   { name: 'Buenos Aires', country: 'Argentina', weight: 0.02 },
-  { name: 'Tokyo', country: 'Japan', weight: 0.02 }
+  { name: 'Tokyo', country: 'Japan', weight: 0.02 },
 ];
 
 const REFERRERS = [
@@ -103,7 +103,7 @@ const REFERRERS = [
   { url: 'https://linkedin.com', weight: 0.05 },
   { url: 'https://reddit.com', weight: 0.05 },
   { url: 'https://t.co', weight: 0.05 },
-  { url: 'other', weight: 0.05 }
+  { url: 'other', weight: 0.05 },
 ];
 
 // Nuevos datos para operatingSystem y userAgent
@@ -112,7 +112,7 @@ const OPERATING_SYSTEMS = [
   { name: 'macOS', weight: 0.2 },
   { name: 'Linux', weight: 0.15 },
   { name: 'Android', weight: 0.15 },
-  { name: 'iOS', weight: 0.1 }
+  { name: 'iOS', weight: 0.1 },
 ];
 
 const USER_AGENTS = [
@@ -125,7 +125,7 @@ const USER_AGENTS = [
   'Mozilla/5.0 (Linux; Android 13; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36',
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0',
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-  'Mozilla/5.0 (Linux; Android 13; SM-A528B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36'
+  'Mozilla/5.0 (Linux; Android 13; SM-A528B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36',
 ];
 
 // Función para selección ponderada
@@ -229,7 +229,7 @@ async function seed() {
       ...url,
       user: user._id,
       createdAt: creationDates[index],
-      updatedAt: creationDates[index]
+      updatedAt: creationDates[index],
     }))
   );
 
@@ -274,7 +274,7 @@ async function seed() {
           referrer: referrer === 'direct' ? '' : referrer,
           city: cityObj.name,
           operatingSystem,
-          userAgent
+          userAgent,
         });
 
         totalClicksGenerated++;

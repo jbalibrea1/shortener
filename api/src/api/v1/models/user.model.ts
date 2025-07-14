@@ -6,36 +6,37 @@ const userSchema = new mongoose.Schema(
     username: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
+      index: {
+        unique: true,
+        collation: { locale: 'en', strength: 1 },
+      },
     },
     name: {
       type: String,
-      required: false
+      required: false,
     },
     email: {
       type: String,
       required: false,
-      unique: true
+      unique: true,
+      index: {
+        unique: true,
+        collation: { locale: 'en', strength: 1 },
+      },
     },
     passwordHash: {
       type: String,
-      required: true
+      required: true,
     },
     role: {
       type: String,
       enum: ['user', 'admin'],
-      default: 'user'
-    }
+      default: 'user',
+    },
   },
   { timestamps: true }
 );
-
-// shortURLs: [
-//   {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'ShortURL'
-//   }
-// ]
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
@@ -44,7 +45,7 @@ userSchema.set('toJSON', {
     delete returnedObject.__v;
     // the passwordHash should not be revealed
     delete returnedObject.passwordHash;
-  }
+  },
 });
 
 export const UserModel = mongoose.model('User', userSchema);

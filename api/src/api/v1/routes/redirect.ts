@@ -3,11 +3,11 @@
  * @module routes/v1/redirect
  */
 
-import { shortURL } from '@/api/v1/controllers';
 import express from 'express';
+import { shortURL } from '@/api/v1/controllers';
 
 const router = express.Router();
 
-router.get('/:shortUrl', shortURL.redirectShortURL);
+router.get('/:shortCode', shortURL.redirectShortURL);
 
 export default router;

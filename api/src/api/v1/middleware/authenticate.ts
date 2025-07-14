@@ -1,7 +1,7 @@
+import { NextFunction, Response } from 'express';
 import { IJwtRequest } from '@/api/v1/interfaces';
 import { UnauthorizedError } from '@/api/v1/utils/errors';
 import token from '@/api/v1/utils/token';
-import { NextFunction, Response } from 'express';
 
 /**
  * Middleware de autenticación JWT.

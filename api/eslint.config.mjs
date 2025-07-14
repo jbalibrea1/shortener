@@ -1,21 +1,23 @@
 import eslint from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
+import prettierConfig from 'eslint-config-prettier';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
   eslint.configs.recommended,
   tseslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
+  prettierConfig,
   {
     files: ['**/*.ts'],
     languageOptions: {
       parserOptions: {
         project: true,
-        tsconfigRootDir: import.meta.dirname
-      }
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
     plugins: {
-      '@stylistic': stylistic
+      '@stylistic': stylistic,
     },
     rules: {
       '@stylistic/indent': ['error', 2],
@@ -30,13 +32,13 @@ export default tseslint.config(
       '@typescript-eslint/restrict-plus-operands': 'off',
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { argsIgnorePattern: '^_' }
+        { argsIgnorePattern: '^_' },
       ],
       eqeqeq: 'error',
       'no-trailing-spaces': 'error',
       'object-curly-spacing': ['error', 'always'],
       'arrow-spacing': ['error', { before: true, after: true }],
-      'no-console': 'warn'
+      'no-console': 'warn',
     },
     ignores: ['build/*'],
   }

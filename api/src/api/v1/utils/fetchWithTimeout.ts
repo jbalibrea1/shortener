@@ -14,7 +14,7 @@ export const fetchWithTimeout = async (
     try {
       const response = await fetch(url, {
         ...options,
-        signal: controller.signal
+        signal: controller.signal,
       });
 
       if (!response.ok) {

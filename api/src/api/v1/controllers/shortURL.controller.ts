@@ -4,12 +4,12 @@
  * @module controllers/shortURLController
  */
 
-import { CustomJwtPayload, IJwtRequest } from '@/api/v1/interfaces';
-import shortURL from '@/api/v1/services/shortURL.service';
-import { successResponse } from '@/api/v1/utils/succesResponse';
-import token from '@/api/v1/utils/token';
 import { Request, Response } from 'express';
 import path from 'path';
+import { CustomJwtPayload, IJwtRequest } from '@/api/v1/interfaces';
+import shortURL from '@/api/v1/services/shortURL.service';
+import { successResponse } from '@/api/v1/utils/responses';
+import token from '@/api/v1/utils/token';
 
 /**
  * Lista todas las URLs acortadas del usuario autenticado.
@@ -44,25 +44,25 @@ export const createShortURL = async (
 
 /**
  * Devuelve información de una shortURL concreta.
- * @route GET /api/urls/:shortUrl
- * @param req - Request con el parámetro shortUrl
+ * @route GET /api/urls/:shortCode
+ * @param req - Request con el parámetro shortCode
  * @param res - Response con la información de la shortURL
  */
 export const getShortURLInfo = async (req: Request, res: Response) => {
-  const { shortUrl } = req.params;
-  const entry = await shortURL.getShortURLInfo(shortUrl);
+  const { shortCode } = req.params;
+  const entry = await shortURL.getShortURLInfo(shortCode);
   successResponse({ res, data: entry });
 };
 
 /**
  * Redirige a la URL original a partir de una shortURL, o muestra una página 404 si no existe.
- * @route GET /api/redirect/:shortUrl
- * @param req - Request con el parámetro shortUrl
+ * @route GET /api/redirect/:shortCode
+ * @param req - Request con el parámetro shortCode
  * @param res - Response con la redirección o la página 404
  */
 export const redirectShortURL = async (req: Request, res: Response) => {
-  const { shortUrl } = req.params;
-  const url = await shortURL.resolveShortURL(shortUrl, req);
+  const { shortCode } = req.params;
+  const url = await shortURL.resolveShortURL(shortCode, req);
   if (!url) {
     return res
       .status(404)
@@ -78,11 +78,11 @@ export const redirectShortURL = async (req: Request, res: Response) => {
  * @param res - 204 No Content si se elimina correctamente
  */
 export const removeShortURL = async (req: IJwtRequest, res: Response) => {
-  const { shortUrl } = req.params;
+  const { shortCode } = req.params;
   const user = req.user as CustomJwtPayload | null;
   if (!user) {
     throw new Error('Unauthorized: No user authenticated');
   }
-  await shortURL.deleteShortURL(shortUrl, user);
+  await shortURL.deleteShortURL(shortCode, user);
   res.status(204).end();
 };

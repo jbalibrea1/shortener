@@ -28,6 +28,7 @@
     "metascraper-logo-favicon": "^5.49.1",
     "metascraper-title": "^5.49.1",
     "metascraper-url": "^5.49.1",
+    "module-alias": "^2.2.3",
     "mongoose": "^8.16.1",
     "morgan": "^1.10.0",
     "nanoid": "5.1.5",
@@ -35,17 +36,17 @@
     "zod": "^3.25.67"
   },
   "devDependencies": {
-    "@eslint/js": "^9.30.0",
-    "@stylistic/eslint-plugin": "^5.1.0",
+    "@biomejs/biome": "2.1.1",
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/morgan": "^1.9.10",
-    "eslint": "^9.30.0",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "~5.8.3",
-    "typescript-eslint": "^8.35.0"
+    "typescript": "~5.8.3"
   },
-  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac",
+  "_moduleAliases": {
+    "@": "build"
+  }
 }

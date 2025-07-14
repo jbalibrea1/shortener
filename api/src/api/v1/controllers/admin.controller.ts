@@ -3,9 +3,9 @@
  * @module controllers/adminController
  */
 
-import shortURLAdmin from '@/api/v1/services/shortURLAdmin.service';
-import { successResponse } from '@/api/v1/utils/succesResponse';
 import { Request, Response } from 'express';
+import shortURLAdmin from '@/api/v1/services/shortURLAdmin.service';
+import { successResponse } from '@/api/v1/utils/responses';
 import { ValidationError } from '../utils/errors';
 
 /**
@@ -43,7 +43,7 @@ export const demoteAdmin = async (
   const { username } = req.body;
   if (!username) throw new ValidationError('Nombre de usuario requerido');
   const data = await shortURLAdmin.demoteUserToAdmin(username);
-  successResponse({ res,  data, msg: 'Usuario removido de administrador' });
+  successResponse({ res, data, msg: 'Usuario removido de administrador' });
 };
 
 /**

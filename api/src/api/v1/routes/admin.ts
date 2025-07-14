@@ -3,9 +3,9 @@
  * @module routes/v1/admin
  */
 
+import express from 'express';
 import { admin } from '@/api/v1/controllers/';
 import { authenticate, requireRole } from '@/api/v1/middleware';
-import express from 'express';
 
 const router = express.Router();
 

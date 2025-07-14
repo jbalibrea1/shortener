@@ -1,5 +1,5 @@
-import logger from '@/logger';
 import mongoose from 'mongoose';
+import logger from '@/logger';
 import config from '.';
 
 const connectDB = () => {
