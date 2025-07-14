@@ -66,17 +66,39 @@ export function LoginForm({
 
     const loginPromise = async () => {
       try {
+        const { username, password } = data;
+        // const response = await api.post(
+        //   '/auth/login',
+        //   {
+        //     username,
+        //     password
+        //   },
+        //   {
+        //     withCredentials: true // importante para cookies httpOnly
+        //   }
+        // );
+        // if (response.status !== 200) {
+        //   throw new Error(
+        //     response.data?.error || 'Error de conexión al servidor'
+        //   );
+        // }
         const res = await signIn('credentials', {
-          username: data.username,
-          password: data.password,
+          username,
+          password,
           redirect: false
         });
-        console.log(res);
+        console.log('Login response:', res);
         if (res?.error) {
-          throw new Error('Credenciales incorrectas');
+          // TODO: mejorar
+          if (res.error === 'CredentialsSignin') {
+            throw new Error(
+              'Invalid credentials or login timeout. Please try again.'
+            );
+          } else {
+            throw new Error(res.error);
+          }
         }
         if (res?.ok) {
-          // Limpia el parámetro error de la URL antes de redirigir
           const params = new URLSearchParams(window.location.search);
           if (params.has('error')) {
             params.delete('error');

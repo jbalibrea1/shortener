@@ -14,9 +14,11 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import type { ShortUrlEntry } from '@/interface/shortURLentry';
+import api from '@/lib/axios';
 import handleCopy from '@/utils/handleCopy';
 import {} from '@radix-ui/react-tooltip';
 import { Loader } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { AlertDialogShort } from './alert-dialog-share';
@@ -54,8 +56,7 @@ export function FormSendURL() {
   const [open, setOpen] = useState<boolean>(false);
   const [data, setData] = useState<Partial<ShortUrlEntry>>({});
 
-  const API_URL = process.env.NEXT_PUBLIC_API_URL;
-  const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
+  const { data: session } = useSession();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,9 +66,9 @@ export function FormSendURL() {
   });
 
   const handleCopyAndClose = () => {
-    if (data.shortURL) {
+    if (data.shortCode) {
       handleCopy({
-        url: data.shortURL,
+        url: data.shortCode,
         title: 'Popup closed and link copied',
         desc: 'Link successfully copied to clipboard 🎉',
         toast: (msg, opts) => {
@@ -83,9 +84,9 @@ export function FormSendURL() {
   };
 
   const handleIconClick = () => {
-    if (data.shortURL) {
+    if (data.shortCode) {
       handleCopy({
-        url: data.shortURL,
+        url: data.shortCode,
         toast: (msg, opts) => {
           if (opts?.type === 'error') {
             toast.error(msg, { description: opts?.desc });
@@ -103,22 +104,23 @@ export function FormSendURL() {
     setLoading(true);
     try {
       if (!values.url) throw new Error('Invalid URL');
-      const res = await fetch(`${API_URL}/urls`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(values)
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Error shortening the URL');
-      setData({ ...data, shortURL: `${DOMAIN}/${data.shortURL}` });
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json'
+      };
+      // Si hay accessToken en la sesión de NextAuth, añádelo
+      if (session?.accessToken) {
+        headers['Authorization'] = `Bearer ${session.accessToken}`;
+      }
+      const res = await api.post('/urls', values, { headers });
+      const { data: responseData } = res.data;
+      setData({ ...responseData });
       toast.success('Link generated successfully');
       setOpen(true);
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      const message = error instanceof Error ? error.message : 'Unknown error';
+      const message =
+        error?.response?.data?.message || error.message || 'Unknown error';
       toast.error(message);
     } finally {
       setLoading(false);

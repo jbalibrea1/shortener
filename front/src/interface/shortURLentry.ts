@@ -5,6 +5,6 @@ export interface ShortUrlEntry {
   description?: string | null;
   logo?: string | null;
   totalClicks: number;
-  shortURL: string;
+  shortCode: string;
   createdAt: Date;
 }

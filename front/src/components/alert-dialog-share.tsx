@@ -6,7 +6,7 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle,
+  AlertDialogTitle
 } from '@/components/ui/alert-dialog';
 import type { ShortUrlEntry } from '@/interface/shortURLentry';
 import { CopyIcon } from '@radix-ui/react-icons';
@@ -22,43 +22,42 @@ type AlertDialogDemoProps = {
   handleCopyAndClose: () => void;
 };
 
+const DOMAIN = process.env.NEXT_PUBLIC_DOMAIN;
+
 export function AlertDialogShort({
   open,
   data,
   handleIconClick,
   setOpen,
-  handleCopyAndClose,
+  handleCopyAndClose
 }: AlertDialogDemoProps) {
   return (
     <AlertDialog open={open}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Enlace generado exitosamente</AlertDialogTitle>
+          <AlertDialogTitle>Link generated successfully</AlertDialogTitle>
           <AlertDialogDescription className="flex items-center gap-4 ">
             <ImageFallback
               data={{ logo: data?.logo || undefined, title: data.title || '' }}
             />
             {data.description
-              ? `Descripción: ${data.description}`
-              : 'Copia el enlace corto y compártelo con tus amigos'}
+              ? `Description: ${data.description}`
+              : 'Copy the short link and share it with your friends'}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <InputWithCopyIcon
-          value={`${data.shortURL}`}
+          value={`${DOMAIN}/${data.shortCode}`}
           readOnly
           iconClick={handleIconClick}
         />
         <AlertDialogFooter className="justify-end sm:items-end gap-2 items-center">
-          <QRCodeGenerator content={`${data.shortURL}`} />
-          <div
-            className="flex flex-col sm:flex-row justify-end
- gap-2 w-full"
-          >
+          <QRCodeGenerator content={`${DOMAIN}/${data.shortCode}`} />
+          <div className="flex flex-col sm:flex-row justify-end gap-2 w-full">
             <AlertDialogCancel onClick={() => setOpen(false)}>
-              Cerrar
+              Close
             </AlertDialogCancel>
             <AlertDialogAction onClick={handleCopyAndClose}>
-              <CopyIcon /> Copiar y cerrar
+              <CopyIcon /> Copy and close
             </AlertDialogAction>
           </div>
         </AlertDialogFooter>

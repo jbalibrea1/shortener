@@ -4,7 +4,6 @@ import {
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
@@ -18,12 +17,14 @@ import { useRouter } from 'next/navigation';
 import React from 'react';
 import { toast } from 'sonner';
 import { LogoutLink } from '../logout-link';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 
 const DASHBOARD_KEYBOARD_SHORTCUT = 'd';
 const LOGOUT_KEYBOARD_SHORTCUT = 'o';
 
 export function DropdownLogged() {
   const { data: session } = useSession();
+  console.log('Session data:', session);
   const user = {
     username: session?.user?.username || '',
     email: session?.user?.email || '',
@@ -68,10 +69,22 @@ export function DropdownLogged() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="default">{user.username}</Button>
+        <Button
+          variant="ghost"
+          className="flex items-center gap-2 px-2 py-1 h-10"
+        >
+          <Avatar className="h-8 w-8 rounded-lg">
+            <AvatarImage src={user.avatar} alt={user.username} />
+            <AvatarFallback className="rounded-lg">
+              {user.username?.slice(0, 2).toUpperCase() || 'SH'}
+            </AvatarFallback>
+          </Avatar>
+          <span className="max-w-[120px] truncate text-left">
+            {user.username}
+          </span>
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <a href="/dashboard" className="flex items-center gap-2">
@@ -109,7 +122,6 @@ export function DropdownLogged() {
           <LogoutLink className="transition-all ease-in-out delay-75 text-foreground/70 hover:text-foreground">
             Log out
           </LogoutLink>
-
           <DropdownMenuShortcut>⇧⌘O</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

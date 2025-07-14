@@ -12,16 +12,16 @@ const handleCopy = ({ url, desc, title, toast }: handleCopyProps) => {
   navigator.clipboard
     .writeText(url)
     .then(() => {
-      toast(title ?? 'Enlace copiado', {
+      toast(title ?? 'Link copied', {
         type: 'success',
-        desc: desc ?? 'Enlace copiado al portapapeles correctamente  🎉'
+        desc: desc ?? 'Link successfully copied to clipboard 🎉'
       });
     })
     .catch((error) => {
       console.error(error);
-      toast('Error al copiar el enlace', {
+      toast('Error copying link', {
         type: 'error',
-        desc: 'Por favor, intenta de nuevo.'
+        desc: 'Please try again.'
       });
     });
 };

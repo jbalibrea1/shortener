@@ -1,7 +1,8 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { authConfig } from '../auth.config';
-import api from './axios';
+import { authConfig } from './auth.config';
+import api from './lib/axios';
+
 export const { auth, handlers, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
@@ -18,11 +19,17 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             password: credentials?.password
           });
           const { data } = res.data;
-          if (data && data.token && data.username) {
+          console.log('🔐 Auth response:', data);
+          if (data && data.accessToken && data.username) {
             return {
               id: data.username,
               username: data.username,
-              token: data.token
+              name: data.name,
+              email: data.email,
+              accessToken: data.accessToken,
+              refreshToken: data.refreshToken,
+              expiresAt: data.expiresAt // Assuming the API returns an expiresAt timestamp
+              // expiresAt: Date.now() + data.expiresIn * 1000
             };
           }
           return null;

@@ -1,6 +1,4 @@
-import { auth } from '@/lib/auth';
 import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
 export const metadata: Metadata = {
   title: 'Dashboard | by Jorge Balibrea - @jbalibrea1',
   description: 'Dashboard is a simple tool to manage URLs'
@@ -14,12 +12,6 @@ export default async function PrivateLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect('/login?error=unauthorized');
-  }
-
   return (
     <div className="flex flex-col min-h-svh">
       <main className="flex flex-1 flex-col">

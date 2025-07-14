@@ -32,7 +32,7 @@ export function NavMain({
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  className={isActive ? 'bg-primary/10' : ''}
+                  className={isActive ? 'bg-sidebar-accent' : ''}
                 >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

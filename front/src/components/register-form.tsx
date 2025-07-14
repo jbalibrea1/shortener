@@ -23,13 +23,13 @@ import { Input } from '@/components/ui/input';
 import { registerSchema, RegisterSchemaType } from '@/schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
 export function RegisterForm() {
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -43,7 +43,6 @@ export function RegisterForm() {
   });
 
   const onSubmit = async (data: RegisterSchemaType) => {
-    setError('');
     setLoading(true);
     try {
       const res = await fetch(
@@ -59,10 +58,12 @@ export function RegisterForm() {
       );
       if (!res.ok) {
         const result = await res.json();
-        setError(result.message || 'Error al registrar');
-        toast.error(result.message || 'Error al registrar');
+        toast.error(result.error || 'Registration error');
+        if (result.error?.toLowerCase().includes('user')) {
+          form.setError('username', { type: 'manual', message: result.error });
+        }
       } else {
-        toast.success('Usuario registrado correctamente');
+        toast.success('User registered successfully');
         await signIn('credentials', {
           username: data.username,
           password: data.password,
@@ -71,8 +72,7 @@ export function RegisterForm() {
         router.push('/');
       }
     } catch {
-      setError('Error de conexión');
-      toast.error('Error de conexión');
+      toast.error('Connection error');
     } finally {
       setLoading(false);
     }
@@ -81,24 +81,22 @@ export function RegisterForm() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle>Registrarse</CardTitle>
-        <CardDescription>
-          Crea tu cuenta ingresando un nombre de usuario y contraseña
-        </CardDescription>
-        <CardAction>
-          <Button variant="link" onClick={() => router.push('/login')}>
-            ¿Ya tienes cuenta? Inicia sesión
-          </Button>
+        <CardTitle>Register your account</CardTitle>
+        <CardAction className="text-right ">
+          <div className="text-sm">
+            <div>Already have an account? </div>
+            <Link href="/login" className="underline underline-offset-4">
+              Sign in
+            </Link>
+          </div>
         </CardAction>
+        <CardDescription>
+          Enter your username and password to create an account.
+        </CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <CardContent>
-            {error && (
-              <div className="mb-4 text-sm text-red-600 text-center">
-                {error}
-              </div>
-            )}
             <div className="flex flex-col gap-6">
               <FormField
                 control={form.control}
@@ -115,7 +113,7 @@ export function RegisterForm() {
                       />
                     </FormControl>
                     <FormDescription>
-                      Este será tu nombre de usuario único
+                      This will be your unique username
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -136,7 +134,7 @@ export function RegisterForm() {
                       />
                     </FormControl>
                     <FormDescription>
-                      La contraseña debe tener al menos 6 caracteres
+                      Password must be at least 6 characters
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -147,7 +145,7 @@ export function RegisterForm() {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirmar contraseña</FormLabel>
+                    <FormLabel>Confirm password</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
@@ -164,7 +162,7 @@ export function RegisterForm() {
           </CardContent>
           <CardFooter className="flex-col gap-2">
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Registrando...' : 'Registrarse'}
+              {loading ? 'Signing up...' : 'Sign up'}
             </Button>
             <Button
               variant="outline"
@@ -173,9 +171,15 @@ export function RegisterForm() {
               onClick={() => signIn('google')}
               type="button"
             >
-              Registrarse con Google
+              Sign up with Google
             </Button>
           </CardFooter>
+          <div className="text-sm text-center">
+            Already have an account?{' '}
+            <Link href="/login" className="underline underline-offset-4">
+              Sign in
+            </Link>
+          </div>
         </form>
       </Form>
     </Card>

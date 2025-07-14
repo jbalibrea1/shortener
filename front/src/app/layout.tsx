@@ -2,7 +2,7 @@ import '@/styles/globals.css';
 import type { Metadata } from 'next';
 
 import ClientProviders from '@/components/client-provider';
-import { fontSans, roboto } from '@/components/fonts';
+import { fontSans } from '@/components/fonts';
 import { Toaster } from '@/components/ui/sonner';
 import { cn } from '@/lib/utils';
 
@@ -20,7 +20,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
-          roboto.className,
           fontSans.className,
           'font-sans min-h-svh bg-background antialiased'
         )}

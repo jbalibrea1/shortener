@@ -16,10 +16,10 @@ export function LogoutLink({
   return (
     <button
       type="button"
-      className={className + ' cursor-pointer'}
+      className={`${className} cursor-pointer`}
       onClick={async () => {
-        toast.success('Has cerrado sesión correctamente.');
         await signOut({ redirect: false });
+        toast.success('You have successfully logged out.');
         router.push('/');
       }}
     >

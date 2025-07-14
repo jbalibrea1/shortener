@@ -1,10 +1,21 @@
 import 'next-auth';
-
+//  id: data.username,
+//       username: data.username,
+//       name: data.name,
+//       email: data.email,
+//       accessToken: data.accessToken,
+//       refreshToken: data.refreshToken,
+//       expiresAt: Date.now() + data.expiresIn * 1000
 declare module 'next-auth' {
   interface User {
     username?: string;
     role?: string;
     // otros campos personalizados si tienes
+    id?: string;
+    email?: string;
+    accessToken?: string;
+    refreshToken?: string;
+    expiresAt?: number;
   }
   interface Session {
     user: {
@@ -12,6 +23,8 @@ declare module 'next-auth' {
       role?: string;
       // otros campos personalizados si tienes
     } & DefaultSession['user'];
-    apiToken?: string;
+    accessToken?: string;
+    refreshToken?: string;
+    expiredAt?: number;
   }
 }

@@ -1,17 +1,5 @@
 'use client';
 
-import { LifeBuoy, Send } from 'lucide-react';
-
-import {
-  IconChartBar,
-  IconCirclePlus,
-  IconDashboard,
-  IconFolder,
-  IconUsers
-} from '@tabler/icons-react';
-
-import * as React from 'react';
-
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import {
@@ -22,17 +10,21 @@ import {
   SidebarMenu,
   SidebarRail
 } from '@/components/ui/sidebar';
+import {
+  IconChartBar,
+  IconCirclePlus,
+  IconDashboard,
+  IconFolder,
+  IconUsers
+} from '@tabler/icons-react';
+import { LifeBuoy, Send } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import * as React from 'react';
 import { NavSecondary } from './nav-secondary';
 import { ModeToggle } from './toggle-dark';
 
 // This is sample data.
 const data = {
-  user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg'
-  },
   navMain: [
     {
       title: 'Dashboard',
@@ -81,6 +73,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     email: session?.user?.email || '',
     avatar: session?.user?.avatar || '/avatars/default.jpg'
   };
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader className="border-sidebar-border h-16 border-b">

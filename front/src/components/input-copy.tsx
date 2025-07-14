@@ -2,7 +2,7 @@ import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger,
+  TooltipTrigger
 } from '@/components/ui/tooltip';
 import { CopyIcon } from '@radix-ui/react-icons';
 import type { InputHTMLAttributes } from 'react';
@@ -32,7 +32,7 @@ const InputWithCopyIcon = React.forwardRef<
             />
           </TooltipTrigger>
           <TooltipContent>
-            <p>Copiar al portapapeles</p>
+            <p>Copy to clipboard</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
