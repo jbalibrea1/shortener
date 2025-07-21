@@ -1,6 +1,6 @@
-import { Request } from 'express';
+import type { Request } from 'express';
 import mongoose from 'mongoose';
-import {
+import type {
   CustomJwtPayload,
   IShortURL,
   NewShortURLEntry,
@@ -18,7 +18,7 @@ import {
 import { getGeoFromIp, parseUserAgent } from '@/api/v1/utils/metrics';
 
 const getAllShortURLsFromUser = async (
-  user: CustomJwtPayload
+  user: CustomJwtPayload,
 ): Promise<IShortURL[]> => {
   if (!user || !user.id) {
     throw new UnauthorizedError('No user id provided');
@@ -37,7 +37,7 @@ const getAllShortURLsFromUser = async (
 const MAX_ATTEMPTS = 5;
 export const createShortURL = async (
   urlData: NewShortURLEntry,
-  user?: CustomJwtPayload
+  user?: CustomJwtPayload,
 ) => {
   if (!urlData?.url || typeof urlData.url !== 'string') {
     throw new ValidationError('URL válida es requerida');
@@ -63,7 +63,7 @@ export const createShortURL = async (
             shortCode,
           },
         ],
-        { session }
+        { session },
       );
 
       await session.commitTransaction();
@@ -83,7 +83,7 @@ export const createShortURL = async (
   }
 
   throw new Error(
-    `No se pudo generar URL única después de ${MAX_ATTEMPTS} intentos`
+    `No se pudo generar URL única después de ${MAX_ATTEMPTS} intentos`,
   );
 };
 
@@ -119,7 +119,7 @@ const resolveShortURL = async (shortCode: string, req?: Request) => {
     const userAgent = req.headers['user-agent'] || 'unknown';
     const referrer = req.headers.referer || 'direct';
     const { deviceType, browser, operatingSystem } = parseUserAgent(
-      userAgent.toString()
+      userAgent.toString(),
     );
 
     const ip =
@@ -160,7 +160,7 @@ const resolveShortURL = async (shortCode: string, req?: Request) => {
  */
 const deleteShortURL = async (
   shortCode: string,
-  user: CustomJwtPayload | null
+  user: CustomJwtPayload | null,
 ) => {
   if (!user || !user.id) {
     throw new UnauthorizedError('No authorization token provided');
@@ -176,7 +176,7 @@ const deleteShortURL = async (
   }
   if (!entry.user || entry.user.toString() !== user.id) {
     throw new UnauthorizedError(
-      'You do not have permission to delete this URL'
+      'You do not have permission to delete this URL',
     );
   }
 

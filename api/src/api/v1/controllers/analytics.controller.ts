@@ -1,5 +1,5 @@
-import { Response } from 'express';
-import { IJwtRequest } from '@/api/v1/interfaces';
+import type { Response } from 'express';
+import type { IJwtRequest } from '@/api/v1/interfaces';
 import analytics from '@/api/v1/services/analytics.service';
 import { UnauthorizedError } from '@/api/v1/utils/errors';
 import { successResponse } from '@/api/v1/utils/responses';
@@ -62,7 +62,7 @@ export const getDailyClicks = async (req: IJwtRequest, res: Response) => {
  */
 export const getShortUrlClicksByDay = async (
   req: IJwtRequest,
-  res: Response
+  res: Response,
 ) => {
   const user = req.user;
   if (!user || !user.id) {

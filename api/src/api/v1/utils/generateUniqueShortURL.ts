@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 
 // Helper para detectar errores de duplicado
 export function isDuplicateError(
-  error: unknown
+  error: unknown,
 ): error is { code?: number; name?: string; message?: string } {
   if (typeof error !== 'object' || error === null) return false;
   const err = error as { code?: number; name?: string; message?: string };

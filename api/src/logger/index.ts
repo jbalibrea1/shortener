@@ -11,7 +11,7 @@ const transports = [];
 if (config.env !== 'production') {
   transports.push(
     new winston.transports.File({ filename: 'logs/error.log', level: 'error' }),
-    new winston.transports.File({ filename: 'logs/app.log' })
+    new winston.transports.File({ filename: 'logs/app.log' }),
   );
 }
 
@@ -32,7 +32,7 @@ const logger = winston.createLogger({
       return `${timestamp} [${level}]: ${message} ${
         Object.keys(meta).length ? JSON.stringify(meta) : ''
       }`;
-    })
+    }),
   ),
   transports,
 });

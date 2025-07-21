@@ -1,5 +1,5 @@
-import { NextFunction, Request, Response } from 'express';
-import { ZodSchema } from 'zod';
+import type { NextFunction, Request, Response } from 'express';
+import type { ZodSchema } from 'zod';
 import { ValidationError } from '@/api/v1/utils/errors';
 
 // Middleware genérico
@@ -11,7 +11,7 @@ export function validateData(schema: ZodSchema) {
         field: issue.path.join('.'),
         message: issue.message,
       }));
-      return next(new ValidationError(JSON.stringify({ errorMessages })));
+      next(new ValidationError(JSON.stringify({ errorMessages })));
     }
     next();
   };

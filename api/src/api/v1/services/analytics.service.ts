@@ -1,5 +1,5 @@
-import { PipelineStage, Types } from 'mongoose';
-import { CustomJwtPayload, Pagination } from '@/api/v1/interfaces';
+import type { PipelineStage, Types } from 'mongoose';
+import type { CustomJwtPayload, Pagination } from '@/api/v1/interfaces';
 import { AnalyticsModel, ShortURLModel } from '@/api/v1/models';
 import { ValidationError } from '@/api/v1/utils/errors';
 
@@ -51,7 +51,7 @@ const getOLDmetrics = async (shortUrlFilter: ShortUrlFilter) => {
  */
 const getShortUrlAnalytics = async (
   user: CustomJwtPayload,
-  shortCode: string
+  shortCode: string,
 ) => {
   // Busca el shortCode del usuario
   const shortURL = await ShortURLModel.findOne({
@@ -120,19 +120,19 @@ interface DailyClicksOptions {
  */
 const getDailyClicks = async (
   user: CustomJwtPayload,
-  options: DailyClicksOptions = {}
+  options: DailyClicksOptions = {},
 ): Promise<Pagination<DailyClickResult>> => {
   // Validación del usuario
   if (!user?.id) {
     throw new ValidationError('No user authenticated');
   }
 
-  // Configuración por defecto, 30 días, orden ascendente, sin URLs, 30 resultados por página, página 1
+  // Configuración por defecto, 30 días, orden ascendente, sin URLs, 50 resultados por página, página 1
   const {
     days = 30,
     order = 'asc',
     includeUrls = false,
-    limit = 30,
+    limit = 50,
     page = 1,
   } = options;
 
@@ -203,7 +203,7 @@ const getDailyClicks = async (
             },
           },
         },
-      }
+      },
     );
   } else {
     pipeline.push({
@@ -224,7 +224,7 @@ const getDailyClicks = async (
 
   // Obtener el total de días primero - obtenemos el primer resultado del array devuelto por countPipeline
   const [countResult] = await AnalyticsModel.aggregate<{ count: number }>(
-    countPipeline
+    countPipeline,
   );
   const totalDays = countResult?.count || 0;
 
@@ -240,7 +240,7 @@ const getDailyClicks = async (
     },
     { $sort: { date: order === 'asc' ? 1 : -1 } },
     { $skip: (validatedPage - 1) * validatedLimit },
-    { $limit: validatedLimit }
+    { $limit: validatedLimit },
   );
 
   const data = await AnalyticsModel.aggregate<DailyClickResult>(pipeline);
@@ -265,7 +265,7 @@ const getDailyClicks = async (
  */
 const getShortUrlClicksByDay = async (
   user: CustomJwtPayload,
-  shortCode: string
+  shortCode: string,
 ) => {
   // Busca la shortURL del usuario
   const urlDoc = await ShortURLModel.findOne({
@@ -333,7 +333,7 @@ interface UrlWithMetrics {
  */
 export const getAnalytics = async (
   user: CustomJwtPayload,
-  options: AnalyticsOptions = {}
+  options: AnalyticsOptions = {},
 ): Promise<Pagination<UrlWithMetrics>> => {
   if (!user?.id) {
     throw new ValidationError('No user authenticated');
@@ -671,7 +671,7 @@ interface UserGlobalMetrics {
  */
 // TODO: Refactorizar
 const getUserGlobalMetrics = async (
-  user: CustomJwtPayload
+  user: CustomJwtPayload,
 ): Promise<UserGlobalMetrics> => {
   const urlIds = await ShortURLModel.distinct('_id', { user: user.id });
 
@@ -709,8 +709,8 @@ const getUserGlobalMetrics = async (
           acc[v] = (acc[v] || 0) + 1;
           return acc;
         },
-        {} as Record<string, number>
-      )
+        {} as Record<string, number>,
+      ),
     )
       .sort((a, b) => b[1] - a[1])
       .map(([name, count]) => ({ name, count }));

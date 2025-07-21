@@ -4,9 +4,9 @@
  * @module controllers/shortURLController
  */
 
-import { Request, Response } from 'express';
-import path from 'path';
-import { CustomJwtPayload, IJwtRequest } from '@/api/v1/interfaces';
+import path from 'node:path';
+import type { Request, Response } from 'express';
+import type { CustomJwtPayload, IJwtRequest } from '@/api/v1/interfaces';
 import shortURL from '@/api/v1/services/shortURL.service';
 import { successResponse } from '@/api/v1/utils/responses';
 import token from '@/api/v1/utils/token';
@@ -34,7 +34,7 @@ export const listShortURLs = async (_req: IJwtRequest, res: Response) => {
  */
 export const createShortURL = async (
   req: Request<unknown, unknown, { url: string }>,
-  res: Response
+  res: Response,
 ) => {
   const urlData = req.body;
   const user = token.extractToken(req) || undefined;

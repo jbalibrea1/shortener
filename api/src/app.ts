@@ -1,7 +1,11 @@
 import cors from 'cors';
 import connectDB from '@/config/db';
 import 'dotenv/config';
-import express, { Application, Request, Response } from 'express';
+import express, {
+  type Application,
+  type Request,
+  type Response,
+} from 'express';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import apiRouter from './api';
@@ -15,7 +19,7 @@ app.use(
   cors({
     origin: 'http://localhost:3000', // tu frontend
     credentials: true,
-  })
+  }),
 );
 app.use(express.json());
 app.use(morgan('dev'));
@@ -28,7 +32,7 @@ app.use(
         fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
       },
     },
-  })
+  }),
 );
 
 // DB connection
@@ -65,7 +69,7 @@ process.on('unhandledRejection', (reason, promise) => {
 process.on('SIGTERM', () => {
   logger.info(
     'SIGTERM received. Shutting down gracefully at ',
-    new Date().toISOString()
+    new Date().toISOString(),
   );
   process.exit(0);
 });

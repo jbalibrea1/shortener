@@ -5,7 +5,7 @@ export const fetchWithTimeout = async (
   url: string,
   retries = 3,
   options: RequestInit = {},
-  timeoutMs = 5000
+  timeoutMs = 5000,
 ): Promise<Response> => {
   for (let attempt = 1; attempt <= retries; attempt++) {
     const controller = new AbortController();
@@ -20,7 +20,7 @@ export const fetchWithTimeout = async (
       if (!response.ok) {
         throw new AppError(
           `HTTP error! status: ${response.status} on attempt ${attempt} for: ${url}`,
-          response.status
+          response.status,
         );
       }
 
@@ -28,13 +28,13 @@ export const fetchWithTimeout = async (
     } catch (error: unknown) {
       if ((error as Error)?.name === 'AbortError') {
         logger.warn(
-          `[fetchWithTimeout] Timeout (AbortError) on attempt ${attempt} for: ${url}`
+          `[fetchWithTimeout] Timeout (AbortError) on attempt ${attempt} for: ${url}`,
         );
       } else {
         logger.error(
           `[fetchWithTimeout] Error on attempt ${attempt} for: ${url} - ${
             (error as Error)?.message
-          }`
+          }`,
         );
         throw error;
       }

@@ -1,6 +1,6 @@
 import 'dotenv/config';
-import express, { Request, Response } from 'express';
-import path from 'path';
+import path from 'node:path';
+import express, { type Request, type Response } from 'express';
 import { errorHandler } from './middleware';
 import v1Routes from './routes';
 

@@ -3,8 +3,8 @@
  * @module controllers/userController
  */
 
-import { Request, Response } from 'express';
-import { IJwtRequest, IUser } from '@/api/v1/interfaces';
+import type { Request, Response } from 'express';
+import type { IJwtRequest, IUser } from '@/api/v1/interfaces';
 import auth from '@/api/v1/services/auth.service';
 import { UnauthorizedError } from '@/api/v1/utils/errors';
 import { successResponse } from '@/api/v1/utils/responses';
@@ -16,7 +16,7 @@ import token from '../utils/token';
  */
 export const login = async (
   req: Request<unknown, unknown, IUser>,
-  res: Response
+  res: Response,
 ) => {
   const { username, password } = req.body;
   const authenticatedUser = await auth.login({ username, password });
@@ -29,7 +29,7 @@ export const login = async (
  */
 export const saveUser = async (
   req: Request<unknown, unknown, IUser>,
-  res: Response
+  res: Response,
 ) => {
   const { username, password, name, email } = req.body;
   const newUser = await auth.register({ username, password, name, email });
@@ -75,7 +75,7 @@ export const logout = async (req: IJwtRequest, res: Response) => {
  */
 export const refreshToken = async (
   req: Request<unknown, unknown, { refreshToken: string }>,
-  res: Response
+  res: Response,
 ) => {
   const { refreshToken } = req.body;
   if (!refreshToken || typeof refreshToken !== 'string') {

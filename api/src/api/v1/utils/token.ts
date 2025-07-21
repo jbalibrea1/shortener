@@ -3,13 +3,13 @@
  * @module utils/token
  */
 
-import { Request } from 'express';
+import type { Request } from 'express';
 import jwt from 'jsonwebtoken';
-import { CustomJwtPayload } from '@/api/v1/interfaces';
+import type { CustomJwtPayload } from '@/api/v1/interfaces';
 import { UnauthorizedError } from '@/api/v1/utils/errors';
 import config from '@/config';
 
-const ACCESS_TOKEN_EXP = '15m';
+const ACCESS_TOKEN_EXP = config.env === 'production' ? '15m' : '1h';
 const REFRESH_TOKEN_EXP = '7d';
 const generateToken = (username: string, id: string, role: string) => {
   if (!config.jwtSecret) {
@@ -37,11 +37,11 @@ const extractToken = (req: Request<unknown>) => {
   }
 
   const authorization = req.get('authorization');
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+  if (authorization?.toLowerCase().startsWith('bearer ')) {
     const token = authorization.substring(7);
     const decodedToken = jwt.verify(
       token,
-      config.jwtSecret
+      config.jwtSecret,
     ) as CustomJwtPayload;
 
     if (!decodedToken.id && typeof decodedToken.id !== 'string') {
@@ -59,7 +59,7 @@ const verifyRefreshToken = (token: string): CustomJwtPayload | null => {
   }
   const decodedToken = jwt.verify(
     token,
-    config.refreshSecret
+    config.refreshSecret,
   ) as CustomJwtPayload;
   if (!decodedToken.id || typeof decodedToken.id !== 'string') {
     return null;

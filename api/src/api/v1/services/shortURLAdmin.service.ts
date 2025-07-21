@@ -1,4 +1,4 @@
-import { IShortURL } from '@/api/v1/interfaces';
+import type { IShortURL } from '@/api/v1/interfaces';
 import { ShortURLModel, UserModel } from '@/api/v1/models';
 import {
   ConflictError,
@@ -30,7 +30,7 @@ const promoteUserToAdmin = async (username: string) => {
   try {
     await user.save();
     logger.info(
-      `Usuario ${user.username} promovido de ${previousRole} a admin`
+      `Usuario ${user.username} promovido de ${previousRole} a admin`,
     );
     // TODO: Enviar notificación al administrador
     // await sendAdminNotification({

@@ -1,5 +1,5 @@
-import { NextFunction, Response } from 'express';
-import { IJwtRequest } from '@/api/v1/interfaces';
+import type { NextFunction, Response } from 'express';
+import type { IJwtRequest } from '@/api/v1/interfaces';
 import { UnauthorizedError } from '@/api/v1/utils/errors';
 import token from '@/api/v1/utils/token';
 
@@ -15,7 +15,7 @@ import token from '@/api/v1/utils/token';
 export function authenticate(
   req: IJwtRequest,
   _res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   try {
     const user = token.extractToken(req);

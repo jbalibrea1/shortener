@@ -1,23 +1,23 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { shortUrlParamSchema } from '@/api/v1/schemas/shorturl.schema';
 import { ValidationError } from '@/api/v1/utils/errors';
 
 export function validateShortUrlParam(
   req: Request,
-  res: Response,
-  next: NextFunction
+  _res: Response,
+  next: NextFunction,
 ): void {
   const result = shortUrlParamSchema.safeParse(req.params);
   if (!result.success) {
-    return next(
+    next(
       new ValidationError(
         result.error.errors
           .map(
             (e) =>
-              `${e.path.length ? e.path.join('.') : 'shortUrl'}: ${e.message}`
+              `${e.path.length ? e.path.join('.') : 'shortUrl'}: ${e.message}`,
           )
-          .join(', ')
-      )
+          .join(', '),
+      ),
     );
   }
   next();

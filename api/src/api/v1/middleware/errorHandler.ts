@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { errorResponse } from '@/api/v1/utils/responses';
 import config from '@/config';
 import logger from '@/logger';
@@ -21,7 +21,7 @@ export const errorHandler = (
   err: unknown,
   req: Request,
   res: Response,
-  _next: NextFunction
+  _next: NextFunction,
 ) => {
   // Log all errors with context
   const errorObj =

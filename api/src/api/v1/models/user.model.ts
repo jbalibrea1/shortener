@@ -35,11 +35,11 @@ const userSchema = new mongoose.Schema(
       default: 'user',
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 userSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
+  transform: (_document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
     delete returnedObject.__v;

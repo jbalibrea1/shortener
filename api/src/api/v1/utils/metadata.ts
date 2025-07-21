@@ -4,7 +4,7 @@ import metascraperLogoFavicon from 'metascraper-logo-favicon';
 import metascraperTitle from 'metascraper-title';
 import metascraperUrl from 'metascraper-url';
 import logger from '@/logger';
-import { NewShortURLEntry } from '../interfaces/shortURL.interface';
+import type { NewShortURLEntry } from '../interfaces/shortURL.interface';
 import { fetchWithTimeout } from './fetchWithTimeout';
 
 const scraper = metascraper([
@@ -35,7 +35,7 @@ async function getMetadata(url: string) {
  * @returns Metadata object with title, description, image, etc.
  */
 const addMetadata = async (
-  entry: NewShortURLEntry
+  entry: NewShortURLEntry,
 ): Promise<NewShortURLEntry> => {
   try {
     const metadata = await getMetadata(entry.url);

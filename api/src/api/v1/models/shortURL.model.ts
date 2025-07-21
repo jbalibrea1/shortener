@@ -27,7 +27,7 @@ const shortURLSchema = new mongoose.Schema(
     shortCode: { type: String, unique: true, required: true },
     totalClicks: { type: Number, default: 0 },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 // Transform the returned object to a more readable format
@@ -41,7 +41,7 @@ shortURLSchema.set('toJSON', {
 
 shortURLSchema.index({ user: 1 });
 
-shortURLSchema.post('findOneAndDelete', async function (doc) {
+shortURLSchema.post('findOneAndDelete', async (doc) => {
   if (doc) {
     await mongoose.model('Analytics').deleteMany({ shortUrl: doc._id });
   }

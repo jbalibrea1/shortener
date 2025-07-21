@@ -1,6 +1,6 @@
 import { ValidationError } from '@/api/v1/utils/errors';
 import logger from '@/logger';
-import { NewShortURLEntry } from '../interfaces/shortURL.interface';
+import type { NewShortURLEntry } from '../interfaces/shortURL.interface';
 import addMetadata from './metadata';
 
 const allowedSchemes = ['http', 'https', 'ftp'];
@@ -15,7 +15,7 @@ const parseUrl = (url: string): string => {
     !url.startsWith('https://') &&
     !url.startsWith('ftp://')
   ) {
-    url = 'http://' + url;
+    url = `http://${url}`;
   }
 
   try {
@@ -43,7 +43,7 @@ const parseUrl = (url: string): string => {
  * @throws {ValidationError} Si los datos son incorrectos o la URL no es válida.
  */
 const parsedURL = async (
-  urlObj: NewShortURLEntry
+  urlObj: NewShortURLEntry,
 ): Promise<NewShortURLEntry> => {
   if (!urlObj || typeof urlObj !== 'object') {
     throw new ValidationError('Incorrect or missing data');

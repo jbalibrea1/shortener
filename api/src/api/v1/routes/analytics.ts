@@ -7,19 +7,19 @@ const router = express.Router();
 router.get(
   '/user/global-metrics',
   authenticate,
-  analytics.getUserGlobalMetrics
+  analytics.getUserGlobalMetrics,
 );
 router.get('/user/urls', authenticate, analytics.getAllAnalytics);
 router.get(
   '/user/urls/:shortCode',
   authenticate,
-  analytics.getShortUrlAnalytics
+  analytics.getShortUrlAnalytics,
 );
 router.get('/by-day', authenticate, analytics.getDailyClicks);
 router.get(
   '/by-day/:shortCode',
   authenticate,
-  analytics.getShortUrlClicksByDay
+  analytics.getShortUrlClicksByDay,
 );
 
 export default router;

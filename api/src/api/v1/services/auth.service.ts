@@ -4,8 +4,8 @@
  */
 
 import bcrypt from 'bcryptjs';
-import { CustomJwtPayload } from '@/api/v1/interfaces';
-import { IUser } from '@/api/v1/interfaces/user.interface';
+import type { CustomJwtPayload } from '@/api/v1/interfaces';
+import type { IUser } from '@/api/v1/interfaces/user.interface';
 import { UserModel } from '@/api/v1/models';
 import { UnauthorizedError, ValidationError } from '@/api/v1/utils/errors';
 import token from '@/api/v1/utils/token';
@@ -54,7 +54,7 @@ const register = async (data: IUser): Promise<AuthResponse> => {
   const { accessToken, refreshToken, expiredAt } = token.generateToken(
     savedUser.username,
     savedUser._id.toString(),
-    savedUser.role // role default is 'user'
+    savedUser.role, // role default is 'user'
   );
 
   return {
@@ -76,7 +76,7 @@ const register = async (data: IUser): Promise<AuthResponse> => {
  * @throws {UnauthorizedError} Si el usuario o la contraseña no son válidos.
  */
 const login = async (
-  data: Pick<IUser, 'username' | 'password'>
+  data: Pick<IUser, 'username' | 'password'>,
 ): Promise<AuthResponse> => {
   const { username, password } = data;
   if (!username || !password) {
@@ -100,7 +100,7 @@ const login = async (
   const { accessToken, refreshToken, expiredAt } = token.generateToken(
     userFind.username,
     userFind._id.toString(),
-    userFind.role
+    userFind.role,
   );
 
   return {
@@ -121,7 +121,7 @@ const login = async (
  * @throws {UnauthorizedError} Si no hay usuario.
  */
 const getPersonalInfo = async (
-  user: CustomJwtPayload
+  user: CustomJwtPayload,
 ): Promise<ReturnType<typeof UserModel.findById>> => {
   if (!user) {
     throw new UnauthorizedError('No user id provided');
@@ -151,7 +151,7 @@ const refreshToken = async (userId: string): Promise<AuthResponse> => {
   const { accessToken, refreshToken, expiredAt } = token.generateToken(
     user.username,
     user._id.toString(),
-    user.role
+    user.role,
   );
 
   return {

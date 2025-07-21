@@ -23,7 +23,7 @@ const isErrorWithMessage = (e: unknown): e is { message: string } => {
 };
 
 const isErrorWithStatus = (
-  e: unknown
+  e: unknown,
 ): e is { status: number; message: string } => {
   return (
     typeof e === 'object' &&

@@ -154,15 +154,16 @@ function gaussianRandom(mean: number, std: number): number {
     Math.max(
       0,
       Math.floor(
-        mean + std * Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v)
-      )
-    )
+        mean +
+          std * Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v),
+      ),
+    ),
   );
 }
 
 function getRandomIP(): string {
   return `${Math.floor(Math.random() * 255)}.${Math.floor(
-    Math.random() * 255
+    Math.random() * 255,
   )}.${Math.floor(Math.random() * 255)}.${Math.floor(Math.random() * 255)}`;
 }
 
@@ -221,7 +222,7 @@ async function seed() {
     (_, i) => {
       const daysAgo = SEED_CONFIG.DAYS_TO_SEED - i * 3; // URLs más nuevas más recientes
       return new Date(Date.now() - daysAgo * 24 * 60 * 60 * 1000);
-    }
+    },
   );
 
   const urls = await ShortURLModel.insertMany(
@@ -230,7 +231,7 @@ async function seed() {
       user: user._id,
       createdAt: creationDates[index],
       updatedAt: creationDates[index],
-    }))
+    })),
   );
 
   // Generar analytics
@@ -247,7 +248,7 @@ async function seed() {
     while (currentDate <= endDate) {
       const daysSinceCreation = Math.floor(
         (currentDate.getTime() - urlCreationDate.getTime()) /
-          (1000 * 60 * 60 * 24)
+          (1000 * 60 * 60 * 24),
       );
 
       const clicks = getClicksForDay(index, daysSinceCreation);
@@ -292,7 +293,7 @@ async function seed() {
 
     await ShortURLModel.updateOne(
       { _id: url._id },
-      { $set: { totalClicks: urlTotalClicks } }
+      { $set: { totalClicks: urlTotalClicks } },
     );
   }
 

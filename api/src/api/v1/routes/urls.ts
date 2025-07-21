@@ -21,7 +21,7 @@ router.delete(
   '/:shortCode',
   authenticate,
   validateShortUrlParam,
-  shortURL.removeShortURL
+  shortURL.removeShortURL,
 );
 
 export default router;

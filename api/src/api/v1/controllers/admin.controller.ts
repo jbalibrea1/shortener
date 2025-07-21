@@ -3,7 +3,7 @@
  * @module controllers/adminController
  */
 
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import shortURLAdmin from '@/api/v1/services/shortURLAdmin.service';
 import { successResponse } from '@/api/v1/utils/responses';
 import { ValidationError } from '../utils/errors';
@@ -19,7 +19,7 @@ import { ValidationError } from '../utils/errors';
  */
 export const promoteAdmin = async (
   req: Request<unknown, unknown, { username: string }>,
-  res: Response
+  res: Response,
 ) => {
   const { username } = req.body;
   if (!username) throw new ValidationError('Nombre de usuario requerido');
@@ -38,7 +38,7 @@ export const promoteAdmin = async (
  */
 export const demoteAdmin = async (
   req: Request<unknown, unknown, { username: string }>,
-  res: Response
+  res: Response,
 ) => {
   const { username } = req.body;
   if (!username) throw new ValidationError('Nombre de usuario requerido');

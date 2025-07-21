@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import type { NextFunction, Request, Response } from 'express';
 import { shortUrlBodySchema } from '@/api/v1/schemas/shorturl.schema';
 import { ValidationError } from '@/api/v1/utils/errors';
 import parsedURL from '@/api/v1/utils/parsedURL';
@@ -6,7 +6,7 @@ import parsedURL from '@/api/v1/utils/parsedURL';
 export async function validateShortUrlBody(
   req: Request<Record<string, string>, unknown, { url: string }>,
   _res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): Promise<void> {
   try {
     // Normaliza y parsea la URL antes de validar
@@ -20,10 +20,11 @@ export async function validateShortUrlBody(
         new ValidationError(
           result.error.errors
             .map(
-              (e) => `${e.path.length ? e.path.join('.') : 'url'}: ${e.message}`
+              (e) =>
+                `${e.path.length ? e.path.join('.') : 'url'}: ${e.message}`,
             )
-            .join(', ')
-        )
+            .join(', '),
+        ),
       );
     }
     next();

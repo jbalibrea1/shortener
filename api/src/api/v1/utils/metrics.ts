@@ -41,7 +41,7 @@ interface IpApiResponse {
   [key: string]: unknown;
 }
 export async function getGeoFromIp(
-  ip: string
+  ip: string,
 ): Promise<{ country: string; city: string }> {
   let country = 'unknown';
   let city = 'unknown';
