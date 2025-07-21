@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React from 'react';
+import type React from "react";
 
 interface Metadata {
   logo?: string;
@@ -8,21 +8,19 @@ interface Metadata {
 
 const ImageFallback: React.FC<{ data: Metadata }> = ({ data }) => {
   const handleImageError = (
-    e: React.SyntheticEvent<HTMLImageElement, Event>
+    e: React.SyntheticEvent<HTMLImageElement, Event>,
   ) => {
     const target = e.target as HTMLImageElement;
-    target.src = '/favicon.ico';
+    target.src = "/favicon.ico";
   };
 
   return (
-    <>
-      <img
-        src={data.logo ?? '/favicon.ico'}
-        alt={data.title}
-        className="max-w-10 max-h-10 border-2 border-primary rounded-full"
-        onError={handleImageError}
-      />
-    </>
+    <img
+      src={data.logo ?? "/favicon.ico"}
+      alt={data.title}
+      className="max-w-10 max-h-10 border-2 border-primary rounded-full"
+      onError={handleImageError}
+    />
   );
 };
 

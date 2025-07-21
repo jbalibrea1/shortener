@@ -1,36 +1,36 @@
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import { authConfig } from '../auth.config';
-import api from './axios';
+import NextAuth from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import { authConfig } from "../auth.config";
+import api from "./axios";
 export const { auth, handlers, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
     CredentialsProvider({
-      name: 'Credentials',
+      name: "Credentials",
       credentials: {
-        username: { label: 'User', type: 'text' },
-        password: { label: 'Password', type: 'password' }
+        username: { label: "User", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         try {
-          const res = await api.post('/auth/login', {
+          const res = await api.post("/auth/login", {
             username: credentials?.username,
-            password: credentials?.password
+            password: credentials?.password,
           });
           const { data } = res.data;
-          if (data && data.token && data.username) {
+          if (data?.token && data.username) {
             return {
               id: data.username,
               username: data.username,
-              token: data.token
+              token: data.token,
             };
           }
           return null;
         } catch (error) {
-          console.error('Auth error:', error);
+          console.error("Auth error:", error);
           return null;
         }
-      }
-    })
-  ]
+      },
+    }),
+  ],
 });

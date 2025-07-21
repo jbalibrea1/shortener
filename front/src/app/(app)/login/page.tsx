@@ -1,11 +1,11 @@
-import { LoginForm } from '@/components/login-form';
-import { redirect } from 'next/navigation';
-import { auth } from '../../../auth';
+import { redirect } from "next/navigation";
+import { LoginForm } from "@/components/login-form";
+import { auth } from "../../../auth";
 
 export default async function LoginPage() {
   const session = await auth();
   if (session?.user) {
-    redirect('/dashboard');
+    redirect("/dashboard");
   }
 
   return (

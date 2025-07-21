@@ -1,26 +1,34 @@
-'use client';
-import { signOut } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { ReactNode } from 'react';
-import { toast } from 'sonner';
+"use client";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import type { ReactNode } from "react";
+import { toast } from "sonner";
 
 export function LogoutLink({
-  className = '',
-  children
+  className = "",
+  children,
 }: {
   className?: string;
   children?: ReactNode;
 }) {
   const router = useRouter();
 
+  const handleLogout = async () => {
+    return signOut({ redirect: false }).then(() => {
+      router.push("/");
+    });
+  };
+
   return (
     <button
       type="button"
       className={`${className} cursor-pointer`}
-      onClick={async () => {
-        await signOut({ redirect: false });
-        toast.success('You have successfully logged out.');
-        router.push('/');
+      onClick={() => {
+        toast.promise(handleLogout(), {
+          loading: "Logging out...",
+          success: "You have successfully logged out.",
+          error: "Logout failed. Please try again.",
+        });
       }}
     >
       {children}

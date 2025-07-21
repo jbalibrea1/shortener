@@ -4,7 +4,7 @@ interface handleCopyProps {
   title?: string;
   toast: (
     msg: string,
-    opts?: { type?: 'success' | 'error'; desc?: string }
+    opts?: { type?: "success" | "error"; desc?: string },
   ) => void;
 }
 
@@ -12,16 +12,16 @@ const handleCopy = ({ url, desc, title, toast }: handleCopyProps) => {
   navigator.clipboard
     .writeText(url)
     .then(() => {
-      toast(title ?? 'Link copied', {
-        type: 'success',
-        desc: desc ?? 'Link successfully copied to clipboard 🎉'
+      toast(title ?? "Link copied", {
+        type: "success",
+        desc: desc ?? "Link successfully copied to clipboard 🎉",
       });
     })
     .catch((error) => {
       console.error(error);
-      toast('Error copying link', {
-        type: 'error',
-        desc: 'Please try again.'
+      toast("Error copying link", {
+        type: "error",
+        desc: "Please try again.",
       });
     });
 };

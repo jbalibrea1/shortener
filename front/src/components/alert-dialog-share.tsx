@@ -1,3 +1,4 @@
+import { CopyIcon } from "@radix-ui/react-icons";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -6,13 +7,12 @@ import {
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog';
-import type { ShortUrlEntry } from '@/interface/shortURLentry';
-import { CopyIcon } from '@radix-ui/react-icons';
-import ImageFallback from './image-fallback';
-import InputWithCopyIcon from './input-copy';
-import QRCodeGenerator from './qrcode';
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import type { ShortUrlEntry } from "@/interface/shortURLentry";
+import ImageFallback from "./image-fallback";
+import InputWithCopyIcon from "./input-copy";
+import QRCodeGenerator from "./qrcode";
 
 type AlertDialogDemoProps = {
   open: boolean;
@@ -29,7 +29,7 @@ export function AlertDialogShort({
   data,
   handleIconClick,
   setOpen,
-  handleCopyAndClose
+  handleCopyAndClose,
 }: AlertDialogDemoProps) {
   return (
     <AlertDialog open={open}>
@@ -38,11 +38,11 @@ export function AlertDialogShort({
           <AlertDialogTitle>Link generated successfully</AlertDialogTitle>
           <AlertDialogDescription className="flex items-center gap-4 ">
             <ImageFallback
-              data={{ logo: data?.logo || undefined, title: data.title || '' }}
+              data={{ logo: data?.logo || undefined, title: data.title || "" }}
             />
             {data.description
               ? `Description: ${data.description}`
-              : 'Copy the short link and share it with your friends'}
+              : "Copy the short link and share it with your friends"}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <InputWithCopyIcon

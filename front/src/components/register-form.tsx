@@ -1,6 +1,13 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardAction,
@@ -8,8 +15,8 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -17,17 +24,10 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { registerSchema, RegisterSchemaType } from '@/schemas/auth.schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { signIn } from 'next-auth/react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { type RegisterSchemaType, registerSchema } from "@/schemas/auth.schema";
 
 export function RegisterForm() {
   const [loading, setLoading] = useState(false);
@@ -36,10 +36,10 @@ export function RegisterForm() {
   const form = useForm<RegisterSchemaType>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      username: '',
-      password: '',
-      confirmPassword: ''
-    }
+      username: "",
+      password: "",
+      confirmPassword: "",
+    },
   });
 
   const onSubmit = async (data: RegisterSchemaType) => {
@@ -48,31 +48,31 @@ export function RegisterForm() {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
         {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             username: data.username,
-            password: data.password
-          })
-        }
+            password: data.password,
+          }),
+        },
       );
       if (!res.ok) {
         const result = await res.json();
-        toast.error(result.error || 'Registration error');
-        if (result.error?.toLowerCase().includes('user')) {
-          form.setError('username', { type: 'manual', message: result.error });
+        toast.error(result.error || "Registration error");
+        if (result.error?.toLowerCase().includes("user")) {
+          form.setError("username", { type: "manual", message: result.error });
         }
       } else {
-        toast.success('User registered successfully');
-        await signIn('credentials', {
+        toast.success("User registered successfully");
+        await signIn("credentials", {
           username: data.username,
           password: data.password,
-          redirect: false
+          redirect: false,
         });
-        router.push('/');
+        router.push("/");
       }
     } catch {
-      toast.error('Connection error');
+      toast.error("Connection error");
     } finally {
       setLoading(false);
     }
@@ -162,20 +162,20 @@ export function RegisterForm() {
           </CardContent>
           <CardFooter className="flex-col gap-2">
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? 'Signing up...' : 'Sign up'}
+              {loading ? "Signing up..." : "Sign up"}
             </Button>
             <Button
               variant="outline"
               className="w-full"
               disabled={loading}
-              onClick={() => signIn('google')}
+              onClick={() => signIn("google")}
               type="button"
             >
               Sign up with Google
             </Button>
           </CardFooter>
           <div className="text-sm text-center">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <Link href="/login" className="underline underline-offset-4">
               Sign in
             </Link>

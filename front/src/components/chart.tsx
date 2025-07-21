@@ -1,132 +1,120 @@
-'use client';
+"use client";
 
-import { useSession } from 'next-auth/react';
-import * as React from 'react';
-import { Area, AreaChart, CartesianGrid, XAxis } from 'recharts';
-
+import { usePathname, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import * as React from "react";
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
 import {
   Card,
   CardAction,
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
-} from '@/components/ui/card';
+  CardTitle,
+} from "@/components/ui/card";
 import {
-  ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent
-} from '@/components/ui/chart';
+  ChartTooltipContent,
+} from "@/components/ui/chart";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
-import { useIsMobile } from '@/hooks/use-mobile';
+  SelectValue,
+} from "@/components/ui/select";
+import { useIsMobile } from "@/hooks/use-mobile";
+import api from "@/lib/axios";
 
-export const description = 'An interactive area chart';
-
-const chartData = [
-  { date: '2025-05-22', clicks: 49 },
-  { date: '2025-07-02', clicks: 14 },
-  { date: '2025-07-05', clicks: 12 },
-  { date: '2025-07-06', clicks: 11 }
-];
+export const description = "An interactive area chart";
 
 const chartConfig = {
   visitors: {
-    label: 'Visitors'
+    label: "Visitors",
   },
   desktop: {
-    label: 'Desktop',
-    color: 'var(--primary)'
+    label: "Desktop",
+    color: "var(--primary)",
   },
   mobile: {
-    label: 'Mobile',
-    color: 'var(--primary)'
-  }
+    label: "Mobile",
+    color: "var(--primary)",
+  },
 } satisfies ChartConfig;
 
-export function ChartAreaInteractive() {
+export function ChartAreaInteractive({ initialDays }: { initialDays: string }) {
   const isMobile = useIsMobile();
+  const pathname = usePathname();
   const { data: session } = useSession();
-  const [timeRange, setTimeRange] = React.useState('90d');
+  const [timeRange, setTimeRange] = React.useState(initialDays || "30"); // default to 30
   const [data, setData] = React.useState<{ date: string; clicks: number }[]>(
-    []
+    [],
   );
-
-  // TODO: Remove loading?
-  const [loading, setLoading] = React.useState(true);
+  const router = useRouter();
+  const createParams = React.useCallback(() => {
+    const params = new URLSearchParams();
+    params.set("days", timeRange);
+    return `${pathname}?${params.toString()}`;
+  }, [pathname, timeRange]);
 
   React.useEffect(() => {
     if (isMobile) {
-      setTimeRange('7d');
+      setTimeRange("7");
     }
-  }, [isMobile]);
+    router.replace(createParams());
+  }, [isMobile, createParams, router.replace]);
 
   React.useEffect(() => {
-    if (!session?.accessToken) return;
-    setLoading(true);
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/analytics/by-day`, {
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`
-      }
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json.data);
-        setLoading(false);
+    async function fetchData() {
+      if (!session?.accessToken) return;
+      const res = await api.get(`/analytics/by-day?days=${timeRange}`, {
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`,
+        },
       });
-  }, [session]);
-
-  const filteredData = data.filter((item) => {
-    const date = new Date(item.date);
-    const referenceDate = new Date();
-    let daysToSubtract = 90;
-    if (timeRange === '30d') {
-      daysToSubtract = 30;
-    } else if (timeRange === '7d') {
-      daysToSubtract = 7;
+      if (res.status !== 200) {
+        console.error("Failed to fetch data", res.statusText);
+        return;
+      }
+      const { data } = res.data;
+      setData(data);
     }
-    const startDate = new Date(referenceDate);
-    startDate.setDate(startDate.getDate() - daysToSubtract);
-    return date >= startDate;
-  });
+    fetchData();
+  }, [session, timeRange]);
 
-  const totalClicks = filteredData.reduce((acc, item) => acc + item.clicks, 0);
+  const totalClicks = data.reduce((acc, item) => acc + item.clicks, 0);
   return (
     <Card className="@container/card">
       <CardHeader>
         <CardTitle>
           Total of clicks on Short URLs
           <span className="text-muted-foreground">
-            {' '}
-            ({filteredData.length} días, {totalClicks} clicks)
+            {` (${data.length} días, ${totalClicks} clicks)`}
           </span>
         </CardTitle>
         <CardDescription>
           <span className="hidden @[540px]/card:block">
-            Total for the last{' '}
-            {timeRange === '90d'
-              ? '3 months'
-              : timeRange === '30d'
-              ? '30 days'
-              : '7 days'}{' '}
-            - Last click on{' '}
-            {filteredData.length > 0
-              ? new Date(
-                  filteredData[filteredData.length - 1].date
-                ).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric'
-                })
-              : 'N/A'}
+            Total for the last{" "}
+            {timeRange === "90"
+              ? "3 months"
+              : timeRange === "30"
+                ? "30 days"
+                : "7 days"}{" "}
+            - Last click on{" "}
+            {data.length > 0
+              ? new Date(data[data.length - 1].date).toLocaleDateString(
+                  "en-US",
+                  {
+                    month: "short",
+                    day: "numeric",
+                    year: "numeric",
+                  },
+                )
+              : "N/A"}
           </span>
-          <span className="@[540px]/card:hidden">Last 3 months</span>
+          <span className="@[540px]/card:hidden">Last {timeRange} days</span>
         </CardDescription>
         <CardAction>
           <Select value={timeRange} onValueChange={setTimeRange}>
@@ -137,13 +125,13 @@ export function ChartAreaInteractive() {
               <SelectValue placeholder="Last 3 months" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
-              <SelectItem value="90d" className="rounded-lg">
+              <SelectItem value="90" className="rounded-lg">
                 Last 3 months
               </SelectItem>
-              <SelectItem value="30d" className="rounded-lg">
+              <SelectItem value="30" className="rounded-lg">
                 Last 30 days
               </SelectItem>
-              <SelectItem value="7d" className="rounded-lg">
+              <SelectItem value="7" className="rounded-lg">
                 Last 7 days
               </SelectItem>
             </SelectContent>
@@ -155,7 +143,7 @@ export function ChartAreaInteractive() {
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
         >
-          <AreaChart data={filteredData}>
+          <AreaChart data={data}>
             <defs>
               <linearGradient id="fillClicks" x1="0" y1="0" x2="0" y2="1">
                 <stop
@@ -179,9 +167,9 @@ export function ChartAreaInteractive() {
               minTickGap={32}
               tickFormatter={(value) => {
                 const date = new Date(value);
-                return date.toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric'
+                return date.toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
                 });
               }}
             />
@@ -191,9 +179,9 @@ export function ChartAreaInteractive() {
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric'
+                    return new Date(value).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
                     });
                   }}
                   indicator="dot"

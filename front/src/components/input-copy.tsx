@@ -1,12 +1,12 @@
+import { CopyIcon } from "@radix-ui/react-icons";
+import type { InputHTMLAttributes } from "react";
+import * as React from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
-  TooltipTrigger
-} from '@/components/ui/tooltip';
-import { CopyIcon } from '@radix-ui/react-icons';
-import type { InputHTMLAttributes } from 'react';
-import * as React from 'react';
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface InputWithCopyIconProps extends InputHTMLAttributes<HTMLInputElement> {
   iconClick: () => void;
@@ -40,6 +40,6 @@ const InputWithCopyIcon = React.forwardRef<
   );
 });
 
-InputWithCopyIcon.displayName = 'InputWithCopyIcon';
+InputWithCopyIcon.displayName = "InputWithCopyIcon";
 
 export default InputWithCopyIcon;

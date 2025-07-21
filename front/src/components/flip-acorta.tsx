@@ -1,23 +1,23 @@
-import { FlipWords } from '@/components/ui/flipwords';
+import { FlipWords } from "@/components/ui/flipwords";
 
 export function FlipWordsAcorta() {
   const words = [
-    'tWe5wR',
-    'bij-6cg',
-    'zvf1nIg',
-    'ux1ewg',
-    'k8pQ2z',
-    'm3nX7v',
-    'aB4cD5',
-    'qR9tY1',
-    'lmn-8op',
-    's2t3uv',
-    'wxy-4z',
-    'h7j6kl',
-    'p0q1rs',
-    'v5w6x7',
-    'g8h9ij',
-    'b2c3de'
+    "tWe5wR",
+    "bij-6cg",
+    "zvf1nIg",
+    "ux1ewg",
+    "k8pQ2z",
+    "m3nX7v",
+    "aB4cD5",
+    "qR9tY1",
+    "lmn-8op",
+    "s2t3uv",
+    "wxy-4z",
+    "h7j6kl",
+    "p0q1rs",
+    "v5w6x7",
+    "g8h9ij",
+    "b2c3de",
   ];
 
   return (

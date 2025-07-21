@@ -1,12 +1,12 @@
-'use client';
-import { OverlayLoading } from '@/components/overlay-loading';
-import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+"use client";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { OverlayLoading } from "@/components/overlay-loading";
 
 export function RouteLoadingOverlay() {
   const pathname = usePathname();
   const [loading, setLoading] = useState(false);
-
+  // TODO: DELETE?
   useEffect(() => {
     setLoading(true);
 

@@ -1,19 +1,18 @@
-'use client';
+"use client";
 
-import { type Icon } from '@tabler/icons-react';
-import { usePathname } from 'next/navigation';
-
+import type { Icon } from "@tabler/icons-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem
-} from '@/components/ui/sidebar';
-import Link from 'next/link';
+  SidebarMenuItem,
+} from "@/components/ui/sidebar";
 
 export function NavMain({
-  items
+  items,
 }: {
   items: {
     title: string;
@@ -32,7 +31,7 @@ export function NavMain({
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton
                   tooltip={item.title}
-                  className={isActive ? 'bg-sidebar-accent' : ''}
+                  className={isActive ? "bg-sidebar-accent" : ""}
                 >
                   {item.icon && <item.icon />}
                   <span>{item.title}</span>

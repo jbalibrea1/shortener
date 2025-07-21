@@ -1,11 +1,11 @@
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
 
-import Footer from '@/components/main/footer';
-import HeaderNavigation from '@/components/main/header-navigation';
+import Footer from "@/components/main/footer";
+import HeaderNavigation from "@/components/main/header-navigation";
 
 export const metadata: Metadata = {
-  title: 'APP URL Shortener | by Jorge Balibrea - @jbalibrea1',
-  description: 'URL Shortener is a simple tool to shorten URLs'
+  title: "APP URL Shortener | by Jorge Balibrea - @jbalibrea1",
+  description: "URL Shortener is a simple tool to shorten URLs",
 };
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
