@@ -11,4 +11,6 @@ RUN pnpm install
 
 COPY . .
 
+ENV NODE_ENV=development
+
 CMD ["pnpm", "run", "dev"]

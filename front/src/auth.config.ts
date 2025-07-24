@@ -1,11 +1,16 @@
-import axios from "axios";
-import type { NextAuthConfig } from "next-auth";
+import axios from 'axios';
+import type { NextAuthConfig } from 'next-auth';
 
+const isServer = typeof window === 'undefined';
+const baseURL = isServer
+  ? process.env.API_URL
+  : process.env.NEXT_PUBLIC_API_URL;
 const localApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL,
   timeout: 30000,
   withCredentials: true,
 });
+
 export const authConfig = {
   providers: [
     // added later in auth.ts since it requires bcrypt which is only compatible with Node.js
@@ -13,35 +18,24 @@ export const authConfig = {
   ],
   // TODO: change maxAge
   session: {
-    strategy: "jwt" as const,
+    strategy: 'jwt' as const,
     maxAge: 7 * 24 * 60 * 60, // 7 días
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard");
+      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
       console.log(
         `🔑 [authorized] ${new Date().toISOString()} | isLoggedIn=${isLoggedIn}, isOnDashboard=${isOnDashboard}, nextUrl=${
           nextUrl.pathname
-        }`,
+        }`
       );
       if (isOnDashboard) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       }
-      // else if (isLoggedIn) {
-      //   return Response.redirect(new URL('/dashboard', nextUrl));
-      // }
       return true;
     },
-    // async jwt({ token, user }: any) {
-    //   if (user?.token) {
-    //     token.apiToken = user.token;
-    //     token.role = user.role;
-    //     token.username = user.username;
-    //   }
-    //   return token;
-    // },
 
     async jwt({ token, user }) {
       if (user) {
@@ -60,10 +54,10 @@ export const authConfig = {
         return token;
       }
       // Subsequent logins, but the `access_token` has expired, try to refresh it
-      if (!token.refreshToken) throw new TypeError("Missing refreshToken");
+      if (!token.refreshToken) throw new TypeError('Missing refreshToken');
 
       try {
-        const res = await localApi.post("/auth/refreshToken", {
+        const res = await localApi.post('/auth/refreshToken', {
           refreshToken: token.refreshToken,
         });
 
@@ -78,7 +72,7 @@ export const authConfig = {
         };
 
         console.log(
-          `🔑 [jwt] New accessToken for user: ${JSON.stringify(newTokens)}`,
+          `🔑 [jwt] New accessToken for user: ${JSON.stringify(newTokens)}`
         );
         return {
           ...token,
@@ -90,9 +84,9 @@ export const authConfig = {
             : token.refreshToken,
         };
       } catch (error) {
-        console.error("Error refreshing accessToken", error);
+        console.error('Error refreshing accessToken', error);
         // If we fail to refresh the token, return an error so we can handle it on the page
-        token.error = "RefreshTokenError";
+        token.error = 'RefreshTokenError';
         return token;
       }
     },
@@ -111,7 +105,7 @@ export const authConfig = {
     },
   },
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
   // debug: process.env.NODE_ENV === 'development'
 } satisfies NextAuthConfig;
