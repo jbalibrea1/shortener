@@ -16,7 +16,7 @@ import token from '../utils/token';
  */
 export const login = async (
   req: Request<unknown, unknown, IUser>,
-  res: Response,
+  res: Response
 ) => {
   const { username, password } = req.body;
   const authenticatedUser = await auth.login({ username, password });
@@ -29,7 +29,7 @@ export const login = async (
  */
 export const saveUser = async (
   req: Request<unknown, unknown, IUser>,
-  res: Response,
+  res: Response
 ) => {
   const { username, password, name, email } = req.body;
   const newUser = await auth.register({ username, password, name, email });
@@ -75,7 +75,7 @@ export const logout = async (req: IJwtRequest, res: Response) => {
  */
 export const refreshToken = async (
   req: Request<unknown, unknown, { refreshToken: string }>,
-  res: Response,
+  res: Response
 ) => {
   const { refreshToken } = req.body;
   if (!refreshToken || typeof refreshToken !== 'string') {
@@ -88,4 +88,21 @@ export const refreshToken = async (
   const data = await auth.refreshToken(payload.id);
 
   successResponse({ res, data, msg: 'Token refrescado' });
+};
+
+export const updateProfile = async (req: IJwtRequest, res: Response) => {
+  const user = req.user;
+  if (!user || !user.id) {
+    throw new UnauthorizedError('No authorization token provided');
+  }
+  const { name, password } = req.body;
+  const updatedUser = await auth.updateProfile(user.id, {
+    name,
+    password,
+  });
+  successResponse({
+    res,
+    data: updatedUser,
+    msg: 'Perfil actualizado correctamente',
+  });
 };

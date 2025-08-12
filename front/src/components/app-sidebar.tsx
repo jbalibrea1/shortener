@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   IconChartBar,
@@ -6,12 +6,12 @@ import {
   IconDashboard,
   IconFolder,
   IconUsers,
-} from "@tabler/icons-react";
-import { LifeBuoy, Send } from "lucide-react";
-import { useSession } from "next-auth/react";
-import type * as React from "react";
-import { NavMain } from "@/components/nav-main";
-import { NavUser } from "@/components/nav-user";
+} from '@tabler/icons-react';
+import { LifeBuoy, Send } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import type * as React from 'react';
+import { NavMain } from '@/components/nav-main';
+import { NavUser } from '@/components/nav-user';
 import {
   Sidebar,
   SidebarContent,
@@ -19,66 +19,59 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarRail,
-} from "@/components/ui/sidebar";
-import { NavSecondary } from "./nav-secondary";
-import { ModeToggle } from "./toggle-dark";
+} from '@/components/ui/sidebar';
+import { NavSecondary } from './nav-secondary';
+import { ModeToggle } from './toggle-dark';
 
 // This is sample data.
 const data = {
   navMain: [
     {
-      title: "Dashboard",
-      url: "/dashboard",
+      title: 'Dashboard',
+      url: '/dashboard',
       icon: IconDashboard,
     },
     {
-      title: "Analytics",
-      url: "/dashboard/analytics",
+      title: 'Analytics',
+      url: '/dashboard/analytics',
       icon: IconChartBar,
     },
     {
-      title: "Create",
-      url: "/dashboard/create",
+      title: 'Create',
+      url: '/dashboard/create',
       icon: IconCirclePlus,
     },
     {
-      title: "Projects",
-      url: "#",
+      title: 'Projects',
+      url: '#',
       icon: IconFolder,
     },
     {
-      title: "Team",
-      url: "#",
+      title: 'Team',
+      url: '#',
       icon: IconUsers,
     },
   ],
   navSecondary: [
     {
-      title: "Support",
-      url: "#",
+      title: 'Support',
+      url: '#',
       icon: LifeBuoy,
     },
     {
-      title: "Feedback",
-      url: "#",
+      title: 'Feedback',
+      url: '#',
       icon: Send,
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: session } = useSession();
-  const user = {
-    username: session?.user?.username || "",
-    email: session?.user?.email || "",
-    avatar: session?.user?.avatar || "/avatars/default.jpg",
-  };
-
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader className="border-sidebar-border h-16 border-b">
         <SidebarMenu>
-          <NavUser user={user} />
+          <NavUser />
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>

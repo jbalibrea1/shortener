@@ -25,11 +25,6 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-      console.log(
-        `🔑 [authorized] ${new Date().toISOString()} | isLoggedIn=${isLoggedIn}, isOnDashboard=${isOnDashboard}, nextUrl=${
-          nextUrl.pathname
-        }`
-      );
       if (isOnDashboard) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
@@ -39,11 +34,11 @@ export const authConfig = {
 
     async jwt({ token, user }) {
       if (user) {
-        console.log(`🔑 [jwt] First-time login for user: ${user.username}`);
         // First-time login, save the `access_token`, its expiry and the `refresh_token`
         return {
           ...token,
           username: user.username,
+          name: user.name,
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
           expiresAt: user.expiresAt,
@@ -71,12 +66,10 @@ export const authConfig = {
           refreshToken?: string;
         };
 
-        console.log(
-          `🔑 [jwt] New accessToken for user: ${JSON.stringify(newTokens)}`
-        );
         return {
           ...token,
           username: token.username,
+          name: token.name,
           accessToken: newTokens.accessToken,
           expiresAt: Math.floor(Date.now() / 1000 + newTokens.expiresIn),
           refreshToken: newTokens.refreshToken
@@ -91,12 +84,11 @@ export const authConfig = {
       }
     },
     async session({ session, token }: any) {
-      console.log(`🔑 [session] Session data: ${JSON.stringify(session)}`);
-      console.log(`🔑 [session] Token data: ${JSON.stringify(token)}`);
       if (token.accessToken) {
         session.accessToken = token.accessToken;
         session.user.role = token.role;
         session.user.username = token.username;
+        session.user.name = token.name;
       }
       // if (token.accessToken) session.accessToken = token.accessToken;
       // if (token.role) session.user.role = token.role;

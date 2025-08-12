@@ -1,4 +1,4 @@
-import "next-auth";
+import 'next-auth';
 //  id: data.username,
 //       username: data.username,
 //       name: data.name,
@@ -6,9 +6,10 @@ import "next-auth";
 //       accessToken: data.accessToken,
 //       refreshToken: data.refreshToken,
 //       expiresAt: Date.now() + data.expiresIn * 1000
-declare module "next-auth" {
+declare module 'next-auth' {
   interface User {
     username?: string;
+    name?: string;
     role?: string;
     // otros campos personalizados si tienes
     id?: string;
@@ -21,8 +22,9 @@ declare module "next-auth" {
     user: {
       username?: string;
       role?: string;
+      name?: string;
       // otros campos personalizados si tienes
-    } & DefaultSession["user"];
+    } & DefaultSession['user'];
     accessToken?: string;
     refreshToken?: string;
     expiredAt?: number;
