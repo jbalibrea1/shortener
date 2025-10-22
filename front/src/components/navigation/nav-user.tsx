@@ -79,10 +79,21 @@ export function NavUser() {
   const onSubmit = async (data: EditProfileSchemaType) => {
     setLoading(true);
     try {
-      await api.put('/auth/me', {
-        name: data.name,
-        password: data.password || undefined,
-      });
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+      // Si hay accessToken en la sesión de NextAuth, añádelo
+      if (session?.accessToken) {
+        headers.Authorization = `Bearer ${session.accessToken}`;
+      }
+      await api.put(
+        '/auth/me',
+        {
+          name: data.name,
+          password: data.password || undefined,
+        },
+        { headers }
+      );
       toast.success('Profile updated successfully');
       // Opcional: cerrar el diálogo aquí si lo necesitas
     } catch (err: any) {
