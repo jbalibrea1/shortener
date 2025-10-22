@@ -1,8 +1,8 @@
-import { useRouter } from "next/navigation";
-import { signOut, useSession } from "next-auth/react";
-import React from "react";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { useRouter } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
+import React from 'react';
+import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,32 +15,32 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { LogoutLink } from "../logout-link";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { LogoutLink } from '@/components/features/logout-link';
 
-const DASHBOARD_KEYBOARD_SHORTCUT = "d";
-const LOGOUT_KEYBOARD_SHORTCUT = "o";
+const DASHBOARD_KEYBOARD_SHORTCUT = 'd';
+const LOGOUT_KEYBOARD_SHORTCUT = 'o';
 
 export function DropdownLogged() {
   const { data: session } = useSession();
-  console.log("Session data:", session);
+  console.log('Session data:', session);
   const user = {
-    username: session?.user?.username || "",
-    email: session?.user?.email || "",
-    avatar: session?.user?.avatar || "/avatars/default.jpg",
+    username: session?.user?.username || '',
+    email: session?.user?.email || '',
+    avatar: session?.user?.avatar || '/avatars/default.jpg',
   };
   const router = useRouter();
 
   // Functions to navigate
   const goToDashboard = React.useCallback(() => {
-    window.location.href = "/dashboard";
+    window.location.href = '/dashboard';
   }, []);
 
   const logout = React.useCallback(async () => {
-    toast.success("Has cerrado sesión correctamente.");
+    toast.success('Has cerrado sesión correctamente.');
     await signOut({ redirect: false });
-    router.push("/");
+    router.push('/');
   }, [router]);
 
   // Adds a keyboard shortcut to toggle the sidebar.
@@ -62,8 +62,8 @@ export function DropdownLogged() {
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, [goToDashboard, logout]);
 
   return (
@@ -76,7 +76,7 @@ export function DropdownLogged() {
           <Avatar className="h-8 w-8 rounded-lg">
             <AvatarImage src={user.avatar} alt={user.username} />
             <AvatarFallback className="rounded-lg">
-              {user.username?.slice(0, 2).toUpperCase() || "SH"}
+              {user.username?.slice(0, 2).toUpperCase() || 'SH'}
             </AvatarFallback>
           </Avatar>
           <span className="max-w-[120px] truncate text-left">

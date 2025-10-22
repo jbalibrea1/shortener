@@ -1,5 +1,5 @@
-import { FlipWordsAcorta } from "@/components/flip-acorta";
-import { FormSendURL } from "@/components/form-send-url";
+import { FlipWordsAcorta } from '@/components/features/flip-acorta';
+import { FormSendURL } from '@/components/forms/form-send-url';
 
 export default function Home() {
   return (

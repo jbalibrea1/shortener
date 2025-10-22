@@ -1,5 +1,5 @@
-import { SiteHeader } from "@/components/site-header";
-import { DashboardSkeleton } from "@/components/skeletons";
+import { DashboardSkeleton } from '@/components/common/skeletons';
+import { SiteHeader } from '@/components/layout/site-header';
 
 export default function Loading() {
   return (

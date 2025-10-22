@@ -1,14 +1,14 @@
-import "@/styles/globals.css";
-import type { Metadata } from "next";
+import '@/styles/globals.css';
+import type { Metadata } from 'next';
 
-import ClientProviders from "@/components/client-provider";
-import { fontSans } from "@/components/fonts";
-import { Toaster } from "@/components/ui/sonner";
-import { cn } from "@/lib/utils";
+import ClientProviders from '@/components/providers/client-provider';
+import { fontSans } from '@/components/providers/fonts';
+import { Toaster } from '@/components/ui/sonner';
+import { cn } from '@/lib/utils';
 
 export const metadata: Metadata = {
-  title: "URL Shortener | by Jorge Balibrea - @jbalibrea1",
-  description: "URL Shortener is a simple tool to shorten URLs",
+  title: 'URL Shortener | by Jorge Balibrea - @jbalibrea1',
+  description: 'URL Shortener is a simple tool to shorten URLs',
 };
 
 export default function RootLayout({
@@ -21,7 +21,7 @@ export default function RootLayout({
       <body
         className={cn(
           fontSans.className,
-          "font-sans min-h-svh bg-background antialiased",
+          'font-sans min-h-svh bg-background antialiased'
         )}
         suppressHydrationWarning
       >

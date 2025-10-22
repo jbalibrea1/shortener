@@ -1,15 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
-import { type Icon, IconInfoCircle, IconUser } from "@tabler/icons-react";
-import clsx from "clsx";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import type { Session } from "next-auth";
-import { useSession } from "next-auth/react";
-import { ModeToggle } from "../toggle-dark";
-import { Button } from "../ui/button";
-import DropdownLogged from "./dropDownLogged";
+'use client';
+import { type Icon, IconInfoCircle, IconUser } from '@tabler/icons-react';
+import clsx from 'clsx';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import type { Session } from 'next-auth';
+import { useSession } from 'next-auth/react';
+import { Button } from '@/components/ui/button';
+import DropdownLogged from './dropDownLogged';
+import { ModeToggle } from '@/components/features/toggle-dark';
 
 type NavLink = {
   href: string;
@@ -22,16 +22,16 @@ type NavLink = {
 function getNavLinks(session: Session | null): NavLink[] {
   const baseLinks: NavLink[] = [
     {
-      href: "/about",
-      label: "About",
+      href: '/about',
+      label: 'About',
       icon: IconInfoCircle,
     },
   ];
 
   const notSessionLinks: NavLink[] = [
     {
-      href: "/login",
-      label: "Login",
+      href: '/login',
+      label: 'Login',
       icon: IconUser,
     },
   ];
@@ -50,10 +50,10 @@ export default function HeaderNavigation() {
         <Link
           href="/"
           className={clsx(
-            "flex items-center gap-4 transition-all ease-in-out delay-75 group",
-            pathname === "/"
-              ? "text-foreground hover:text-foreground/90"
-              : "text-foreground/70 hover:text-foreground",
+            'flex items-center gap-4 transition-all ease-in-out delay-75 group',
+            pathname === '/'
+              ? 'text-foreground hover:text-foreground/90'
+              : 'text-foreground/70 hover:text-foreground'
           )}
         >
           <Image
@@ -62,10 +62,10 @@ export default function HeaderNavigation() {
             src="/favicon.ico"
             alt="Logo"
             className={clsx(
-              "rounded-full transition-all ease-in-out delay-75",
-              pathname === "/"
-                ? "opacity-100 group-hover:opacity-90"
-                : "opacity-90 group-hover:opacity-100",
+              'rounded-full transition-all ease-in-out delay-75',
+              pathname === '/'
+                ? 'opacity-100 group-hover:opacity-90'
+                : 'opacity-90 group-hover:opacity-100'
             )}
           />
         </Link>
@@ -103,10 +103,10 @@ export default function HeaderNavigation() {
                   <Link
                     href={item.href}
                     className={clsx(
-                      "flex h-[40px] grow items-center justify-center",
+                      'flex h-[40px] grow items-center justify-center',
                       {
-                        "text-primary": pathname === item.href,
-                      },
+                        'text-primary': pathname === item.href,
+                      }
                     )}
                   >
                     {item.icon && <item.icon className="size-5" />}

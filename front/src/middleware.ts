@@ -1,6 +1,3 @@
-// middleware.ts
-console.log("🔑 [middleware] Initializing NextAuth middleware...");
-
 import NextAuth from "next-auth";
 import { authConfig } from "./auth.config";
 
@@ -14,8 +11,7 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * - login (página de inicio de sesión)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|login).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
 };

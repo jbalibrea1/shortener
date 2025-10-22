@@ -8,10 +8,8 @@ import {
   IconUsers,
 } from '@tabler/icons-react';
 import { LifeBuoy, Send } from 'lucide-react';
-import { useSession } from 'next-auth/react';
-import type * as React from 'react';
-import { NavMain } from '@/components/nav-main';
-import { NavUser } from '@/components/nav-user';
+import { NavMain } from '@/components/navigation/nav-main';
+import { NavUser } from '@/components/navigation/nav-user';
 import {
   Sidebar,
   SidebarContent,
@@ -20,10 +18,11 @@ import {
   SidebarMenu,
   SidebarRail,
 } from '@/components/ui/sidebar';
-import { NavSecondary } from './nav-secondary';
-import { ModeToggle } from './toggle-dark';
+import { NavSecondary } from '../navigation/nav-secondary';
+import { ModeToggle } from '../features/toggle-dark';
+// import { NavSecondary } from './nav-secondary';
+// import { ModeToggle } from './toggle-dark';
 
-// This is sample data.
 const data = {
   navMain: [
     {

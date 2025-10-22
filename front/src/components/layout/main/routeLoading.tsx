@@ -1,7 +1,7 @@
-"use client";
-import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { OverlayLoading } from "@/components/overlay-loading";
+'use client';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { OverlayLoading } from '@/components/common/overlay-loading';
 
 export function RouteLoadingOverlay() {
   const pathname = usePathname();

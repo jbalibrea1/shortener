@@ -1,6 +1,6 @@
-import { FlipWordsAcorta } from "@/components/flip-acorta";
-import { FormSendURL } from "@/components/form-send-url";
-import { SiteHeader } from "@/components/site-header";
+import { FlipWordsAcorta } from '@/components/features/flip-acorta';
+import { FormSendURL } from '@/components/forms/form-send-url';
+import { SiteHeader } from '@/components/layout/site-header';
 
 export default function createPage() {
   return (

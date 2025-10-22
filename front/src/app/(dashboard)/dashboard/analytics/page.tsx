@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import { SiteHeader } from '@/components/site-header';
+import { SiteHeader } from '@/components/layout/site-header';
 import api from '@/lib/axios';
 import { columns, type ShortUrlAnalytics } from './columns';
 import { DataTable } from './data-table';

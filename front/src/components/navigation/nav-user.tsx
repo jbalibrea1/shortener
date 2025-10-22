@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -28,6 +29,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   SidebarMenu,
   SidebarMenuButton,
@@ -39,11 +42,8 @@ import {
   type EditProfileSchemaType,
   editProfileSchema,
 } from '@/schemas/edit-profile.schema';
-import { LogoutLink } from './logout-link';
-import { ModeToggle } from './toggle-dark';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
+import { LogoutLink } from '../features/logout-link';
+import { ModeToggle } from '../features/toggle-dark';
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -133,7 +133,6 @@ export function NavUser() {
                     </span>
                     <span className="truncate text-xs">{user.email}</span>
                   </div>
-                  <ModeToggle />
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -141,7 +140,7 @@ export function NavUser() {
                 <DialogTrigger asChild>
                   <DropdownMenuItem>
                     <BadgeCheck />
-                    Edit Profile
+                    <span className="cursor-pointer">Edit Profile</span>
                   </DropdownMenuItem>
                 </DialogTrigger>
                 <DropdownMenuItem>
@@ -194,17 +193,17 @@ export function NavUser() {
                     disabled={loading}
                   />
                 </div>
-              </div>
-              <DialogFooter>
-                <DialogClose asChild>
-                  <Button variant="outline" type="button" disabled={loading}>
-                    Cancel
+                <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline" type="button" disabled={loading}>
+                      Cancel
+                    </Button>
+                  </DialogClose>
+                  <Button type="submit" disabled={loading}>
+                    {loading ? 'Saving...' : 'Save changes'}
                   </Button>
-                </DialogClose>
-                <Button type="submit" disabled={loading}>
-                  {loading ? 'Saving...' : 'Save changes'}
-                </Button>
-              </DialogFooter>
+                </DialogFooter>
+              </div>
             </form>
           </DialogContent>
         </Dialog>

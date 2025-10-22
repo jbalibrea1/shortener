@@ -1,15 +1,9 @@
-import axios from 'axios';
 import type { NextAuthConfig } from 'next-auth';
 
 const isServer = typeof window === 'undefined';
 const baseURL = isServer
   ? process.env.API_URL
   : process.env.NEXT_PUBLIC_API_URL;
-const localApi = axios.create({
-  baseURL,
-  timeout: 30000,
-  withCredentials: true,
-});
 
 export const authConfig = {
   providers: [
@@ -52,15 +46,23 @@ export const authConfig = {
       if (!token.refreshToken) throw new TypeError('Missing refreshToken');
 
       try {
-        const res = await localApi.post('/auth/refreshToken', {
-          refreshToken: token.refreshToken,
+        const res = await fetch(`${baseURL}/auth/refreshToken`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            refreshToken: token.refreshToken,
+          }),
+          credentials: 'include',
         });
 
-        const { data } = await res.data;
-        const isOk = res.status >= 200 && res.status < 300;
-        if (!isOk) throw data;
+        if (!res.ok) {
+          throw new Error('Failed to refresh token');
+        }
 
-        const newTokens = data as {
+        const response = await res.json();
+        const newTokens = response.data as {
           accessToken: string;
           expiresIn: number;
           refreshToken?: string;
@@ -72,27 +74,27 @@ export const authConfig = {
           name: token.name,
           accessToken: newTokens.accessToken,
           expiresAt: Math.floor(Date.now() / 1000 + newTokens.expiresIn),
-          refreshToken: newTokens.refreshToken
-            ? newTokens.refreshToken
-            : token.refreshToken,
+          refreshToken: newTokens.refreshToken ?? token.refreshToken,
         };
       } catch (error) {
         console.error('Error refreshing accessToken', error);
         // If we fail to refresh the token, return an error so we can handle it on the page
-        token.error = 'RefreshTokenError';
-        return token;
+        return {
+          ...token,
+          error: 'RefreshTokenError',
+        };
       }
     },
     async session({ session, token }: any) {
+      if (token.error) {
+        session.error = token.error;
+      }
       if (token.accessToken) {
         session.accessToken = token.accessToken;
         session.user.role = token.role;
         session.user.username = token.username;
         session.user.name = token.name;
       }
-      // if (token.accessToken) session.accessToken = token.accessToken;
-      // if (token.role) session.user.role = token.role;
-      // if (token.username) session.user.username = token.username;
       return session;
     },
   },

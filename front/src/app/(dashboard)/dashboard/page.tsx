@@ -1,18 +1,18 @@
-import { Suspense } from "react";
-import { auth } from "@/auth";
-import { ChartAreaInteractive } from "@/components/chart";
-import { SectionCards } from "@/components/sections-cards";
-import { SiteHeader } from "@/components/site-header";
-import { ChartSkeleton } from "@/components/skeletons";
-import api from "@/lib/axios";
+import { Suspense } from 'react';
+import { auth } from '@/auth';
+import { ChartAreaInteractive } from '@/components/charts/chart';
+import { SectionCards } from '@/components/common/sections-cards';
+import { ChartSkeleton } from '@/components/common/skeletons';
+import { SiteHeader } from '@/components/layout/site-header';
+import api from '@/lib/axios';
 
 async function fetchStats() {
   const session = await auth();
   const token = session?.accessToken;
-  const res = await api.get("/analytics/user/global-metrics", {
+  const res = await api.get('/analytics/user/global-metrics', {
     headers: { Authorization: `Bearer ${token}` },
   });
-  if (res.status !== 200) throw new Error("Failed to fetch stats");
+  if (res.status !== 200) throw new Error('Failed to fetch stats');
   const { data } = res.data;
   return data;
 }
@@ -24,7 +24,7 @@ export default async function DashboardPage(props: {
 }) {
   const data = await fetchStats();
   const searchParams = await props.searchParams;
-  const days = searchParams?.days || "30";
+  const days = searchParams?.days || '30';
   return (
     <>
       <SiteHeader site="Dashboard" />

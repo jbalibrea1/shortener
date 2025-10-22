@@ -23,10 +23,24 @@ export type ShortUrlAnalytics = {
   metrics: {
     totalClicks: number;
     lastClickAt: string;
-    topReferrer: string;
-    topDevice: string;
-    topCountry: string;
+    topReferrer: string | null;
+    topDevice: string | null;
+    topCountry: string | null;
   };
+};
+
+// Helper to format date consistently
+const formatDate = (dateString: string) => {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+};
+
+// Helper to display metric values with fallback
+const displayMetric = (value: string | null) => {
+  return value || 'N/A';
 };
 
 export const columns: ColumnDef<ShortUrlAnalytics>[] = [
@@ -43,12 +57,12 @@ export const columns: ColumnDef<ShortUrlAnalytics>[] = [
     ),
     cell: ({ row }) => (
       <Link
-        className="font-mono text-xs"
+        className="font-mono text-xs font-medium hover:underline"
         href={`/${row.getValue('shortCode')}`}
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Button variant="link"> /{row.getValue('shortCode')}</Button>
+        /{row.getValue('shortCode')}
       </Link>
     ),
   },
@@ -69,15 +83,10 @@ export const columns: ColumnDef<ShortUrlAnalytics>[] = [
         href={row.getValue('url')}
         target="_blank"
         rel="noopener noreferrer"
-        className="underline underline-offset-4 "
+        className="text-muted-foreground hover:text-foreground max-w-[220px] truncate block underline-offset-4 hover:underline"
         title={row.getValue('url')}
       >
-        <Button
-          variant="link"
-          className="text-muted-foreground p-0 max-w-[220px] truncate block"
-        >
-          {row.getValue('url')}
-        </Button>
+        {row.getValue('url')}
       </a>
     ),
   },
@@ -126,8 +135,7 @@ export const columns: ColumnDef<ShortUrlAnalytics>[] = [
     ),
     cell: ({ row }) => (
       <span className="text-xs text-muted-foreground">
-        {new Date(row.getValue('createdAt')).toLocaleDateString()}
-        {/* {new Date(row.getValue('createdAt')).toISOString().slice(0, 10)} */}
+        {formatDate(row.getValue('createdAt'))}
       </span>
     ),
   },
@@ -143,7 +151,11 @@ export const columns: ColumnDef<ShortUrlAnalytics>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <span>{row.original.metrics.topReferrer}</span>,
+    cell: ({ row }) => (
+      <span className="text-sm">
+        {displayMetric(row.original.metrics.topReferrer)}
+      </span>
+    ),
   },
   {
     id: 'topDevice',
@@ -157,7 +169,11 @@ export const columns: ColumnDef<ShortUrlAnalytics>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <span>{row.original.metrics.topDevice}</span>,
+    cell: ({ row }) => (
+      <span className="text-sm">
+        {displayMetric(row.original.metrics.topDevice)}
+      </span>
+    ),
   },
   {
     id: 'topCountry',
@@ -171,31 +187,58 @@ export const columns: ColumnDef<ShortUrlAnalytics>[] = [
         <ArrowUpDown className="ml-2 h-4 w-4" />
       </Button>
     ),
-    cell: ({ row }) => <span>{row.original.metrics.topCountry}</span>,
+    cell: ({ row }) => (
+      <span className="text-sm">
+        {displayMetric(row.original.metrics.topCountry)}
+      </span>
+    ),
   },
   {
     id: 'actions',
-    cell: () => (
-      <div className="text-right">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
-              size="icon"
-            >
-              <IconDotsVertical />
-              <span className="sr-only">Open menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-32">
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Show Graph</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-    ),
+    cell: ({ row }) => {
+      const shortCode = row.getValue('shortCode') as string;
+
+      const handleEdit = () => {
+        // TODO: Implement edit functionality
+        console.log('Edit URL:', shortCode);
+      };
+
+      const handleShowGraph = () => {
+        // TODO: Navigate to detailed analytics page
+        console.log('Show graph for:', shortCode);
+      };
+
+      const handleDelete = () => {
+        // TODO: Implement delete with confirmation
+        console.log('Delete URL:', shortCode);
+      };
+
+      return (
+        <div className="text-right">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="data-[state=open]:bg-muted text-muted-foreground flex size-8"
+                size="icon"
+              >
+                <IconDotsVertical />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-32">
+              <DropdownMenuItem onClick={handleEdit}>Edit</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleShowGraph}>
+                Show Graph
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem variant="destructive" onClick={handleDelete}>
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      );
+    },
   },
 ];
