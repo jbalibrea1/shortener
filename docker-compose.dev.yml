@@ -9,12 +9,7 @@ services:
       - ./front/:/app
     ports:
       - 3000:3000
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:3001/api/v1
-      - API_URL=http://back:3001/api/v1
-      - NEXTAUTH_URL=http://localhost:3000
-      - NEXT_PUBLIC_DOMAIN=https://sh.jbalibrea.dev
-      - NEXTAUTH_SECRET=c2b0dd0576fcad9560cd96c289b5ff1e973f7f3a78a36f52b689f04cd04e102a74cc025c5a6b52ff6fe793352095a9b271df7e5263c86ef9ef939856bc192ee6642c6c830112f290837b7eb52f819a1a1945a6a8f5b64af01bee191ae80dab206245366532c773bf03605c3d5fe85165b48202997b68a208aad3af91dbf0c104d42cc5a42e334f0eb3e44d637fa3e97f16a6ea2fde2dc6b7f80f428ac81f734803517d3697630a7552acb53ee6eb9d1baaeafe690eac2e0d80717d64df0b47288525c4a67a9b50ab289c87e675e5176baf1efe01b421208247c7c7530bcb52434e6a7563ca28b7e0bba6aba7794325a6c5e6d9e2772884ebd76ef044a3e172b9
+    env_file: ./front/.env.local
 
   back:
     container_name: shortener-back-dev

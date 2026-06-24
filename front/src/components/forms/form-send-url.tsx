@@ -9,17 +9,6 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import type { ShortUrlEntry } from '@/interface/shortURLentry';
-import api from '@/lib/axios';
-import handleCopy from '@/utils/handleCopy';
-import {
   Card,
   CardContent,
   CardDescription,
@@ -27,6 +16,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -35,6 +32,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import type { ShortUrlEntry } from '@/interface/shortURLentry';
+import api from '@/lib/axios';
+import handleCopy from '@/utils/handleCopy';
 import { AlertDialogShort } from '../features/alert-dialog-share';
 
 const formSchema = z.object({

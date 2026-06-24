@@ -44,6 +44,8 @@ const extractToken = (req: Request<unknown>) => {
       config.jwtSecret,
     ) as CustomJwtPayload;
 
+    console.log("el docededtoken es: ", decodedToken)
+
     if (!decodedToken.id && typeof decodedToken.id !== 'string') {
       return null;
     }

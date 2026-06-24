@@ -15,10 +15,11 @@ import token from '@/api/v1/utils/token';
 export function authenticate(
   req: IJwtRequest,
   _res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) {
   try {
     const user = token.extractToken(req);
+    console.log('USERR?', user);
     if (!user) throw new UnauthorizedError('No token provided');
     req.user = user;
     next();

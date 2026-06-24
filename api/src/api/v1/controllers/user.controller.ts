@@ -91,6 +91,7 @@ export const refreshToken = async (
 };
 
 export const updateProfile = async (req: IJwtRequest, res: Response) => {
+  console.log('ENTRNADO EN UPDATEPROFILE');
   const user = req.user;
   if (!user || !user.id) {
     throw new UnauthorizedError('No authorization token provided');

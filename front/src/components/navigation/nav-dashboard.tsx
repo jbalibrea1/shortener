@@ -7,12 +7,10 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { z } from 'zod';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -43,10 +41,10 @@ import {
   editProfileSchema,
 } from '@/schemas/edit-profile.schema';
 import { LogoutLink } from '../features/logout-link';
-import { ModeToggle } from '../features/toggle-dark';
 
 export function NavUser() {
   const { isMobile } = useSidebar();
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const { data: session } = useSession();
   const user = {
@@ -76,6 +74,14 @@ export function NavUser() {
     }
   }, [user.name, form]);
 
+  // Resetear campos de contraseña cuando se abre el diálogo
+  useEffect(() => {
+    if (dialogOpen) {
+      form.setValue('password', '');
+      form.setValue('confirmPassword', '');
+    }
+  }, [dialogOpen, form]);
+
   const onSubmit = async (data: EditProfileSchemaType) => {
     setLoading(true);
     try {
@@ -95,7 +101,10 @@ export function NavUser() {
         { headers }
       );
       toast.success('Profile updated successfully');
-      // Opcional: cerrar el diálogo aquí si lo necesitas
+      // Resetear solo los campos de contraseña
+      form.setValue('password', '');
+      form.setValue('confirmPassword', '');
+      setDialogOpen(false); // Cerrar el diálogo cuando se actualiza correctamente
     } catch (err: any) {
       toast.error(err?.response?.data?.error || 'Error updating profile');
     } finally {
@@ -106,7 +115,7 @@ export function NavUser() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <SidebarMenuButton
@@ -205,11 +214,14 @@ export function NavUser() {
                   />
                 </div>
                 <DialogFooter>
-                  <DialogClose asChild>
-                    <Button variant="outline" type="button" disabled={loading}>
-                      Cancel
-                    </Button>
-                  </DialogClose>
+                  <Button
+                    variant="outline"
+                    type="button"
+                    disabled={loading}
+                    onClick={() => setDialogOpen(false)}
+                  >
+                    Cancel
+                  </Button>
                   <Button type="submit" disabled={loading}>
                     {loading ? 'Saving...' : 'Save changes'}
                   </Button>
